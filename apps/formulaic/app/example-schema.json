@@ -13,13 +13,6 @@
     "age": {
       "type": "integer",
       "minimum": 0
-    },
-    "hobbies": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "minItems": 1
     }
   },
   "required": ["name", "email", "age"]
