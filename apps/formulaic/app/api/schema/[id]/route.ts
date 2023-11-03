@@ -1,4 +1,4 @@
-import { FormSchemaService } from "./form-schema.service";
+import { FormSchemaService } from "../form-schema.service";
 
 const formSchemaService = new FormSchemaService();
 
