@@ -1,4 +1,4 @@
-import schema from "../../example-schema.json";
+import { mocks } from "./mocks";
 
 export class FormSchemaService {
   private toString(object: any) {
@@ -6,6 +6,6 @@ export class FormSchemaService {
   }
 
   get() {
-    return this.toString(schema);
+    return this.toString(mocks.schema);
   }
 }
