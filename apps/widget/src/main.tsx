@@ -1,12 +1,14 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import App from "./App.tsx";
 import "./index.css";
 
 const ROOT_ID = "formulaic-widget";
 
-ReactDOM.createRoot(document.getElementById(ROOT_ID)!).render(
+const rootNode = document.getElementById(ROOT_ID);
+ReactDOM.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
+  rootNode
 );

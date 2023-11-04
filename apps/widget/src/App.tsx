@@ -32,7 +32,11 @@ function App() {
     <section>
       {isLoading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
-      {schema && <Form schema={schema} validator={validator} />}
+      {schema && (
+        <div>
+          <Form schema={schema} validator={validator} />
+        </div>
+      )}
     </section>
   );
 }
