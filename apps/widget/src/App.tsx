@@ -3,6 +3,7 @@ import "./App.css";
 import validator from "@rjsf/validator-ajv8";
 import Form from "@rjsf/core";
 import type { RJSFSchema } from "@rjsf/utils";
+import { API_URL } from "./const";
 
 function App() {
   const [schema, setSchema] = React.useState<RJSFSchema>();
@@ -12,7 +13,7 @@ function App() {
   async function fetchSchema(id: string) {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:3000/api/schema/" + id);
+      const response = await fetch(`${API_URL}/api/schema/` + id);
       const data = (await response.json()) as unknown as RJSFSchema;
 
       setIsLoading(false);
