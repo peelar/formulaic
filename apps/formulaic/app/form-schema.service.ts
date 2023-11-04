@@ -1,11 +1,13 @@
-import { mocks } from "./mocks";
+import { db } from "./db";
 
 export class FormSchemaService {
-  private toString(object: any) {
-    return JSON.stringify(object, null, 2);
-  }
-
-  get() {
-    return this.toString(mocks.schema);
+  getById(id: string) {
+    return db.form.findFirst({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        schema: true,
+      },
+    });
   }
 }
