@@ -1,6 +1,6 @@
-import { db } from "./db";
+import { db } from "../../db";
 
-export class FormSchemaService {
+export class FormRepository {
   getById(id: string) {
     return db.form.findFirst({
       where: { id: Number(id) },
