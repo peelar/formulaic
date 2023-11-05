@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.form.create({
     data: {
+      domainAllowList: ["https://formulaic-widget.tunnelto.dev"],
       schema: {
         create: {
           content: mocks.schema,

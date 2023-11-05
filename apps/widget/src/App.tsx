@@ -40,7 +40,8 @@ function App() {
   }
 
   React.useEffect(() => {
-    fetchSchema("1");
+    // todo: get id from somewhere
+    fetchSchema("3");
   }, []);
 
   return (

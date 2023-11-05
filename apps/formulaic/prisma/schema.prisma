@@ -11,10 +11,11 @@ datasource db {
 }
 
 model Form {
-  id          Int          @id @default(autoincrement())
-  createdAt   DateTime     @default(now())
-  submissions Submission[]
-  schema      Schema?
+  id              Int          @id @default(autoincrement())
+  createdAt       DateTime     @default(now())
+  domainAllowList String[]
+  submissions     Submission[]
+  schema          Schema?
 }
 
 model Submission {

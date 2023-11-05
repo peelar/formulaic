@@ -7,6 +7,7 @@ export class FormRepository {
       select: {
         id: true,
         schema: true,
+        domainAllowList: true,
       },
     });
   }

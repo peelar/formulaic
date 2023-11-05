@@ -1,20 +1,30 @@
+import { Form } from "@prisma/client";
 import { FormRepository } from "./form-repository";
 
 // todo: move
 type Nullable<T> = T | null | undefined;
 
-function isDomainAllowed(request: Request, form: any) {
-  // todo: get domain from request
-  // const domain = new URL(request.url).hostname;
-  // const allowedDomains = form.allowedDomains;
-  // if (!allowedDomains) {
-  //   return false;
-  // }
-  // if (allowedDomains.includes(domain)) {
-  //   return true;
-  // }
-  // return false;
-  return true;
+export function isDomainAllowed(
+  request: Request,
+  form: Pick<Form, "domainAllowList">
+) {
+  const requestHeaders = new Headers(request.headers);
+  const origin = requestHeaders.get("origin");
+  if (!origin) {
+    throw new Error("Missing origin");
+  }
+
+  const allowedDomains = form.domainAllowList;
+
+  if (!allowedDomains.length) {
+    return false;
+  }
+
+  if (allowedDomains.includes(origin)) {
+    return true;
+  }
+
+  return false;
 }
 
 export class FormService {

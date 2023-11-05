@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "vitest",
     "lint": "next lint",
     "generate": "prisma generate",
     "postinstall": "prisma generate"
@@ -27,6 +28,7 @@
     "prisma": "^5.5.2",
     "ts-node": "^10.9.1",
     "tsconfig": "workspace:*",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   }
 }
