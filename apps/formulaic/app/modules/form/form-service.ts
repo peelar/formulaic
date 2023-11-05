@@ -3,25 +3,33 @@ import { FormRepository } from "./form-repository";
 // todo: move
 type Nullable<T> = T | null | undefined;
 
+function isDomainAllowed(request: Request, form: any) {
+  // todo: get domain from request
+  // const domain = new URL(request.url).hostname;
+  // const allowedDomains = form.allowedDomains;
+  // if (!allowedDomains) {
+  //   return false;
+  // }
+  // if (allowedDomains.includes(domain)) {
+  //   return true;
+  // }
+  // return false;
+  return true;
+}
+
 export class FormService {
-  private formRepository: FormRepository;
+  private repository: FormRepository;
+  private request: Request;
 
-  constructor(private request: Request) {
-    this.formRepository = new FormRepository();
-  }
-
-  private isDomainAllowed(request: Request, form: any) {
-    // todo: get domain from request
-    // const domain = new URL(request.url).hostname;
-    // const allowedDomains = form.allowedDomains;
-    // if (!allowedDomains) {
-    //   return false;
-    // }
-    // if (allowedDomains.includes(domain)) {
-    //   return true;
-    // }
-    // return false;
-    return true;
+  constructor({
+    request,
+    repository,
+  }: {
+    request: Request;
+    repository: FormRepository;
+  }) {
+    this.repository = repository;
+    this.request = request;
   }
 
   async getById(id: Nullable<string>) {
@@ -29,13 +37,13 @@ export class FormService {
       return new Response("Missing id", { status: 400 });
     }
 
-    const form = await this.formRepository.getById(id);
+    const form = await this.repository.getById(id);
 
     if (!form) {
       return new Response("Not found", { status: 404 });
     }
 
-    if (!this.isDomainAllowed(this.request, form)) {
+    if (!isDomainAllowed(this.request, form)) {
       return new Response("Not allowed", { status: 403 });
     }
 
