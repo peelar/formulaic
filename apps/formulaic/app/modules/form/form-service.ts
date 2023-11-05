@@ -5,8 +5,23 @@ type Nullable<T> = T | null | undefined;
 
 export class FormService {
   private formRepository: FormRepository;
-  constructor() {
+
+  constructor(private request: Request) {
     this.formRepository = new FormRepository();
+  }
+
+  private isDomainAllowed(request: Request, form: any) {
+    // todo: get domain from request
+    // const domain = new URL(request.url).hostname;
+    // const allowedDomains = form.allowedDomains;
+    // if (!allowedDomains) {
+    //   return false;
+    // }
+    // if (allowedDomains.includes(domain)) {
+    //   return true;
+    // }
+    // return false;
+    return true;
   }
 
   async getById(id: Nullable<string>) {
@@ -14,13 +29,17 @@ export class FormService {
       return new Response("Missing id", { status: 400 });
     }
 
-    const schema = await this.formRepository.getById(id);
+    const form = await this.formRepository.getById(id);
 
-    if (!schema) {
+    if (!form) {
       return new Response("Not found", { status: 404 });
     }
 
-    return new Response(JSON.stringify(schema), {
+    if (!this.isDomainAllowed(this.request, form)) {
+      return new Response("Not allowed", { status: 403 });
+    }
+
+    return new Response(JSON.stringify(form), {
       status: 200,
       headers: {
         // todo: add real CORS policy here
