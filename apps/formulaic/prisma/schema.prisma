@@ -11,27 +11,40 @@ datasource db {
 }
 
 model Form {
-  id              Int          @id @default(autoincrement())
+  id              String       @id @default(cuid())
   createdAt       DateTime     @default(now())
   domainAllowList String[]
   submissions     Submission[]
   schema          Schema?
+  author          User?        @relation(fields: [authorId], references: [id])
+  authorId        String?
 }
 
 model Submission {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   Json     @db.JsonB
   form      Form?    @relation(fields: [formId], references: [id])
-  formId    Int?
+  formId    String   @unique
 }
 
 model Schema {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   Json     @db.JsonB
   form      Form?    @relation(fields: [formId], references: [id])
-  formId    Int      @unique
+  formId    String   @unique
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?  @unique
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  forms     Form[]
+
+  @@map(name: "users") // next-auth requires it
 }
