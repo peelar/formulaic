@@ -16,9 +16,12 @@
   },
   "dependencies": {
     "@prisma/client": "5.5.2",
+    "@t3-oss/env-core": "^0.7.1",
     "next": "^13.4.19",
+    "pino": "^8.16.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.4.19",
