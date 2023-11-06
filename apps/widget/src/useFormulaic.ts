@@ -1,6 +1,7 @@
 import React from "react";
 import type { RJSFSchema } from "@rjsf/utils";
 import { API_URL } from "./const";
+import { ROOT_ID } from "./main";
 
 // todo: parse with zod or
 // todo: use a type from the api package
@@ -15,15 +16,23 @@ type FormResponse = {
   };
 };
 
-export function useFetchForm(id: string) {
+export function useFormulaic() {
+  const formId = document.getElementById(ROOT_ID)?.getAttribute("data-form-id");
+
+  if (!formId) {
+    throw new Error(
+      "Missing form id. Make sure that your root element has a data-form-id attribute."
+    );
+  }
+
   const [schema, setSchema] = React.useState<RJSFSchema>();
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
-  async function fetchForm(id: string) {
+  async function fetchForm() {
     try {
       setIsLoading(true);
-      const response = await fetch(`${API_URL}/api/form/` + id);
+      const response = await fetch(`${API_URL}/api/form/` + formId);
       const data = (await response.json()) as unknown as FormResponse;
       const nextSchema = data.schema.content;
 
@@ -37,8 +46,8 @@ export function useFetchForm(id: string) {
   }
 
   React.useEffect(() => {
-    fetchForm(id);
-  }, [id]);
+    fetchForm();
+  }, []);
 
   return { data: schema, isLoading, error };
 }
