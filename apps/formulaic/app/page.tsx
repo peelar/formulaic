@@ -1,7 +1,7 @@
 export default function Page(): JSX.Element {
   return (
     <main>
-      <h1>Formulaic</h1>
+      <h1>Welcome to Formulaic</h1>
     </main>
   );
 }

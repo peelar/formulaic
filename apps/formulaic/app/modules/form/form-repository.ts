@@ -1,9 +1,9 @@
-import { db } from "../../db";
+import { prisma } from "../../prisma";
 
 export class FormRepository {
   getById(id: string) {
-    return db.form.findFirst({
-      where: { id: Number(id) },
+    return prisma.form.findFirst({
+      where: { id },
       select: {
         id: true,
         schema: true,

@@ -8,10 +8,13 @@ export const env = createEnv({
    * Will throw if you access these variables on the client.
    */
   server: {
-    DATABASE_URL: z.string().url(),
+    DATABASE_URL: z.string(),
     LOG_LEVEL: z
       .enum(["fatal", "error", "warn", "info", "debug", "trace"])
       .default("debug"),
+    GITHUB_ID: z.string(),
+    GITHUB_SECRET: z.string(),
+    NEXTAUTH_URL: z.string().url(),
   },
   /*
    * Environment variables available on the client (and server).
@@ -28,5 +31,8 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     LOG_LEVEL: process.env.LOG_LEVEL,
+    GITHUB_ID: process.env.GITHUB_ID,
+    GITHUB_SECRET: process.env.GITHUB_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
 });
