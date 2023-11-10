@@ -28,7 +28,7 @@ export function useSubmitForm(): UseSubmitFormValues {
       const response = await fetch(`${API_URL}/api/submission`, {
         method: "POST",
         body: JSON.stringify({
-          content: JSON.stringify(body.content),
+          content: body.content,
           formId: body.formId,
         }),
       });

@@ -3,7 +3,7 @@ import { createLogger } from "../../lib/logger";
 import { SubmissionRepository } from "./submission-repository";
 
 const submissionRepositoryInputSchema = z.object({
-  content: z.string().min(1),
+  content: z.record(z.any()),
   formId: z.string().min(6),
 });
 
@@ -34,6 +34,8 @@ export class SubmissionService {
         content: input.content,
         formId: input.formId,
       });
+
+      this.logger.info({ submission }, "created submission");
 
       return new Response(JSON.stringify(submission), {
         status: 201,

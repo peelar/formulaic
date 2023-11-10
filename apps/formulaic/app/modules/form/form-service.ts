@@ -58,7 +58,7 @@ export class FormService {
       return new Response("Not allowed", { status: 403 });
     }
 
-    this.logger.debug({ form }, "Returning form");
+    this.logger.info({ form }, "Returning form");
     return new Response(JSON.stringify(form), {
       status: 200,
     });
