@@ -6,8 +6,8 @@ export async function GET(
   { params }: { params: { id: string | null } }
 ) {
   const repository = new FormRepository();
-  const formService = new FormService({ request, repository });
+  const formService = new FormService(repository);
   const id = params.id;
 
-  return formService.getById(id);
+  return formService.getById({ id, request });
 }
