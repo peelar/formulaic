@@ -1,6 +1,6 @@
 import React from "react";
 import type { RJSFSchema } from "@rjsf/utils";
-import { API_URL } from "./const";
+import { API_URL, FORM_ID } from "./const";
 import { ROOT_ID } from "./main";
 
 // todo: parse with zod or
@@ -17,7 +17,8 @@ type FormResponse = {
 };
 
 export function useGetForm() {
-  const formId = document.getElementById(ROOT_ID)?.getAttribute("data-form-id");
+  const formId =
+    document.getElementById(ROOT_ID)?.getAttribute("data-form-id") ?? FORM_ID;
 
   if (!formId) {
     throw new Error(
@@ -29,7 +30,7 @@ export function useGetForm() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
 
-  async function fetchForm() {
+  const fetchForm = React.useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await fetch(`${API_URL}/api/form/` + formId);
@@ -42,11 +43,11 @@ export function useGetForm() {
       setError(nextError);
       setIsLoading(false);
     }
-  }
+  }, [formId]);
 
   React.useEffect(() => {
     fetchForm();
-  }, []);
+  }, [fetchForm]);
 
   return { data: form, isLoading, error };
 }
