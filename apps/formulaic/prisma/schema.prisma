@@ -26,7 +26,7 @@ model Submission {
   updatedAt DateTime @updatedAt
   content   Json     @db.JsonB
   form      Form?    @relation(fields: [formId], references: [id])
-  formId    String   @unique
+  formId    String
 }
 
 model Schema {
