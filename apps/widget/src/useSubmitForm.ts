@@ -8,7 +8,7 @@ type SubmitResponse = {
 };
 
 type UseSubmitFormValues = [
-  (body: { content: string; formId: number }) => Promise<void>,
+  (body: { content: string; schemaId: number }) => Promise<void>,
   {
     data: SubmitResponse | undefined;
     isLoading: boolean;
@@ -22,14 +22,14 @@ export function useSubmitForm(): UseSubmitFormValues {
   const [error, setError] = React.useState<Error | null>(null);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function submitForm(body: { content: any; formId: number }) {
+  async function submitForm(body: { content: any; schemaId: number }) {
     try {
       setIsLoading(true);
       const response = await fetch(`${API_URL}/api/submission`, {
         method: "POST",
         body: JSON.stringify({
           content: body.content,
-          formId: body.formId,
+          schemaId: body.schemaId,
         }),
       });
       const data = (await response.json()) as unknown as SubmitResponse;

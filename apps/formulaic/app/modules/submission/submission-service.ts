@@ -4,7 +4,7 @@ import { SubmissionRepository } from "./submission-repository";
 
 const submissionRepositoryInputSchema = z.object({
   content: z.record(z.any()),
-  formId: z.string().min(6),
+  schemaId: z.string().min(6),
 });
 
 export class SubmissionService {
@@ -15,8 +15,6 @@ export class SubmissionService {
   constructor(private repository: SubmissionRepository) {}
 
   async create(request: Request) {
-    this.logger.debug("create");
-
     const body = await request.json();
 
     const parsed = submissionRepositoryInputSchema.safeParse(body);
@@ -29,10 +27,12 @@ export class SubmissionService {
 
     const input = parsed.data;
 
+    this.logger.debug({ input }, "Creating submission");
+
     try {
       const submission = await this.repository.create({
         content: input.content,
-        formId: input.formId,
+        schemaId: input.schemaId,
       });
 
       this.logger.info({ submission }, "created submission");

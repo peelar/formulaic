@@ -11,12 +11,11 @@ datasource db {
 }
 
 model Form {
-  id              String       @id @default(cuid())
-  createdAt       DateTime     @default(now())
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
   domainAllowList String[]
-  submissions     Submission[]
   schema          Schema?
-  author          User?        @relation(fields: [authorId], references: [id])
+  author          User?    @relation(fields: [authorId], references: [id])
   authorId        String?
 }
 
@@ -25,17 +24,18 @@ model Submission {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   Json     @db.JsonB
-  form      Form?    @relation(fields: [formId], references: [id])
-  formId    String
+  schema    Schema?  @relation(fields: [schemaId], references: [id])
+  schemaId  String?
 }
 
 model Schema {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   Json     @db.JsonB
-  form      Form?    @relation(fields: [formId], references: [id])
-  formId    String   @unique
+  id          String       @id @default(cuid())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  content     Json         @db.JsonB
+  form        Form?        @relation(fields: [formId], references: [id])
+  formId      String       @unique
+  submissions Submission[]
 }
 
 model Account {
