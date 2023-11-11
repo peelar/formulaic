@@ -1,9 +1,7 @@
-import { SubmissionRepository } from "../../modules/submission/submission-repository";
-import { SubmissionService } from "../../modules/submission/submission-service";
+import { SubmissionController } from "../../modules/submission/submission-controller";
 
 export async function POST(request: Request) {
-  const repository = new SubmissionRepository();
-  const submissionService = new SubmissionService(repository);
+  const submissionController = new SubmissionController();
 
-  return submissionService.create(request);
+  return submissionController.POST(request);
 }

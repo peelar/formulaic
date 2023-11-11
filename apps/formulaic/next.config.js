@@ -2,9 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["ui"],
-  experimental: {
-    serverActions: true,
-  },
+
   async headers() {
     return [
       {

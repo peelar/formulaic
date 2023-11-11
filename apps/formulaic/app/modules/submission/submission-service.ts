@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createLogger } from "../../lib/logger";
 import { SubmissionRepository } from "./submission-repository";
+import { BadRequestError, InternalServerError } from "../../lib/error";
 
 const submissionRepositoryInputSchema = z.object({
   content: z.record(z.any()),
@@ -14,41 +15,26 @@ export class SubmissionService {
 
   constructor(private repository: SubmissionRepository) {}
 
-  async create(request: Request) {
-    const body = await request.json();
-
+  async create(body: unknown) {
     const parsed = submissionRepositoryInputSchema.safeParse(body);
 
     if (!parsed.success) {
       this.logger.error(parsed.error);
       // todo: return error in response
-      return new Response("Invalid input", { status: 400 });
+      throw new BadRequestError("Invalid submission input");
     }
 
     const input = parsed.data;
 
-    this.logger.debug({ input }, "Creating submission");
+    this.logger.debug("Creating submission", { input });
 
-    try {
-      const submission = await this.repository.create({
-        content: input.content,
-        schemaId: input.schemaId,
-      });
+    const submission = await this.repository.create({
+      content: input.content,
+      schemaId: input.schemaId,
+    });
 
-      this.logger.info({ submission }, "created submission");
+    this.logger.info("Created submission", { submission });
 
-      return new Response(JSON.stringify(submission), {
-        status: 201,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch (error) {
-      // todo: read error and decide on status code
-      this.logger.error(error);
-
-      //  todo: return error in response
-      return new Response("Internal server error", { status: 500 });
-    }
+    return submission;
   }
 }

@@ -1,28 +1,27 @@
 import { Form } from "@prisma/client";
+import { z } from "zod";
+import {
+  BadRequestError,
+  NotAllowedError,
+  NotFoundError,
+} from "../../lib/error";
 import { createLogger, logger } from "../../lib/logger";
 import { FormRepository } from "./form-repository";
 
-// todo: move
-type Nullable<T> = T | null | undefined;
-
-export function isDomainAllowed(
-  request: Request,
-  form: Pick<Form, "domainAllowList">
-) {
-  const requestHeaders = new Headers(request.headers);
-  const origin = requestHeaders.get("origin");
-
-  if (!origin) {
-    throw new Error("Missing origin");
-  }
-
+export function isDomainAllowed({
+  origin,
+  form,
+}: {
+  origin: string;
+  form: Pick<Form, "domainAllowList">;
+}) {
   const allowedDomains = form.domainAllowList;
 
   if (!allowedDomains.length) {
     return false;
   }
 
-  logger.debug({ origin, allowedDomains }, "Checking if domain is allowed");
+  logger.debug("Checking if domain is allowed", { origin, allowedDomains });
 
   if (allowedDomains.includes(origin)) {
     return true;
@@ -31,6 +30,10 @@ export function isDomainAllowed(
   return false;
 }
 
+export const formCreateSchema = z.object({
+  schemaContent: z.record(z.any()),
+});
+
 export class FormService {
   private logger = createLogger({
     name: "FormService",
@@ -38,29 +41,45 @@ export class FormService {
 
   constructor(private repository: FormRepository) {}
 
-  async getById({ id, request }: { request: Request; id: Nullable<string> }) {
-    this.logger.debug({ id }, "Getting form by id");
+  async getById({ id, origin }: { origin: string; id: string }) {
+    this.logger.debug("Getting form by id", { id });
 
     if (!id) {
       this.logger.debug("Form id is either null or undefined");
-      return new Response("Missing id", { status: 400 });
+      throw new BadRequestError("Missing form id");
     }
 
     const form = await this.repository.getById(id);
 
     if (!form) {
       this.logger.debug("No form was found for this id");
-      return new Response("Not found", { status: 404 });
+      throw new NotFoundError("Form not found");
     }
 
-    if (!isDomainAllowed(request, form)) {
+    if (!isDomainAllowed({ origin, form })) {
       this.logger.debug("Domain not found in form allow list");
-      return new Response("Not allowed", { status: 403 });
+      throw new NotAllowedError("Domain not allowed");
     }
 
-    this.logger.info({ form }, "Returning form");
-    return new Response(JSON.stringify(form), {
-      status: 200,
-    });
+    this.logger.info("Returning form", { form });
+    return form;
+  }
+
+  async create(body: unknown) {
+    this.logger.debug("Creating form");
+
+    const parsed = formCreateSchema.safeParse(body);
+
+    if (!parsed.success) {
+      this.logger.debug("Invalid form input", { errors: parsed.error });
+      throw new BadRequestError("Invalid form input");
+    }
+
+    const input = parsed.data;
+
+    const form = await this.repository.create(input);
+
+    this.logger.info("Returning form", { form });
+    return form;
   }
 }
