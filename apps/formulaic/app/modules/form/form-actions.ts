@@ -3,7 +3,10 @@
 import { FormRepository } from "./form-repository";
 import { FormService } from "./form-service";
 
-export async function createForm(_prevData: any, formData: FormData) {
+export async function createForm(
+  _prevData: { id: string | null },
+  formData: FormData
+) {
   const schemaContent = formData.get("schemaContent") as string;
   const schema = JSON.parse(schemaContent);
 
@@ -16,5 +19,5 @@ export async function createForm(_prevData: any, formData: FormData) {
 
   const form = await formService.create(input);
 
-  return { message: `Form ${form.id} created` };
+  return { id: form.id };
 }
