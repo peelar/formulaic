@@ -1,39 +1,21 @@
 "use client";
 
-import { GetFormResponse } from "../form-controller";
-import { CreateFormArgs } from "../form-service";
+import { useFormState, useFormStatus } from "react-dom";
+import { createForm } from "../form-actions";
 
 export const CreateForm = () => {
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const schemaContent = formData.get("schemaContent") as string;
-    const schema = JSON.parse(schemaContent);
-
-    const body: CreateFormArgs = {
-      schemaContent: schema,
-    };
-
-    const response = await fetch(`/api/form`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-
-    const data = (await response.json()) as unknown as GetFormResponse;
-
-    console.log(data);
-  };
+  const [state, formAction] = useFormState(createForm, { message: null });
+  const status = useFormStatus();
 
   return (
     <section>
       <h2>Create a form</h2>
-      <form onSubmit={handleSubmit}>
+      <form action={formAction}>
         <textarea name="schemaContent" />
-        <button type="submit">Create</button>
+        <button disabled={status.pending} type="submit">
+          {status.pending ? "Loading..." : "Create"}
+        </button>
+        {state.message && <p>{state.message}</p>}
       </form>
     </section>
   );
