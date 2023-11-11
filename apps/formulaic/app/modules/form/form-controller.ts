@@ -60,6 +60,10 @@ export class FormController {
 }
 
 // todo: move to api package
-type GetFormResponse = Awaited<
+export type GetFormResponse = Awaited<
   ReturnType<(typeof FormService)["prototype"]["getById"]>
+>;
+
+export type CreateFormResponse = Awaited<
+  ReturnType<(typeof FormService)["prototype"]["create"]>
 >;

@@ -34,6 +34,8 @@ export const formCreateSchema = z.object({
   schemaContent: z.record(z.any()),
 });
 
+export type CreateFormArgs = z.infer<typeof formCreateSchema>;
+
 export class FormService {
   private logger = createLogger({
     name: "FormService",
