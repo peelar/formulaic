@@ -24,6 +24,7 @@
     "@t3-oss/env-nextjs": "^0.7.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
     "next": "latest",
     "next-auth": "5.0.0-beta.3",
     "pino": "^8.16.1",

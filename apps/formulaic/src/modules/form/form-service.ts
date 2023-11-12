@@ -18,6 +18,15 @@ export class FormService {
 
   constructor(private repository: FormRepository) {}
 
+  async getAllMine({ userEmail }: { userEmail: string }) {
+    this.logger.debug("Getting all forms");
+
+    const forms = await this.repository.getAllMine({ userEmail });
+
+    this.logger.info("Returning forms", { forms });
+    return forms;
+  }
+
   async getById({ id }: { id: string }) {
     this.logger.debug("Getting form by id", { id });
 

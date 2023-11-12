@@ -9,13 +9,6 @@ export const config = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [GitHub],
-  callbacks: {
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl;
-      if (pathname === "/") return !!auth;
-      return true;
-    },
-  },
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
