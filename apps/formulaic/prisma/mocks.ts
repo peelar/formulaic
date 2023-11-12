@@ -1,4 +1,4 @@
-import schema from "../app/example-schema.json";
+import schema from "../example-schema.json";
 
 export const mocks = {
   schema,

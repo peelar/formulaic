@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "./typography.css";
 import { cx } from "class-variance-authority";
-import { MainNavigation } from "./ui/main-navigation";
+import { MainNavigation } from "../ui/main-navigation";
 
 const inter = Inter({
   subsets: ["latin"],

@@ -1,4 +1,4 @@
-import { FormController } from "../../../modules/form/form-controller";
+import { FormController } from "../../../../modules/form/form-controller";
 
 export async function GET(
   request: Request,

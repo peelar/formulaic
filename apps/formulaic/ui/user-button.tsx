@@ -1,5 +1,5 @@
-import { Button } from "../../@/components/ui/button";
-import { auth, signIn, signOut } from "../../auth";
+import { Button } from "../@/components/ui/button";
+import { auth, signIn, signOut } from "../auth";
 import { redirect } from "next/navigation";
 
 function SignIn({ provider }: { provider?: string }) {

@@ -1,4 +1,4 @@
-import { FormCreator } from "./modules/form/ui/form-creator";
+import { FormCreator } from "../modules/form/ui/form-creator";
 
 export default function Page(): JSX.Element {
   return (
