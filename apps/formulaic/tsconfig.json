@@ -10,5 +10,8 @@
     ".next/types/**/*.ts",
     "**/*.mjs"
   ],
+  "paths": {
+    "@/*": ["./*"]
+  },
   "exclude": ["node_modules"]
 }

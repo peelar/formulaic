@@ -1,40 +1,15 @@
-import { Form } from "@prisma/client";
 import { z } from "zod";
-import {
-  BadRequestError,
-  NotAllowedError,
-  NotFoundError,
-} from "../../lib/error";
-import { createLogger, logger } from "../../lib/logger";
+import { BadRequestError, NotFoundError } from "../../lib/error";
+import { createLogger } from "../../lib/logger";
 import { FormRepository } from "./form-repository";
 
-export function isDomainAllowed({
-  origin,
-  form,
-}: {
-  origin: string;
-  form: Pick<Form, "domainAllowList">;
-}) {
-  const allowedDomains = form.domainAllowList;
-
-  if (!allowedDomains.length) {
-    return false;
-  }
-
-  logger.debug("Checking if domain is allowed", { origin, allowedDomains });
-
-  if (allowedDomains.includes(origin)) {
-    return true;
-  }
-
-  return false;
-}
-
-export const formCreateSchema = z.object({
+const formCreateInputSchema = z.object({
+  name: z.string(),
   schemaContent: z.record(z.any()),
+  domain: z.string().url(),
 });
 
-export type CreateFormArgs = z.infer<typeof formCreateSchema>;
+export type FormCreateInput = z.infer<typeof formCreateInputSchema>;
 
 export class FormService {
   private logger = createLogger({
@@ -43,7 +18,7 @@ export class FormService {
 
   constructor(private repository: FormRepository) {}
 
-  async getById({ id, origin }: { origin: string; id: string }) {
+  async getById({ id }: { id: string }) {
     this.logger.debug("Getting form by id", { id });
 
     if (!id) {
@@ -58,11 +33,6 @@ export class FormService {
       throw new NotFoundError("Form not found");
     }
 
-    if (!isDomainAllowed({ origin, form })) {
-      this.logger.debug("Domain not found in form allow list");
-      throw new NotAllowedError("Domain not allowed");
-    }
-
     this.logger.info("Returning form", { form });
     return form;
   }
@@ -70,7 +40,7 @@ export class FormService {
   async create(body: unknown) {
     this.logger.debug("Creating form");
 
-    const parsed = formCreateSchema.safeParse(body);
+    const parsed = formCreateInputSchema.safeParse(body);
 
     if (!parsed.success) {
       this.logger.debug("Invalid form input", { errors: parsed.error });

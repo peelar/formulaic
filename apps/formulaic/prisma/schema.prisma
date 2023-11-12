@@ -13,6 +13,7 @@ datasource db {
 model Form {
   id              String   @id @default(cuid())
   createdAt       DateTime @default(now())
+  name            String
   domainAllowList String[]
   schema          Schema?
   author          User?    @relation(fields: [authorId], references: [id])

@@ -12,16 +12,19 @@ export const env = createEnv({
     LOG_LEVEL: z
       .enum(["fatal", "error", "warn", "info", "debug", "trace"])
       .default("debug"),
-    GITHUB_ID: z.string(),
-    GITHUB_SECRET: z.string(),
+    AUTH_GITHUB_ID: z.string(),
+    AUTH_GITHUB_SECRET: z.string(),
     NEXTAUTH_URL: z.string().url(),
+    WIDGET_URL: z.string().url(),
   },
   /*
    * Environment variables available on the client (and server).
    *
    * 💡 You'll get type errors if these are not prefixed with NEXT_PUBLIC_.
    */
-  client: {},
+  client: {
+    NEXT_PUBLIC_EMBED_SCRIPT_URL: z.string().url(),
+  },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
    * we need to manually destructure them to make sure all are included in bundle.
@@ -31,8 +34,10 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     LOG_LEVEL: process.env.LOG_LEVEL,
-    GITHUB_ID: process.env.GITHUB_ID,
-    GITHUB_SECRET: process.env.GITHUB_SECRET,
+    AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
+    AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    WIDGET_URL: process.env.WIDGET_URL,
+    NEXT_PUBLIC_EMBED_SCRIPT_URL: process.env.NEXT_PUBLIC_EMBED_SCRIPT_URL,
   },
 });

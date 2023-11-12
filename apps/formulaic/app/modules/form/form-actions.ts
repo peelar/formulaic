@@ -1,17 +1,30 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { FormRepository } from "./form-repository";
-import { FormService } from "./form-service";
+import { FormCreateInput, FormService } from "./form-service";
 
-export async function createForm(
-  _prevData: { id: string | null },
-  formData: FormData
-) {
-  const schemaContent = formData.get("schemaContent") as string;
-  const schema = JSON.parse(schemaContent);
+export async function createForm(formData: FormData) {
+  const schemaContent = formData.get("schemaContent");
+  const name = formData.get("name");
+  const domain = formData.get("domain");
 
-  const input = {
-    schemaContent: schema,
+  if (!schemaContent || !name || !domain) {
+    throw new Error("Missing form data");
+  }
+
+  if (
+    typeof schemaContent !== "string" ||
+    typeof name !== "string" ||
+    typeof domain !== "string"
+  ) {
+    throw new Error("Invalid form data");
+  }
+
+  const input: FormCreateInput = {
+    schemaContent: JSON.parse(schemaContent),
+    name,
+    domain,
   };
 
   const formRepository = new FormRepository();
@@ -19,5 +32,5 @@ export async function createForm(
 
   const form = await formService.create(input);
 
-  return { id: form.id };
+  redirect(`/form/${form.id}`);
 }

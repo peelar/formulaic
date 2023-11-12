@@ -1,3 +1,4 @@
+import { Button } from "../../@/components/ui/button";
 import { auth, signIn, signOut } from "../../auth";
 import { redirect } from "next/navigation";
 
@@ -10,7 +11,7 @@ function SignIn({ provider }: { provider?: string }) {
         redirect(url.replace("signin", "api/auth/signin"));
       }}
     >
-      <button>Sign In</button>
+      <Button variant={"ghost"}>Sign In</Button>
     </form>
   );
 }

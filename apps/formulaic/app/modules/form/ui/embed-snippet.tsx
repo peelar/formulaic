@@ -1,33 +1,27 @@
 "use client";
 
 import React from "react";
-
-async function copyTextToClipboard(text: string) {
-  if ("clipboard" in navigator) {
-    return await navigator.clipboard.writeText(text);
-  } else {
-    return document.execCommand("copy", true, text);
-  }
-}
+import { env } from "../../../../env.mjs";
 
 export const EmbedSnippet = ({ formId }: { formId: string }) => {
-  const [isCopied, setIsCopied] = React.useState(false);
   const snippetText = `
-  <div data-form-id="${formId}" id="formulaic-widget"></div><script crossorigin src="https://widget-ruddy.vercel.app/embed.js">
+  <div data-form-id="${formId}" id="formulaic-widget"></div><script crossorigin src="${env.NEXT_PUBLIC_EMBED_SCRIPT_URL}">
   `;
 
-  function handleClick() {
-    copyTextToClipboard(snippetText);
-    setIsCopied(true);
-  }
-
   return (
-    <section>
-      <p>Paste this snippet on your website</p>
-      <pre>{snippetText}</pre>
-      <div>
-        <button onClick={handleClick}>{isCopied ? "Copied ✅" : "Copy"}</button>
-      </div>
+    <section className="flex flex-col">
+      <h3>Embed</h3>
+      <ol className="my-4 flex flex-col gap-4">
+        <li>
+          <p>1. Copy the snippet below</p>
+          <div className="flex max-w-[480px] ml-2 mt-2">
+            <div className="bg-stone-100 wrap" contentEditable>
+              {snippetText}
+            </div>
+          </div>
+        </li>
+        <li>2. Paste the snippet into your website</li>
+      </ol>
     </section>
   );
 };

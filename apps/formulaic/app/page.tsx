@@ -1,10 +1,13 @@
-import { CreateForm } from "./modules/form/ui/create-form";
+import { FormCreator } from "./modules/form/ui/form-creator";
 
 export default function Page(): JSX.Element {
   return (
     <main>
-      <h1>Welcome to Formulaic</h1>
-      <CreateForm />
+      <div className="flex items-center justify-center my-[25vh]">
+        <div className="min-w-[480px]">
+          <FormCreator />
+        </div>
+      </div>
     </main>
   );
 }

@@ -1,17 +1,13 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { UserButton } from "./ui/UserButton";
+import "./typography.css";
+import { cx } from "class-variance-authority";
+import { MainNavigation } from "./ui/main-navigation";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const Header = () => {
-  return (
-    <div>
-      <span>Formulaic</span>
-      <UserButton />
-    </div>
-  );
-};
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export default async function RootLayout({
   children,
@@ -20,8 +16,8 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Header />
+      <body className={cx(inter.variable, "mx-8 my-4")}>
+        <MainNavigation />
         {children}
       </body>
     </html>

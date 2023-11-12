@@ -1,4 +1,4 @@
-import { isDomainAllowed } from "./form-service";
+import { isDomainAllowed } from "./form-controller";
 import { describe, expect, it } from "vitest";
 
 describe("isDomainAllowed", () => {

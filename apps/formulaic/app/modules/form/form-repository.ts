@@ -1,8 +1,6 @@
-import { prisma, Prisma } from "../../prisma";
-
-export type FormCreateInput = {
-  schemaContent: Prisma.InputJsonValue;
-};
+import { env } from "../../../env.mjs";
+import { prisma } from "../../prisma";
+import { FormCreateInput } from "./form-service";
 
 // idea: try/catch? and return { data, error }
 export class FormRepository {
@@ -12,7 +10,7 @@ export class FormRepository {
       select: {
         id: true,
         schema: true,
-        domainAllowList: true,
+        name: true,
       },
     });
   }
@@ -20,13 +18,16 @@ export class FormRepository {
   create(data: FormCreateInput) {
     return prisma.form.create({
       data: {
+        name: data.name,
+        domainAllowList: [
+          ...(process.env.NODE_ENV === "development" ? [env.WIDGET_URL] : []),
+          data.domain,
+        ],
         schema: {
           create: {
             content: data.schemaContent,
           },
         },
-        // todo: remove this
-        domainAllowList: ["https://formulaic-widget.tunnelto.dev"],
       },
     });
   }

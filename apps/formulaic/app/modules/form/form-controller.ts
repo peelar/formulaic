@@ -1,7 +1,30 @@
-import { BaseError } from "../../lib/error";
-import { createLogger } from "../../lib/logger";
+import { Form } from "@prisma/client";
+import { BaseError, NotAllowedError } from "../../lib/error";
+import { createLogger, logger } from "../../lib/logger";
 import { FormRepository } from "./form-repository";
 import { FormService } from "./form-service";
+
+export function isDomainAllowed({
+  origin,
+  form,
+}: {
+  origin: string;
+  form: Pick<Form, "domainAllowList">;
+}) {
+  const allowedDomains = form.domainAllowList;
+
+  if (!allowedDomains.length) {
+    return false;
+  }
+
+  logger.debug("Checking if domain is allowed", { origin, allowedDomains });
+
+  if (allowedDomains.includes(origin)) {
+    return true;
+  }
+
+  return false;
+}
 
 export class FormController {
   logger = createLogger({
@@ -26,7 +49,7 @@ export class FormController {
     }
 
     try {
-      const form = await this.service.getById({ id, origin });
+      const form = await this.service.getById({ id });
 
       return new Response(JSON.stringify(form), { status: 200 });
     } catch (error) {
@@ -46,6 +69,11 @@ export class FormController {
 
     try {
       const form = await this.service.create(body);
+
+      if (!isDomainAllowed({ origin, form })) {
+        this.logger.debug("Domain not found in form allow list");
+        throw new NotAllowedError("Domain not allowed");
+      }
 
       return new Response(JSON.stringify(form), { status: 201 });
     } catch (error) {
