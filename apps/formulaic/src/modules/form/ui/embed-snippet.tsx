@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { env } from "../../../env.mjs";
+import { env } from "../../../../env.mjs";
 
 export const EmbedSnippet = ({ formId }: { formId: string }) => {
   const snippetText = `

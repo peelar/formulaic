@@ -1,4 +1,4 @@
-import { SubmissionController } from "../../../modules/submission/submission-controller";
+import { SubmissionController } from "../../../src/modules/submission/submission-controller";
 
 export async function POST(request: Request) {
   const submissionController = new SubmissionController();

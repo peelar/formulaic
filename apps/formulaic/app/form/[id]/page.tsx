@@ -1,6 +1,6 @@
-import { FormRepository } from "../../../modules/form/form-repository";
-import { FormService } from "../../../modules/form/form-service";
-import { EmbedSnippet } from "../../../modules/form/ui/embed-snippet";
+import { FormRepository } from "../../../src/modules/form/form-repository";
+import { FormService } from "../../../src/modules/form/form-service";
+import { EmbedSnippet } from "../../../src/modules/form/ui/embed-snippet";
 
 async function getForm(id: string) {
   const formRepository = new FormRepository();

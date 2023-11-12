@@ -1,4 +1,4 @@
-import { prisma, Prisma } from "../../prisma";
+import { prisma, Prisma } from "../../../prisma";
 
 export type SubmissionCreateInput = Pick<
   Prisma.SubmissionCreateInput,
