@@ -5,7 +5,7 @@ import { useGetForm } from "./useGetForm";
 import { useSubmitForm } from "./useSubmitForm";
 import { RJSFSchema } from "@rjsf/utils";
 
-function App() {
+export function App() {
   const { data: form, isLoading, error } = useGetForm();
   const [submit, { data: submitData }] = useSubmitForm();
 
@@ -40,5 +40,3 @@ function App() {
     </section>
   );
 }
-
-export default App;
