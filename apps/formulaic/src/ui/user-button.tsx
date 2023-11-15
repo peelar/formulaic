@@ -23,7 +23,7 @@ function SignOut() {
         await signOut();
       }}
     >
-      <button>Sign Out</button>
+      <Button variant={"ghost"}>Sign Out</Button>
     </form>
   );
 }
@@ -33,7 +33,6 @@ export const UserButton = async () => {
 
   return (
     <div>
-      <span>{session.user.name}</span>
       <SignOut />
     </div>
   );

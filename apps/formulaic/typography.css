@@ -49,3 +49,8 @@ code {
 .text-small {
   @apply text-sm font-medium leading-none;
 }
+
+/* anchor tags that are not children of nav: */
+a:not(nav a) {
+  @apply underline hover:bg-stone-100;
+}

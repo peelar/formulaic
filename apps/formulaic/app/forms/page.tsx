@@ -1,16 +1,5 @@
-import React from "react";
-import { auth } from "../../auth";
-import { redirect } from "next/navigation";
+import { protectPage } from "../../src/lib/routing";
 import { FormsTable } from "../../src/modules/form/ui/forms-table";
-
-async function protectPage() {
-  const session = await auth();
-  console.log(session);
-
-  if (session?.user === undefined) {
-    redirect("/");
-  }
-}
 
 const FormsPage = async () => {
   await protectPage();

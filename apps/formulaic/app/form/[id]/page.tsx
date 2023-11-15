@@ -1,6 +1,7 @@
 import { FormRepository } from "../../../src/modules/form/form-repository";
 import { FormService } from "../../../src/modules/form/form-service";
 import { EmbedSnippet } from "../../../src/modules/form/ui/embed-snippet";
+import { Section } from "../../../src/ui/section";
 
 async function getForm(id: string) {
   const formRepository = new FormRepository();
@@ -14,11 +15,13 @@ export default async function FormPage({ params }: { params: { id: string } }) {
   return (
     <main>
       <header>
-        <h2 className="text-stone-800 capitalize">{form.name}</h2>
-        <div className="mt-8">
-          <EmbedSnippet formId={form.id} />
-        </div>
+        <Section>
+          <h2 className="text-stone-800 capitalize">{form.name}</h2>
+        </Section>
       </header>
+      <Section>
+        <EmbedSnippet formId={form.id} />
+      </Section>
     </main>
   );
 }

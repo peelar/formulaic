@@ -1,13 +1,22 @@
-import { FormCreator } from "../src/modules/form/ui/form-creator";
+import { auth } from "../auth";
+import { FormsTable } from "../src/modules/form/ui/forms-table";
+import { Section } from "../src/ui/section";
 
-export default function Page(): JSX.Element {
+const LoggedInHomePageContent = () => {
   return (
-    <main>
-      <div className="flex items-center justify-center my-[25vh]">
-        <div className="min-w-[480px]">
-          <FormCreator />
-        </div>
-      </div>
+    <Section>
+      <FormsTable />
+    </Section>
+  );
+};
+
+export default async function Page() {
+  const session = await auth();
+  const user = session?.user;
+
+  return (
+    <main className="flex flex-col items-center my-[10vh]">
+      {user && <LoggedInHomePageContent />}
     </main>
   );
 }

@@ -1,4 +1,4 @@
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "../../../../auth";
 import {
@@ -10,11 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "../../../@/components/ui/table";
+import { date } from "../../../lib/date";
 import { FormRepository } from "../form-repository";
 import { FormService } from "../form-service";
-import { date } from "../../../lib/date";
-import Link from "next/link";
 import { Button } from "../../../@/components/ui/button";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 export const FormsTable = async () => {
   const formRepository = new FormRepository();
@@ -34,7 +34,7 @@ export const FormsTable = async () => {
 
   return (
     <section className="my-6">
-      <h4 className="mb-2">Forms table</h4>
+      <h3 className="mb-2">Forms table</h3>
       <Table>
         <TableHeader>
           <TableRow>
@@ -43,29 +43,28 @@ export const FormsTable = async () => {
             <TableHead>Domains</TableHead>
             <TableHead>Submissions</TableHead>
             <TableHead>Created at</TableHead>
-            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {forms.map((form) => (
             <TableRow>
-              <TableCell className="break-all">{form.id}</TableCell>
+              <TableCell className="break-all">
+                <Link href={`/form/${form.id}`}>{form.id}</Link>
+              </TableCell>
               <TableCell className="font-bold">{form.name}</TableCell>
               <TableCell>{form.domainAllowList.join(", ")}</TableCell>
               <TableCell>{form.schema?._count.submissions}</TableCell>
               <TableCell>{date.toLongDate(form.createdAt)}</TableCell>
-              <TableCell>
-                <Link href={`/form/${form.id}`}>
-                  <Button variant={"ghost"} size="icon">
-                    <ArrowRightIcon />
-                  </Button>
-                </Link>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>
         {!forms.length && <TableCaption>No forms found</TableCaption>}
       </Table>
+      <Link href="/new">
+        <Button size="lg" className="w-full" variant={"ghost"}>
+          <PlusIcon />
+        </Button>
+      </Link>
     </section>
   );
 };
