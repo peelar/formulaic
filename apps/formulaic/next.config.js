@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["localhost:3000", process.env.TUNNEL_URL],
+    },
+  },
 
   async headers() {
     return [

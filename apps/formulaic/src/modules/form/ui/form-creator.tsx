@@ -2,9 +2,9 @@
 
 import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
-import { Textarea } from "../../../@/components/ui/textarea";
 import { createForm } from "../form-actions";
 import { SubmitButton } from "./submit-button";
+import { SchemaBuilder } from "./schema-builder";
 
 export const FormCreator = () => {
   return (
@@ -19,7 +19,7 @@ export const FormCreator = () => {
       <div className="my-6">
         <form action={createForm}>
           <fieldset className="flex flex-col gap-6">
-            <Label>
+            <Label className="w-2/5">
               Name
               <Input
                 type="text"
@@ -27,10 +27,7 @@ export const FormCreator = () => {
                 placeholder="e.g. Invitation form"
               />
             </Label>
-            <Label>
-              JSON Schema
-              <Textarea placeholder={`{ ... }`} name="schemaContent" />
-            </Label>
+            <SchemaBuilder />
             <Label>
               Domain
               <Input

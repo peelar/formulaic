@@ -17,6 +17,7 @@ export default async function Page() {
   return (
     <main className="flex flex-col items-center my-[10vh]">
       {user && <LoggedInHomePageContent />}
+      {!user && <p>Please log in</p>}
     </main>
   );
 }

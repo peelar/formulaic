@@ -16,6 +16,7 @@ export const env = createEnv({
     AUTH_GITHUB_SECRET: z.string(),
     NEXTAUTH_URL: z.string().url(),
     WIDGET_URL: z.string().url(),
+    TUNNEL_URL: z.string().url().optional(),
   },
   /*
    * Environment variables available on the client (and server).
@@ -39,5 +40,6 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     WIDGET_URL: process.env.WIDGET_URL,
     NEXT_PUBLIC_EMBED_SCRIPT_URL: process.env.NEXT_PUBLIC_EMBED_SCRIPT_URL,
+    TUNNEL_URL: process.env.TUNNEL_URL,
   },
 });
