@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { auth } from "../auth";
 import { FormsTable } from "../src/modules/form/ui/forms-table";
 import { Section } from "../src/ui/section";
@@ -8,6 +9,11 @@ const LoggedInHomePageContent = () => {
       <FormsTable />
     </Section>
   );
+};
+
+export const metadata: Metadata = {
+  title: "Formulaic",
+  description: "Build forms",
 };
 
 export default async function Page() {

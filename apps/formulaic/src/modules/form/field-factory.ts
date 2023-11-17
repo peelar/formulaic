@@ -1,8 +1,9 @@
 import { RJSFSchema } from "@rjsf/utils";
 
 type MakeFieldProps<TType extends string, TRules extends object> = {
-  // The `TId` type parameter is used to identify the field in the UI. It's stripped out in the JSON schema.
-  type: TType | undefined;
+  id: string;
+  // The `TType` type parameter is used to identify the field in the UI. It's stripped out in the JSON schema.
+  type: TType;
   name: string;
   rules?: TRules;
 };
@@ -15,9 +16,9 @@ export type TextFieldProps = MakeFieldProps<
   }
 >;
 
-type EmailFieldProps = MakeFieldProps<"email", {}>;
+export type EmailFieldProps = MakeFieldProps<"email", {}>;
 
-type NumberFieldProps = MakeFieldProps<
+export type NumberFieldProps = MakeFieldProps<
   "number",
   {
     minimum?: number;

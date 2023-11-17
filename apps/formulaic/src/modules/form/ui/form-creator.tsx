@@ -5,10 +5,43 @@ import { Label } from "../../../@/components/ui/label";
 import { createForm } from "../form-actions";
 import { SubmitButton } from "./submit-button";
 import { SchemaBuilder } from "./schema-builder";
+import React from "react";
+import { FieldProps } from "../field-factory";
+import { SchemaContext } from "./hooks/useFormBuilder";
+
+const generateId = () => Math.random().toString(36).substr(2, 9);
+
+const defaultFields: FieldProps[] = [
+  {
+    id: generateId(),
+    name: "name",
+    type: "number",
+  },
+  {
+    id: generateId(),
+    name: "name2",
+    type: "email",
+  },
+  {
+    id: generateId(),
+    name: "name3",
+    type: "text",
+  },
+];
+
+const SchemaProvider = ({ children }) => {
+  const fieldsState = React.useState<FieldProps[]>(defaultFields);
+
+  return (
+    <SchemaContext.Provider value={fieldsState}>
+      {children}
+    </SchemaContext.Provider>
+  );
+};
 
 export const FormCreator = () => {
   return (
-    <section>
+    <div className="mt-24">
       <h3>
         Create your{" "}
         <span className="underline decoration-violet-600 decoration-4">
@@ -27,8 +60,10 @@ export const FormCreator = () => {
                 placeholder="e.g. Invitation form"
               />
             </Label>
-            <SchemaBuilder />
-            <Label>
+            <SchemaProvider>
+              <SchemaBuilder />
+            </SchemaProvider>
+            <Label className="w-2/5">
               Domain
               <Input
                 type="text"
@@ -46,6 +81,6 @@ export const FormCreator = () => {
           </div>
         </form>
       </div>
-    </section>
+    </div>
   );
 };

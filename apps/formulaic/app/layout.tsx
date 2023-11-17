@@ -16,9 +16,12 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cx(inter.variable, "mx-8 my-4")}>
-        <MainNavigation />
-        <div className="container mx-auto">{children}</div>
+      {/* cant put className on body because layout shift 🤷 */}
+      <body>
+        <div className={cx(inter.variable, "mx-8 my-4")}>
+          <MainNavigation />
+          <div className="container mx-auto">{children}</div>
+        </div>
       </body>
     </html>
   );
