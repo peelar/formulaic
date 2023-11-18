@@ -17,9 +17,11 @@ import { SchemaBuilder } from "./schema-builder";
 import { SubmitButton } from "./submit-button";
 
 export const FormCreator = () => {
+  const [isPending, setIsPending] = React.useState(false);
   const { fields } = useFormBuilder();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    setIsPending(true);
     e.preventDefault();
 
     const form = new FormData(e.currentTarget);
@@ -65,7 +67,8 @@ export const FormCreator = () => {
       schemaContent,
     };
 
-    createForm(input);
+    await createForm(input);
+    setIsPending(false);
   }
 
   return (
@@ -105,7 +108,7 @@ export const FormCreator = () => {
             </Label>
           </fieldset>
           <div className="mt-4">
-            <SubmitButton />
+            <SubmitButton isPending={isPending} />
           </div>
         </form>
       </div>
