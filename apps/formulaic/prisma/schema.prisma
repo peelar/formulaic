@@ -16,8 +16,8 @@ model Form {
   name            String
   domainAllowList String[]
   schema          Schema?
-  author          User?    @relation(fields: [authorId], references: [id])
-  authorId        String?
+  author          User     @relation(fields: [authorId], references: [id])
+  authorId        String
 }
 
 model Submission {

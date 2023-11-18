@@ -49,6 +49,11 @@ export class FormRepository {
             content: data.schemaContent,
           },
         },
+        author: {
+          connect: {
+            id: data.userId,
+          },
+        },
       },
     });
   }

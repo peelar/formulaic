@@ -4,6 +4,7 @@ import { createLogger } from "../../lib/logger";
 import { FormRepository } from "./form-repository";
 
 const formCreateInputSchema = z.object({
+  userId: z.string(),
   name: z.string(),
   schemaContent: z.record(z.any()),
   domain: z.string().url(),
@@ -23,12 +24,12 @@ export class FormService {
 
     const forms = await this.repository.getAllMine({ userEmail });
 
-    this.logger.info("Returning forms", { forms });
+    this.logger.info("Returning forms");
     return forms;
   }
 
   async getById({ id }: { id: string }) {
-    this.logger.debug("Getting form by id", { id });
+    this.logger.debug({ id }, "Getting form by id");
 
     if (!id) {
       this.logger.debug("Form id is either null or undefined");
@@ -42,7 +43,7 @@ export class FormService {
       throw new NotFoundError("Form not found");
     }
 
-    this.logger.info("Returning form", { form });
+    this.logger.info({ form }, "Returning form");
     return form;
   }
 
@@ -52,15 +53,15 @@ export class FormService {
     const parsed = formCreateInputSchema.safeParse(body);
 
     if (!parsed.success) {
-      this.logger.debug("Invalid form input", { errors: parsed.error });
-      throw new BadRequestError("Invalid form input");
+      this.logger.debug({ errors: parsed.error }, "Invalid form input");
+      throw new BadRequestError("Invalid form input", { cause: parsed.error });
     }
 
     const input = parsed.data;
 
     const form = await this.repository.create(input);
 
-    this.logger.info("Returning form", { form });
+    this.logger.info({ formId: form.id }, "Returning form");
     return form;
   }
 }

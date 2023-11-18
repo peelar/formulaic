@@ -29,18 +29,20 @@ export const FormCreator = () => {
 
     const schemaContent = fields.reduce(
       (prev, next) => {
-        if (!next.type) {
+        const type = next.type;
+
+        if (!type) {
           throw new Error("Field type is not defined");
         }
 
-        if (typeGuards.isFieldTypeEmail(next.type)) {
+        if (typeGuards.isFieldTypeEmail(type)) {
           return {
             ...prev,
             [next.name]: jsonSchemaFieldFactory.email(next as EmailFieldProps),
           };
         }
 
-        if (typeGuards.isFieldTypeNumber(next.type)) {
+        if (typeGuards.isFieldTypeNumber(type)) {
           return {
             ...prev,
             [next.name]: jsonSchemaFieldFactory.number(
@@ -49,7 +51,7 @@ export const FormCreator = () => {
           };
         }
 
-        if (typeGuards.isFieldTypeText(next.type)) {
+        if (typeGuards.isFieldTypeText(type)) {
           return {
             ...prev,
             [next.name]: jsonSchemaFieldFactory.text(next as TextFieldProps),
@@ -61,7 +63,7 @@ export const FormCreator = () => {
       {} as Record<string, any>
     );
 
-    const input: FormCreateInput = {
+    const input: Pick<FormCreateInput, "name" | "domain" | "schemaContent"> = {
       name: form.get("name") as string,
       domain: form.get("domain") as string,
       schemaContent,

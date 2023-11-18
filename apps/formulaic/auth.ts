@@ -9,6 +9,14 @@ export const config = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [GitHub],
+  callbacks: {
+    async session({ session, user }) {
+      if (user.id) {
+        session.user.id = user.id;
+      }
+      return session;
+    },
+  },
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
