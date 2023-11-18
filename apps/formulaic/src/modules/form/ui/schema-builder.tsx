@@ -9,11 +9,13 @@ import { IconProps } from "@radix-ui/react-icons/dist/types";
 import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { Button } from "../../../@/components/ui/button";
 import { Label } from "../../../@/components/ui/label";
 import { Sheet, SheetTrigger } from "../../../@/components/ui/sheet";
 import { FieldProps, FieldType } from "../field-factory";
+import { AddFieldSidebar } from "./add-field-sidebar";
 import { Draggable } from "./draggable";
-import { FieldSidebar } from "./field-sidebar";
+import { EditFieldSidebar } from "./edit-field-sidebar";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 
 const _fieldTypeToIcon: Record<
@@ -40,7 +42,7 @@ export const SchemaBuilder = () => {
               </SheetTrigger>
             </Draggable>
           </div>
-          <FieldSidebar field={field} />
+          <EditFieldSidebar field={field} />
         </Sheet>
       );
     },
@@ -50,10 +52,24 @@ export const SchemaBuilder = () => {
   return (
     <Label>
       Form fields
-      <div className=" w-2/5 py-4">
+      <div className="md:w-2/5 py-4">
         <DndProvider backend={HTML5Backend}>
           <div className="flex flex-col items-start gap-6">
+            {!fields.length && (
+              <p className="text-stone-400 my-0">
+                Add first field to your form
+              </p>
+            )}
             {fields?.map((field, i) => renderFieldNames(field, i))}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button type="button" variant={"secondary"}>
+                  {" "}
+                  <PlusIcon className="mr-2" /> Add field
+                </Button>
+              </SheetTrigger>
+              <AddFieldSidebar />
+            </Sheet>
           </div>
         </DndProvider>
       </div>

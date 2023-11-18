@@ -3,7 +3,7 @@ import { RJSFSchema } from "@rjsf/utils";
 type MakeFieldProps<TType extends string, TRules extends object> = {
   id: string;
   // The `TType` type parameter is used to identify the field in the UI. It's stripped out in the JSON schema.
-  type: TType;
+  type: TType | undefined;
   name: string;
   rules?: TRules;
 };
@@ -28,7 +28,7 @@ export type NumberFieldProps = MakeFieldProps<
 
 export type FieldProps = TextFieldProps | EmailFieldProps | NumberFieldProps;
 
-export type FieldType = FieldProps["type"];
+export type FieldType = NonNullable<FieldProps["type"]>;
 
 export const jsonSchemaFieldFactory = {
   text: (props: TextFieldProps): RJSFSchema => {

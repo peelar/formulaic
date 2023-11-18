@@ -25,14 +25,13 @@ export function useFormBuilder() {
     [fields, setFields]
   );
 
-  function updateField(id: string, field: Partial<Omit<FieldProps, "id">>) {
+  function addField(field: FieldProps) {
+    setFields((prevFields) => [...prevFields, field]);
+  }
+
+  function updateField(field: FieldProps) {
     setFields((prevFields) =>
-      prevFields.map((f) => {
-        if (f.id === id) {
-          return { ...f, ...field };
-        }
-        return f;
-      })
+      prevFields.map((f) => (f.id === field.id ? field : f))
     );
   }
 
@@ -45,5 +44,6 @@ export function useFormBuilder() {
     updateField,
     removeField,
     moveField,
+    addField,
   };
 }

@@ -9,28 +9,8 @@ import React from "react";
 import { FieldProps } from "../field-factory";
 import { SchemaContext } from "./hooks/useFormBuilder";
 
-const generateId = () => Math.random().toString(36).substr(2, 9);
-
-const defaultFields: FieldProps[] = [
-  {
-    id: generateId(),
-    name: "name",
-    type: "number",
-  },
-  {
-    id: generateId(),
-    name: "name2",
-    type: "email",
-  },
-  {
-    id: generateId(),
-    name: "name3",
-    type: "text",
-  },
-];
-
 const SchemaProvider = ({ children }) => {
-  const fieldsState = React.useState<FieldProps[]>(defaultFields);
+  const fieldsState = React.useState<FieldProps[]>([]);
 
   return (
     <SchemaContext.Provider value={fieldsState}>
@@ -52,7 +32,7 @@ export const FormCreator = () => {
       <div className="my-6">
         <form action={createForm}>
           <fieldset className="flex flex-col gap-6">
-            <Label className="w-2/5">
+            <Label className="md:w-2/5">
               Name
               <Input
                 type="text"
@@ -63,7 +43,7 @@ export const FormCreator = () => {
             <SchemaProvider>
               <SchemaBuilder />
             </SchemaProvider>
-            <Label className="w-2/5">
+            <Label className="md:w-2/5">
               Domain
               <Input
                 type="text"
