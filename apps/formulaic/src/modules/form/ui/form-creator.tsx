@@ -5,16 +5,10 @@ import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
 import { createForm } from "../form-actions";
 import { FormCreateInput } from "../form-service";
-import {
-  EmailFieldProps,
-  NumberFieldProps,
-  TextFieldProps,
-  jsonSchemaFieldFactory,
-  typeGuards,
-} from "../json-schema-field-factory";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 import { SchemaBuilder } from "./schema-builder";
 import { SubmitButton } from "./submit-button";
+import { buildFormJsonSchema } from "../build-form-json-schema";
 
 export const FormCreator = () => {
   const [isPending, setIsPending] = React.useState(false);
@@ -25,48 +19,11 @@ export const FormCreator = () => {
     e.preventDefault();
 
     const form = new FormData(e.currentTarget);
-    // create input from form
-
-    const schemaContent = fields.reduce(
-      (prev, next) => {
-        const type = next.type;
-
-        if (!type) {
-          throw new Error("Field type is not defined");
-        }
-
-        if (typeGuards.isFieldTypeEmail(type)) {
-          return {
-            ...prev,
-            [next.name]: jsonSchemaFieldFactory.email(next as EmailFieldProps),
-          };
-        }
-
-        if (typeGuards.isFieldTypeNumber(type)) {
-          return {
-            ...prev,
-            [next.name]: jsonSchemaFieldFactory.number(
-              next as NumberFieldProps
-            ),
-          };
-        }
-
-        if (typeGuards.isFieldTypeText(type)) {
-          return {
-            ...prev,
-            [next.name]: jsonSchemaFieldFactory.text(next as TextFieldProps),
-          };
-        }
-
-        return prev;
-      },
-      {} as Record<string, any>
-    );
 
     const input: Pick<FormCreateInput, "name" | "domain" | "schemaContent"> = {
       name: form.get("name") as string,
       domain: form.get("domain") as string,
-      schemaContent,
+      schemaContent: buildFormJsonSchema(fields),
     };
 
     await createForm(input);

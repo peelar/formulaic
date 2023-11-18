@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { SchemaContext } from "./hooks/useFormBuilder";
-import { FieldProps } from "../json-schema-field-factory";
+import { FieldProps } from "../build-form-json-schema";
 
 export const SchemaProvider = ({ children }) => {
   const fieldsState = React.useState<FieldProps[]>([]);

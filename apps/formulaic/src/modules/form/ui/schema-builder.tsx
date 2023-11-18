@@ -9,12 +9,9 @@ import { IconProps } from "@radix-ui/react-icons/dist/types";
 import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Button } from "../../../@/components/ui/button";
 import { Label } from "../../../@/components/ui/label";
-import { Sheet, SheetTrigger } from "../../../@/components/ui/sheet";
-import { FieldProps, FieldType } from "../json-schema-field-factory";
+import { FieldProps, FieldType } from "../build-form-json-schema";
 import { AddFieldSidebar } from "./add-field-sidebar";
-import { Draggable } from "./draggable";
 import { EditFieldSidebar } from "./edit-field-sidebar";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 

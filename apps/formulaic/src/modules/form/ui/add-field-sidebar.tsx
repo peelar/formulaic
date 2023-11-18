@@ -19,11 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../../../@/components/ui/sheet";
-import {
-  FieldProps,
-  FieldType,
-  typeGuards,
-} from "../json-schema-field-factory";
+import { FieldProps, FieldType, typeGuards } from "../build-form-json-schema";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 import { generateId } from "../../../lib/id";
 import { FieldForm } from "./field-form";

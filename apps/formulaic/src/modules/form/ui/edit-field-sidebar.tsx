@@ -8,11 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../../../@/components/ui/sheet";
-import {
-  FieldProps,
-  FieldType,
-  typeGuards,
-} from "../json-schema-field-factory";
+import { FieldProps, FieldType, typeGuards } from "../build-form-json-schema";
 import { Draggable } from "./draggable";
 import { FieldForm } from "./field-form";
 import { useFormBuilder } from "./hooks/useFormBuilder";

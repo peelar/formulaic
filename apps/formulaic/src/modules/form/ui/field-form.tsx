@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FieldProps, FieldType } from "../json-schema-field-factory";
+import { FieldProps, FieldType } from "../build-form-json-schema";
 import { EditableField } from "./editable-field";
 import { FieldTypeSelect } from "./add-field-sidebar";
 

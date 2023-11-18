@@ -1,6 +1,6 @@
 "use client";
 import React, { useContext } from "react";
-import { FieldProps } from "../../json-schema-field-factory";
+import { FieldProps } from "../../build-form-json-schema";
 
 type SchemaContextType = [
   FieldProps[],

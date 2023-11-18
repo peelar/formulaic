@@ -50,11 +50,11 @@ export const FormsTable = async () => {
         </TableBody>
         {!forms.length && <TableCaption>No forms found</TableCaption>}
       </Table>
-      <Link href="/new">
-        <Button size="lg" className="w-full" variant={"ghost"}>
-          <PlusIcon />
-        </Button>
-      </Link>
+      <div className="flex justify-end mt-2">
+        <Link href="/new">
+          <Button>Add new</Button>
+        </Link>
+      </div>
     </section>
   );
 };
