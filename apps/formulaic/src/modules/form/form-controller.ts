@@ -3,28 +3,8 @@ import { BaseError, NotAllowedError } from "../../lib/error";
 import { createLogger, logger } from "../../lib/logger";
 import { FormRepository } from "./form-repository";
 import { FormService } from "./form-service";
-
-export function isDomainAllowed({
-  origin,
-  form,
-}: {
-  origin: string;
-  form: Pick<Form, "domainAllowList">;
-}) {
-  const allowedDomains = form.domainAllowList;
-
-  if (!allowedDomains.length) {
-    return false;
-  }
-
-  logger.debug("Checking if domain is allowed", { origin, allowedDomains });
-
-  if (allowedDomains.includes(origin)) {
-    return true;
-  }
-
-  return false;
-}
+import { Session } from "next-auth/types";
+import { SessionUser } from "../../../auth";
 
 export class FormController {
   logger = createLogger({
@@ -33,9 +13,14 @@ export class FormController {
 
   private service: FormService;
 
-  constructor() {
-    const repository = new FormRepository();
-    this.service = new FormService(repository);
+  constructor({
+    repository,
+    user,
+  }: {
+    repository: FormRepository;
+    user: SessionUser;
+  }) {
+    this.service = new FormService({ repository, user });
   }
 
   async GET({ id, request }: { request: Request; id: string }) {
@@ -69,11 +54,6 @@ export class FormController {
 
     try {
       const form = await this.service.create(body);
-
-      if (!isDomainAllowed({ origin, form })) {
-        this.logger.debug("Domain not found in form allow list");
-        throw new NotAllowedError("Domain not allowed");
-      }
 
       return new Response(JSON.stringify(form), { status: 201 });
     } catch (error) {

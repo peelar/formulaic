@@ -1,4 +1,5 @@
-import { FormController } from "../../../../src/modules/form/form-controller";
+import { FormRepository } from "../../../../src/modules/form/form-repository";
+import { PublicFormController } from "../../../../src/modules/form/public/public-form-controller";
 
 export async function GET(
   request: Request,
@@ -10,7 +11,11 @@ export async function GET(
     throw new Error("No id provided");
   }
 
-  const formController = new FormController();
+  const repository = new FormRepository();
+
+  const formController = new PublicFormController({
+    repository,
+  });
 
   return formController.GET({ id, request });
 }

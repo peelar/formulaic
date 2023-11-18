@@ -1,7 +1,6 @@
 import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { auth } from "../../../../auth";
+import { getUser } from "../../../../auth";
 import { Button } from "../../../@/components/ui/button";
 import {
   Table,
@@ -17,22 +16,11 @@ import { FormRepository } from "../form-repository";
 import { FormService } from "../form-service";
 
 export const FormsTable = async () => {
-  const formRepository = new FormRepository();
-  const formService = new FormService(formRepository);
-  const session = await auth();
-  const user = session?.user;
+  const repository = new FormRepository();
+  const user = await getUser();
+  const formService = new FormService({ repository, user });
 
-  const userEmail = user?.email;
-
-  if (user === undefined) {
-    redirect("/");
-  }
-
-  if (!userEmail) {
-    throw new Error("User email is missing");
-  }
-
-  const forms = await formService.getAllMine({ userEmail });
+  const forms = await formService.getAllMine();
 
   return (
     <section className="my-6">

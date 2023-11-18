@@ -4,12 +4,10 @@ import { FormCreateInput } from "./form-service";
 
 // idea: try/catch? and return { data, error }
 export class FormRepository {
-  getAllMine({ userEmail }: { userEmail: string }) {
+  getAllMine({ userId }: { userId: string }) {
     return prisma.form.findMany({
       where: {
-        author: {
-          email: userEmail,
-        },
+        authorId: userId,
       },
       select: {
         id: true,
@@ -25,7 +23,7 @@ export class FormRepository {
     });
   }
 
-  getById(id: string) {
+  getById({ id }: { id: string }) {
     return prisma.form.findFirst({
       where: { id },
       select: {
@@ -36,7 +34,7 @@ export class FormRepository {
     });
   }
 
-  create(data: FormCreateInput) {
+  create({ input: data, userId }: { input: FormCreateInput; userId: string }) {
     return prisma.form.create({
       data: {
         name: data.name,
@@ -51,7 +49,7 @@ export class FormRepository {
         },
         author: {
           connect: {
-            id: data.userId,
+            id: userId,
           },
         },
       },

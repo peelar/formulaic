@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import NextAuth, { type NextAuthConfig } from "next-auth";
+import NextAuth, { Session, type NextAuthConfig } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { prisma } from "./prisma";
 
@@ -20,3 +20,25 @@ export const config = {
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
+
+export type SessionUser = Required<Session["user"]>;
+
+export async function getUser(): Promise<SessionUser> {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("No user found");
+  }
+
+  if (
+    user.email === undefined ||
+    user.id === undefined ||
+    user.name === undefined ||
+    user.image === undefined
+  ) {
+    throw new Error("User data is not complete");
+  }
+
+  return user as Promise<SessionUser>;
+}

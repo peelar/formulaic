@@ -3,13 +3,15 @@
 import { redirect } from "next/navigation";
 import { FormRepository } from "./form-repository";
 import { FormCreateInput, FormService } from "./form-service";
-import { auth } from "../../../auth";
+import { auth, getUser } from "../../../auth";
 
 export async function createForm(
   input: Pick<FormCreateInput, "name" | "domain" | "schemaContent">
 ) {
-  const formRepository = new FormRepository();
-  const formService = new FormService(formRepository);
+  const repository = new FormRepository();
+  const user = await getUser();
+
+  const formService = new FormService({ repository, user });
   const session = await auth();
 
   console.log("createForm", session);
