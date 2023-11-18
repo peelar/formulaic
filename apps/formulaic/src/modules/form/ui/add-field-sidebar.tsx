@@ -135,13 +135,11 @@ export const AddFieldSidebar = () => {
         <SheetHeader>
           <SheetTitle>Creating new field</SheetTitle>
         </SheetHeader>
-        <div>
-          <FieldForm
-            field={newField}
-            updateField={updateField}
-            changeType={changeType}
-          />
-        </div>
+        <FieldForm
+          field={newField}
+          updateField={updateField}
+          changeType={changeType}
+        />
         <SheetFooter>
           <SheetTrigger>
             <Button onClick={handleFormSubmit} type="button">

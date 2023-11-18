@@ -103,7 +103,7 @@ export const Draggable = ({
     <div className="flex gap-2 items-center" style={{ opacity }}>
       <Button
         type="button"
-        variant={"ghost"}
+        variant={"secondary"}
         size={"icon"}
         data-handler-id={handlerId}
         ref={ref}

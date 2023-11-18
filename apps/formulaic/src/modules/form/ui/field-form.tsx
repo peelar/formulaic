@@ -14,7 +14,7 @@ export const FieldForm = ({
   changeType: (type: FieldType) => void;
 }) => {
   return (
-    <form className="flex flex-col gap-4 items-start my-4">
+    <form className="flex flex-col gap-4 items-start pt-4">
       <FieldTypeSelect type={field.type} onTypeChange={changeType} />
       <EditableField field={field} updateField={updateField} />
     </form>

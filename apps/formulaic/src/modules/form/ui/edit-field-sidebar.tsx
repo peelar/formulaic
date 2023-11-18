@@ -1,7 +1,9 @@
 "use client";
+import { Button } from "../../../@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -12,7 +14,6 @@ import {
   typeGuards,
 } from "../json-schema-field-factory";
 import { Draggable } from "./draggable";
-import { EditableField } from "./editable-field";
 import { FieldForm } from "./field-form";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 
@@ -23,7 +24,7 @@ export const EditFieldSidebar = ({
   field: FieldProps;
   index: number;
 }) => {
-  const { updateField, moveField } = useFormBuilder();
+  const { updateField, moveField, removeField } = useFormBuilder();
 
   function changeType(type: FieldType) {
     if (typeGuards.isFieldTypeText(type)) {
@@ -62,12 +63,23 @@ export const EditFieldSidebar = ({
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Editing {field.type} field</SheetTitle>
-          <FieldForm
-            field={field}
-            updateField={updateField}
-            changeType={changeType}
-          />
         </SheetHeader>
+        <FieldForm
+          field={field}
+          updateField={updateField}
+          changeType={changeType}
+        />
+        <SheetFooter>
+          <SheetTrigger asChild>
+            <Button
+              onClick={() => removeField(field)}
+              type="button"
+              variant={"destructive"}
+            >
+              Delete
+            </Button>
+          </SheetTrigger>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
