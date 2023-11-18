@@ -72,3 +72,16 @@ export const jsonSchemaFieldFactory = {
     };
   },
 };
+
+export const typeGuards = {
+  isFieldTypeText(type: FieldType): type is "text" {
+    return type === "text";
+  },
+  isFieldTypeEmail(type: FieldType): type is "email" {
+    return type === "email";
+  },
+
+  isFieldTypeNumber(type: FieldType): type is "number" {
+    return type === "number";
+  },
+};

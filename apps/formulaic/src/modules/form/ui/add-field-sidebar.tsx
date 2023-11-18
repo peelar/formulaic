@@ -8,7 +8,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../../../@/components/ui/sheet";
-import { FieldProps, FieldType } from "../field-factory";
+import {
+  FieldProps,
+  FieldType,
+  typeGuards,
+} from "../json-schema-field-factory";
 import { FieldForm } from "./field-form";
 import { Label } from "../../../@/components/ui/label";
 import {
@@ -63,18 +67,6 @@ const FieldTypeSelect = ({
   );
 };
 
-const isFieldTypeText = (type: FieldType): type is "text" => {
-  return type === "text";
-};
-
-const isFieldTypeEmail = (type: FieldType): type is "email" => {
-  return type === "email";
-};
-
-const isFieldTypeNumber = (type: FieldType): type is "number" => {
-  return type === "number";
-};
-
 export const AddFieldSidebar = () => {
   const { addField } = useFormBuilder();
   const [newField, setNewField] = React.useState<FieldProps>({
@@ -88,7 +80,7 @@ export const AddFieldSidebar = () => {
   }
 
   function changeType(type: FieldType) {
-    if (isFieldTypeText(type)) {
+    if (typeGuards.isFieldTypeText(type)) {
       setNewField({
         ...newField,
         type,
@@ -99,7 +91,7 @@ export const AddFieldSidebar = () => {
       });
     }
 
-    if (isFieldTypeNumber(type)) {
+    if (typeGuards.isFieldTypeNumber(type)) {
       setNewField({
         ...newField,
         type,
@@ -107,7 +99,7 @@ export const AddFieldSidebar = () => {
       });
     }
 
-    if (isFieldTypeEmail(type)) {
+    if (typeGuards.isFieldTypeEmail(type)) {
       setNewField({
         ...newField,
         type,
@@ -130,12 +122,12 @@ export const AddFieldSidebar = () => {
       <SheetHeader>
         <SheetTitle>Creating new field</SheetTitle>
       </SheetHeader>
-      <SheetDescription>
+      <div>
         <form className="flex flex-col gap-4 items-start">
           <FieldTypeSelect type={newField.type} onTypeChange={changeType} />
           <FieldForm field={newField} updateField={updateField} />
         </form>
-      </SheetDescription>
+      </div>
       <SheetFooter>
         <SheetTrigger>
           <Button onClick={handleFormSubmit} type="button">

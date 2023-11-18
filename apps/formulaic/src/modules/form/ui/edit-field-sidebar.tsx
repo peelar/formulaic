@@ -4,7 +4,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "../../../@/components/ui/sheet";
-import { FieldProps } from "../field-factory";
+import { FieldProps } from "../json-schema-field-factory";
 import { FieldForm } from "./field-form";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 

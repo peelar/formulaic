@@ -12,7 +12,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { Button } from "../../../@/components/ui/button";
 import { Label } from "../../../@/components/ui/label";
 import { Sheet, SheetTrigger } from "../../../@/components/ui/sheet";
-import { FieldProps, FieldType } from "../field-factory";
+import { FieldProps, FieldType } from "../json-schema-field-factory";
 import { AddFieldSidebar } from "./add-field-sidebar";
 import { Draggable } from "./draggable";
 import { EditFieldSidebar } from "./edit-field-sidebar";
@@ -31,6 +31,7 @@ const _fieldTypeToIcon: Record<
 
 export const SchemaBuilder = () => {
   const { fields, moveField } = useFormBuilder();
+
   const renderFieldNames = React.useCallback(
     (field: FieldProps, index: number) => {
       return (

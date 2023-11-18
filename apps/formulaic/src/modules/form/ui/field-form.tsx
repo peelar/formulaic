@@ -8,7 +8,7 @@ import {
   FieldProps,
   NumberFieldProps,
   TextFieldProps,
-} from "../field-factory";
+} from "../json-schema-field-factory";
 
 const FieldFormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <fieldset className="flex flex-col gap-6">{children}</fieldset>;

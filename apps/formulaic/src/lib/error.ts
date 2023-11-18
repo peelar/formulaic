@@ -1,27 +1,22 @@
-"use client";
+import ModernError from "modern-errors";
 
 type CustomErrorProps = {
   httpCode: number;
 };
 
-export class BaseError extends Error {
-  public readonly httpCode: number;
+export const BaseError = ModernError.subclass("BaseError", {
+  props: { httpCode: 500 } as CustomErrorProps,
+});
 
-  constructor(message, props: CustomErrorProps) {
-    super(message);
-    this.httpCode = props.httpCode;
-  }
-}
-
-export const createError = (props: CustomErrorProps) => {
-  return class extends BaseError {
-    constructor(message: string) {
-      super(message, props);
-    }
-  };
-};
-
-export const BadRequestError = createError({ httpCode: 400 });
-export const NotFoundError = createError({ httpCode: 404 });
-export const InternalServerError = createError({ httpCode: 500 });
-export const NotAllowedError = createError({ httpCode: 403 });
+export const BadRequestError = BaseError.subclass("BadRequestError", {
+  props: { httpCode: 400 } as CustomErrorProps,
+});
+export const NotFoundError = BaseError.subclass("NotFoundError", {
+  props: { httpCode: 404 } as CustomErrorProps,
+});
+export const InternalServerError = BaseError.subclass("InternalServerError", {
+  props: { httpCode: 500 } as CustomErrorProps,
+});
+export const NotAllowedError = BaseError.subclass("NotAllowedError", {
+  props: { httpCode: 403 } as CustomErrorProps,
+});
