@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { Session, type NextAuthConfig } from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { prisma } from "./prisma";
+import { redirect } from "next/navigation";
 
 export const config = {
   theme: {
@@ -28,7 +29,8 @@ export async function getUser(): Promise<SessionUser> {
   const user = session?.user;
 
   if (!user) {
-    throw new Error("No user found");
+    console.warn("No user found");
+    redirect("/");
   }
 
   if (

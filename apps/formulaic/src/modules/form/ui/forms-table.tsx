@@ -1,4 +1,3 @@
-import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { getUser } from "../../../../auth";
 import { Button } from "../../../@/components/ui/button";

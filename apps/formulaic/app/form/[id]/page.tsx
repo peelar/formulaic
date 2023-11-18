@@ -1,9 +1,9 @@
-import { Session } from "next-auth/types";
-import { auth, getUser } from "../../../auth";
+import { getUser } from "../../../auth";
 import { FormRepository } from "../../../src/modules/form/form-repository";
 import { FormService } from "../../../src/modules/form/form-service";
 import { EmbedSnippet } from "../../../src/modules/form/ui/embed-snippet";
 import { Section } from "../../../src/ui/section";
+import { Submissions } from "../../../src/modules/form/ui/submissions";
 
 async function getForm(id: string) {
   const repository = new FormRepository();
@@ -24,6 +24,9 @@ export default async function FormPage({ params }: { params: { id: string } }) {
       </header>
       <Section>
         <EmbedSnippet formId={form.id} />
+      </Section>
+      <Section>
+        <Submissions submissions={form.schema?.submissions ?? []} />
       </Section>
     </main>
   );

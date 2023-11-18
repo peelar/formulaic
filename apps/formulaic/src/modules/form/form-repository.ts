@@ -28,8 +28,21 @@ export class FormRepository {
       where: { id },
       select: {
         id: true,
-        schema: true,
         name: true,
+        schema: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            submissions: {
+              select: {
+                id: true,
+                content: true,
+                createdAt: true,
+              },
+            },
+          },
+        },
       },
     });
   }
