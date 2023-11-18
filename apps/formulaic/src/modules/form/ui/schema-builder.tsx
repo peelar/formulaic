@@ -30,22 +30,11 @@ const _fieldTypeToIcon: Record<
 };
 
 export const SchemaBuilder = () => {
-  const { fields, moveField } = useFormBuilder();
+  const { fields } = useFormBuilder();
 
   const renderFieldNames = React.useCallback(
     (field: FieldProps, index: number) => {
-      return (
-        <Sheet key={field.id}>
-          <div className="border pr-2 rounded-sm">
-            <Draggable id={field.id} index={index} moveFn={moveField}>
-              <SheetTrigger>
-                <span className="hover:underline">{field.name}</span>
-              </SheetTrigger>
-            </Draggable>
-          </div>
-          <EditFieldSidebar field={field} />
-        </Sheet>
-      );
+      return <EditFieldSidebar field={field} index={index} />;
     },
     [fields]
   );
@@ -53,24 +42,16 @@ export const SchemaBuilder = () => {
   return (
     <Label>
       Form fields
-      <div className="md:w-2/5 py-4">
+      <div className="md:w-2/5">
         <DndProvider backend={HTML5Backend}>
-          <div className="flex flex-col items-start gap-6">
+          <div className="flex flex-col items-start gap-4">
             {!fields.length && (
               <p className="text-stone-400 my-0">
                 Add first field to your form
               </p>
             )}
             {fields?.map((field, i) => renderFieldNames(field, i))}
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button type="button" variant={"secondary"}>
-                  {" "}
-                  <PlusIcon className="mr-2" /> Add field
-                </Button>
-              </SheetTrigger>
-              <AddFieldSidebar />
-            </Sheet>
+            <AddFieldSidebar />
           </div>
         </DndProvider>
       </div>

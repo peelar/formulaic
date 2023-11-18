@@ -1,8 +1,19 @@
 "use client";
+import { PlusIcon } from "@radix-ui/react-icons";
 import React from "react";
+import { Button } from "../../../@/components/ui/button";
+import { Label } from "../../../@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../@/components/ui/select";
+import {
+  Sheet,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -13,18 +24,9 @@ import {
   FieldType,
   typeGuards,
 } from "../json-schema-field-factory";
-import { FieldForm } from "./field-form";
-import { Label } from "../../../@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../@/components/ui/select";
-import { Button } from "../../../@/components/ui/button";
 import { useFormBuilder } from "./hooks/useFormBuilder";
+import { generateId } from "../../../lib/id";
+import { FieldForm } from "./field-form";
 
 const options: { id: FieldType; name: string }[] = [
   { id: "text", name: "Text" },
@@ -32,11 +34,7 @@ const options: { id: FieldType; name: string }[] = [
   { id: "number", name: "Number" },
 ];
 
-const generateId = () => {
-  return Math.random().toString(36).substr(2, 9);
-};
-
-const FieldTypeSelect = ({
+export const FieldTypeSelect = ({
   type,
   onTypeChange,
 }: {
@@ -67,13 +65,19 @@ const FieldTypeSelect = ({
   );
 };
 
-export const AddFieldSidebar = () => {
-  const { addField } = useFormBuilder();
-  const [newField, setNewField] = React.useState<FieldProps>({
+function generateDefaultField() {
+  return {
     id: generateId(),
     name: "",
     type: undefined,
-  });
+  };
+}
+
+export const AddFieldSidebar = () => {
+  const { addField } = useFormBuilder();
+  const [newField, setNewField] = React.useState<FieldProps>(
+    generateDefaultField()
+  );
 
   function updateField(field: FieldProps) {
     setNewField(field);
@@ -110,31 +114,42 @@ export const AddFieldSidebar = () => {
 
   function handleFormSubmit() {
     addField(newField);
-    setNewField({
-      id: generateId(),
-      name: "",
-      type: undefined,
-    });
+    setNewField(generateDefaultField());
   }
 
   return (
-    <SheetContent>
-      <SheetHeader>
-        <SheetTitle>Creating new field</SheetTitle>
-      </SheetHeader>
-      <div>
-        <form className="flex flex-col gap-4 items-start">
-          <FieldTypeSelect type={newField.type} onTypeChange={changeType} />
-          <FieldForm field={newField} updateField={updateField} />
-        </form>
-      </div>
-      <SheetFooter>
-        <SheetTrigger>
-          <Button onClick={handleFormSubmit} type="button">
-            Create
-          </Button>
-        </SheetTrigger>
-      </SheetFooter>
-    </SheetContent>
+    <Sheet
+      onOpenChange={(open) => {
+        if (!open) {
+          setNewField(generateDefaultField());
+        }
+      }}
+    >
+      <SheetTrigger asChild>
+        <Button type="button" variant={"secondary"}>
+          {" "}
+          <PlusIcon className="mr-2" /> Add field
+        </Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Creating new field</SheetTitle>
+        </SheetHeader>
+        <div>
+          <FieldForm
+            field={newField}
+            updateField={updateField}
+            changeType={changeType}
+          />
+        </div>
+        <SheetFooter>
+          <SheetTrigger>
+            <Button onClick={handleFormSubmit} type="button">
+              Create
+            </Button>
+          </SheetTrigger>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 };
