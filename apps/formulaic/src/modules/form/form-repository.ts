@@ -68,4 +68,10 @@ export class FormRepository {
       },
     });
   }
+
+  deleteById({ id, userId }: { id: string; userId: string }) {
+    return prisma.form.delete({
+      where: { id },
+    });
+  }
 }

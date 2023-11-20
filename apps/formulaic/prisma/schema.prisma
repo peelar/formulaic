@@ -16,7 +16,7 @@ model Form {
   name            String
   domainAllowList String[]
   schema          Schema?
-  author          User     @relation(fields: [authorId], references: [id])
+  author          User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId        String
 }
 
@@ -25,7 +25,7 @@ model Submission {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   Json     @db.JsonB
-  schema    Schema?  @relation(fields: [schemaId], references: [id])
+  schema    Schema?  @relation(fields: [schemaId], references: [id], onDelete: Cascade)
   schemaId  String?
 }
 
@@ -34,7 +34,7 @@ model Schema {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   content     Json         @db.JsonB
-  form        Form?        @relation(fields: [formId], references: [id])
+  form        Form?        @relation(fields: [formId], references: [id], onDelete: Cascade)
   formId      String       @unique
   submissions Submission[]
 }

@@ -74,7 +74,15 @@ export class FormService {
 
     const form = await this.repository.create({ input, userId: this.user.id });
 
-    this.logger.info({ formId: form.id }, "Returning form");
+    this.logger.info(form.name, "Returning form: ");
     return form;
+  }
+
+  async deleteById({ id }: { id: string }) {
+    this.logger.debug({ id }, "Deleting form by id");
+
+    await this.repository.deleteById({ id, userId: this.user.id });
+
+    this.logger.info({ id }, "Form deleted");
   }
 }

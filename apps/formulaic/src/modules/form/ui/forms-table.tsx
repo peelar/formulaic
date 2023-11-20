@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { getUser } from "../../../../auth";
 import { Button } from "../../../@/components/ui/button";
 import {
   Table,
@@ -11,14 +10,11 @@ import {
   TableRow,
 } from "../../../@/components/ui/table";
 import { date } from "../../../lib/date";
-import { FormRepository } from "../form-repository";
-import { FormService } from "../form-service";
+import { getUserFormService } from "../utils";
+import { DeleteFormAlert } from "./delete-form-alert";
 
 export const FormsTable = async () => {
-  const repository = new FormRepository();
-  const user = await getUser();
-  const formService = new FormService({ repository, user });
-
+  const formService = await getUserFormService();
   const forms = await formService.getAllMine();
 
   return (
@@ -32,6 +28,7 @@ export const FormsTable = async () => {
             <TableHead>Domains</TableHead>
             <TableHead>Submissions</TableHead>
             <TableHead>Created at</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -44,6 +41,9 @@ export const FormsTable = async () => {
               <TableCell>{form.domainAllowList.join(", ")}</TableCell>
               <TableCell>{form.schema?._count.submissions}</TableCell>
               <TableCell>{date.toLongDate(form.createdAt)}</TableCell>
+              <TableCell>
+                <DeleteFormAlert id={form.id} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
