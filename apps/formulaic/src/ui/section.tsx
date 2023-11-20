@@ -6,7 +6,7 @@ export const Section = ({
   title?: string;
 }) => {
   return (
-    <section className="my-8 max-w-5xl w-full mx-auto">
+    <section className="my-12 max-w-5xl w-full mx-auto">
       {title && <h3 className="text-2xl font-bold">{title}</h3>}
       {children}
     </section>

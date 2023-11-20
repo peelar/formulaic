@@ -8,6 +8,9 @@ import { useFormBuilder } from "./hooks/useFormBuilder";
 import { SchemaBuilder } from "./schema-builder";
 import { SubmitButton } from "./submit-button";
 import { FormInput } from "../form-service";
+import { UrlBadges } from "../../../ui/url-badges";
+import { Button } from "../../../@/components/ui/button";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 export const FormCreator = ({
   onHandleSubmit,
@@ -18,6 +21,17 @@ export const FormCreator = ({
 }) => {
   const [isPending, setIsPending] = React.useState(false);
   const { fields } = useFormBuilder();
+  const [urls, setUrls] = React.useState<string[]>(defaultValues?.urls ?? []);
+  const [urlValue, setUrlValue] = React.useState("");
+
+  const deleteUrl = (url: string) => {
+    setUrls(urls.filter((u) => u !== url));
+  };
+
+  const addUrl = () => {
+    setUrls([...urls, urlValue]);
+    setUrlValue("");
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     setIsPending(true);
@@ -27,7 +41,7 @@ export const FormCreator = ({
 
     const input: FormInput = {
       name: form.get("name") as string,
-      domain: form.get("domain") as string,
+      urls,
       schemaContent: buildFormJsonSchema(fields),
     };
 
@@ -48,17 +62,25 @@ export const FormCreator = ({
               placeholder="e.g. Invitation form"
             />
           </Label>
-
           <SchemaBuilder />
-
           <Label className="md:w-2/5">
-            Domain
-            <Input
-              defaultValue={defaultValues?.domain}
-              type="text"
-              name="domain"
-              placeholder="e.g. https://example.com"
-            />
+            Allowed URLs
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Input
+                  value={urlValue}
+                  onChange={(e) => setUrlValue(e.target.value)}
+                  type="text"
+                  name="domain"
+                  placeholder="https://example.com"
+                  className="w-3/5"
+                />
+                <Button type="button" size="icon" onClick={addUrl}>
+                  <PlusIcon />
+                </Button>
+              </div>
+              <UrlBadges urls={urls} onDeleteClick={deleteUrl} />
+            </div>
             <span className="text-stone-400 text-small">
               Domain that the form will be embedded on. This is used to verify
               the origin of the request.

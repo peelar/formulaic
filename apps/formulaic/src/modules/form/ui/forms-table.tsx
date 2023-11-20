@@ -18,14 +18,13 @@ export const FormsTable = async () => {
   const forms = await formService.getAllMine();
 
   return (
-    <section className="my-6">
+    <div className="my-6 w-full max-w-2xl">
       <h3 className="mb-2">Forms table</h3>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Id</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Domains</TableHead>
+            {/* <TableHead>Allowed URLs</TableHead> */}
             <TableHead>Submissions</TableHead>
             <TableHead>Created at</TableHead>
             <TableHead>Actions</TableHead>
@@ -34,11 +33,12 @@ export const FormsTable = async () => {
         <TableBody>
           {forms.map((form) => (
             <TableRow>
-              <TableCell className="break-all">
-                <Link href={`/form/${form.id}`}>{form.id}</Link>
+              <TableCell className="font-bold">
+                <Link href={`/form/${form.id}`}>{form.name}</Link>
               </TableCell>
-              <TableCell className="font-bold">{form.name}</TableCell>
-              <TableCell>{form.domainAllowList.join(", ")}</TableCell>
+              {/* <TableCell>
+                <UrlBadges urls={form.domainAllowList} />
+              </TableCell> */}
               <TableCell>{form.schema?._count.submissions}</TableCell>
               <TableCell>{date.toLongDate(form.createdAt)}</TableCell>
               <TableCell>
@@ -49,11 +49,11 @@ export const FormsTable = async () => {
         </TableBody>
         {!forms.length && <TableCaption>No forms found</TableCaption>}
       </Table>
-      <div className="flex justify-end mt-2">
+      <div className="flex mt-2">
         <Link href="/new">
           <Button>Add new</Button>
         </Link>
       </div>
-    </section>
+    </div>
   );
 };

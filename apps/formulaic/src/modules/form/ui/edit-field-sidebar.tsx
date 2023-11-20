@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "../../../@/components/ui/sheet";
 import { FieldProps, FieldType, typeGuards } from "../build-form-json-schema";
-import { Draggable } from "./draggable";
+import { Draggable } from "../../../ui/draggable";
 import { FieldForm } from "./field-form";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 

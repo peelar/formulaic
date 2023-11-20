@@ -3,7 +3,7 @@ import type { Identifier, XYCoord } from "dnd-core";
 import type { PropsWithChildren } from "react";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { Button } from "../../../@/components/ui/button";
+import { Button } from "../@/components/ui/button";
 
 type DraggableProps = {
   id: any;

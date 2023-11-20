@@ -8,7 +8,7 @@ import { SessionUser } from "../../../auth";
 const formCreateInputSchema = z.object({
   name: z.string(),
   schemaContent: z.record(z.any()),
-  domain: z.string().url(),
+  urls: z.array(z.string().url()),
 });
 
 export type FormInput = z.infer<typeof formCreateInputSchema>;

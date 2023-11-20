@@ -39,8 +39,7 @@ function convertFormToFormInput(
     name: form.name,
     // todo: map form.schema to schemaContent
     schemaContent: {} as Record<string, any>,
-    // todo: think about array of domains
-    domain: "",
+    urls: form.domainAllowList,
   };
 }
 

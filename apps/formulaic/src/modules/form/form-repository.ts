@@ -29,6 +29,7 @@ export class FormRepository {
       select: {
         id: true,
         name: true,
+        domainAllowList: true,
         schema: {
           select: {
             id: true,
@@ -51,10 +52,12 @@ export class FormRepository {
     return prisma.form.create({
       data: {
         name: data.name,
-        domainAllowList: [
-          ...(process.env.NODE_ENV === "development" ? [env.WIDGET_URL] : []),
-          data.domain,
-        ],
+        domainAllowList: {
+          set: [
+            ...(process.env.NODE_ENV === "development" ? [env.WIDGET_URL] : []),
+            ...data.urls,
+          ],
+        },
         schema: {
           create: {
             content: data.schemaContent,
@@ -81,7 +84,7 @@ export class FormRepository {
       data: {
         name: data.name,
         domainAllowList: {
-          push: data.domain,
+          set: data.urls,
         },
         schema: {
           update: {
