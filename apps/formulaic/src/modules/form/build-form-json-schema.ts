@@ -5,6 +5,7 @@ type MakeFieldProps<TType extends string, TRules extends object> = {
   // The `TType` type parameter is used to identify the field in the UI. It's stripped out in the JSON schema.
   type: TType | undefined;
   name: string;
+  required: boolean;
   rules?: TRules;
 };
 
@@ -32,7 +33,6 @@ export type FieldType = NonNullable<FieldProps["type"]>;
 
 const jsonSchemaFieldFactory = {
   text: (props: TextFieldProps): RJSFSchema => {
-    const name = props.name.toLocaleLowerCase();
     return {
       type: "string",
       ...(props.rules && {
@@ -43,16 +43,12 @@ const jsonSchemaFieldFactory = {
     };
   },
   email: (props: EmailFieldProps): RJSFSchema => {
-    const name = props.name.toLocaleLowerCase();
-
     return {
       type: "string",
       format: "email",
     };
   },
   number: (props: NumberFieldProps): RJSFSchema => {
-    const name = props.name.toLocaleLowerCase();
-
     return {
       type: "number",
       ...(props.rules && {
@@ -80,8 +76,8 @@ export const typeGuards = {
   },
 };
 
-export function buildFormJsonSchema(fields: FieldProps[]): Record<string, any> {
-  const properties = fields.reduce(
+function createPropertiesFromFields(fields: FieldProps[]) {
+  return fields.reduce(
     (prev, next) => {
       const type = next.type;
 
@@ -114,11 +110,29 @@ export function buildFormJsonSchema(fields: FieldProps[]): Record<string, any> {
     },
     {} as Record<string, any>
   );
+}
+
+function createRequiredFromFields(fields: FieldProps[]) {
+  const required = new Set();
+
+  fields.forEach((field) => {
+    if (field.required) {
+      required.add(field.name);
+    }
+  });
+
+  return Array.from(required);
+}
+
+export function buildFormJsonSchema(fields: FieldProps[]): Record<string, any> {
+  const properties = createPropertiesFromFields(fields);
+  const required = createRequiredFromFields(fields);
 
   const schemaContent = {
     $schema: "http://json-schema.org/draft-07/schema#",
     type: "object",
     properties,
+    required,
   };
 
   return schemaContent;

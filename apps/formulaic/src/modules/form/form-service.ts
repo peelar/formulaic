@@ -11,7 +11,7 @@ const formCreateInputSchema = z.object({
   domain: z.string().url(),
 });
 
-export type FormCreateInput = z.infer<typeof formCreateInputSchema>;
+export type FormInput = z.infer<typeof formCreateInputSchema>;
 
 export class FormService {
   private logger = createLogger({
@@ -84,5 +84,27 @@ export class FormService {
     await this.repository.deleteById({ id, userId: this.user.id });
 
     this.logger.info({ id }, "Form deleted");
+  }
+
+  async updateById({ id }: { id: string }, body: unknown) {
+    this.logger.debug({ id }, "Updating form by id");
+
+    const parsed = formCreateInputSchema.safeParse(body);
+
+    if (!parsed.success) {
+      this.logger.debug({ errors: parsed.error }, "Invalid form input");
+      throw new BadRequestError("Invalid form input", { cause: parsed.error });
+    }
+
+    const input = parsed.data;
+
+    const form = await this.repository.updateById(
+      { id, userId: this.user.id },
+      input
+    );
+
+    this.logger.info({ id }, "Form updated");
+
+    return form;
   }
 }

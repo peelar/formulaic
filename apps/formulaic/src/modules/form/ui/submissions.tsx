@@ -31,7 +31,9 @@ const SubmissionsTable = ({
             const content = JSON.stringify(submission.content, null, 2);
             return (
               <TableRow>
-                <TableCell className="font-bold">{content}</TableCell>
+                <TableCell className="font-bold">
+                  <pre>{content}</pre>
+                </TableCell>
                 <TableCell>{date.toLongDate(submission.createdAt)}</TableCell>
               </TableRow>
             );
@@ -50,10 +52,5 @@ export const Submissions = ({
 }: {
   submissions: SelectedSubmission[];
 }) => {
-  return (
-    <div>
-      <h3>Submissions</h3>
-      <SubmissionsTable submissions={submissions} />
-    </div>
-  );
+  return <SubmissionsTable submissions={submissions} />;
 };

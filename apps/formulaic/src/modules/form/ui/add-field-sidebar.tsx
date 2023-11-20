@@ -66,6 +66,7 @@ function generateDefaultField() {
     id: generateId(),
     name: "",
     type: undefined,
+    required: false,
   };
 }
 
@@ -138,7 +139,7 @@ export const AddFieldSidebar = () => {
         />
         <SheetFooter>
           <SheetTrigger>
-            <Button onClick={handleFormSubmit} type="button">
+            <Button className="mt-8" onClick={handleFormSubmit} type="button">
               Create
             </Button>
           </SheetTrigger>
