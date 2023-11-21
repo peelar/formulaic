@@ -4,10 +4,10 @@ import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Label } from "../../../@/components/ui/label";
-import { FieldProps } from "../build-form-json-schema";
 import { AddFieldSidebar } from "./add-field-sidebar";
 import { EditFieldSidebar } from "./edit-field-sidebar";
 import { useFormBuilder } from "./hooks/useFormBuilder";
+import { FieldProps } from "../fields-schema";
 
 export const SchemaBuilder = () => {
   const { fields } = useFormBuilder();

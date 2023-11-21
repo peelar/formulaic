@@ -4,11 +4,11 @@ import React from "react";
 import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
 import {
-  EmailFieldProps,
-  FieldProps,
   NumberFieldProps,
   TextFieldProps,
-} from "../build-form-json-schema";
+  EmailFieldProps,
+  FieldProps,
+} from "../fields-schema";
 
 const EditableFieldWrapper = ({ children }: { children: React.ReactNode }) => {
   return <fieldset className="flex flex-col gap-6">{children}</fieldset>;

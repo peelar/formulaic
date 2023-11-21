@@ -1,35 +1,12 @@
 import { RJSFSchema } from "@rjsf/utils";
-
-type MakeFieldProps<TType extends string, TRules extends object> = {
-  id: string;
-  // The `TType` type parameter is used to identify the field in the UI. It's stripped out in the JSON schema.
-  type: TType | undefined;
-  name: string;
-  required: boolean;
-  rules?: TRules;
-};
-
-export type TextFieldProps = MakeFieldProps<
-  "text",
-  {
-    minLength?: number;
-    maxLength?: number;
-  }
->;
-
-export type EmailFieldProps = MakeFieldProps<"email", {}>;
-
-export type NumberFieldProps = MakeFieldProps<
-  "number",
-  {
-    minimum?: number;
-    maximum?: number;
-  }
->;
-
-export type FieldProps = TextFieldProps | EmailFieldProps | NumberFieldProps;
-
-export type FieldType = NonNullable<FieldProps["type"]>;
+import {
+  TextFieldProps,
+  EmailFieldProps,
+  NumberFieldProps,
+  FieldType,
+  FieldProps,
+  typeGuards,
+} from "./fields-schema";
 
 const jsonSchemaFieldFactory = {
   text: (props: TextFieldProps): RJSFSchema => {
@@ -50,7 +27,7 @@ const jsonSchemaFieldFactory = {
   },
   number: (props: NumberFieldProps): RJSFSchema => {
     return {
-      type: "number",
+      type: "integer",
       ...(props.rules && {
         ...(props.rules.minimum && {
           minimum: props.rules.minimum,
@@ -60,19 +37,6 @@ const jsonSchemaFieldFactory = {
         }),
       }),
     };
-  },
-};
-
-export const typeGuards = {
-  isFieldTypeText(type: FieldType): type is "text" {
-    return type === "text";
-  },
-  isFieldTypeEmail(type: FieldType): type is "email" {
-    return type === "email";
-  },
-
-  isFieldTypeNumber(type: FieldType): type is "number" {
-    return type === "number";
   },
 };
 
@@ -124,7 +88,9 @@ function createRequiredFromFields(fields: FieldProps[]) {
   return Array.from(required);
 }
 
-export function buildFormJsonSchema(fields: FieldProps[]): Record<string, any> {
+export function buildFormJsonSchemaFromFields(
+  fields: FieldProps[]
+): Record<string, any> {
   const properties = createPropertiesFromFields(fields);
   const required = createRequiredFromFields(fields);
 

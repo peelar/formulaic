@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import { FieldProps, FieldType } from "../build-form-json-schema";
 import { EditableField } from "./editable-field";
 import { FieldTypeSelect } from "./add-field-sidebar";
 import { Label } from "../../../@/components/ui/label";
 import { Checkbox } from "../../../@/components/ui/checkbox";
 import { Separator } from "../../../@/components/ui/separator";
+import { FieldProps, FieldType } from "../fields-schema";
 
 const FieldRequiredCheckbox = ({
   field,

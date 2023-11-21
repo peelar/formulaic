@@ -32,7 +32,7 @@ export const FormsTable = async () => {
         </TableHeader>
         <TableBody>
           {forms.map((form) => (
-            <TableRow>
+            <TableRow key={form.id}>
               <TableCell className="font-bold">
                 <Link href={`/form/${form.id}`}>{form.name}</Link>
               </TableCell>
@@ -49,7 +49,7 @@ export const FormsTable = async () => {
         </TableBody>
         {!forms.length && <TableCaption>No forms found</TableCaption>}
       </Table>
-      <div className="flex mt-2">
+      <div className="flex mt-4">
         <Link href="/new">
           <Button>Add new</Button>
         </Link>

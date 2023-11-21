@@ -19,10 +19,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../../../@/components/ui/sheet";
-import { FieldProps, FieldType, typeGuards } from "../build-form-json-schema";
+
 import { useFormBuilder } from "./hooks/useFormBuilder";
 import { generateId } from "../../../lib/id";
 import { FieldForm } from "./field-form";
+
+import { FieldProps, FieldType, typeGuards } from "../fields-schema";
 
 const options: { id: FieldType; name: string }[] = [
   { id: "text", name: "Text" },
@@ -61,12 +63,16 @@ export const FieldTypeSelect = ({
   );
 };
 
-function generateDefaultField() {
+function generateDefaultField(): FieldProps {
   return {
     id: generateId(),
     name: "",
-    type: undefined,
+    type: "text",
     required: false,
+    rules: {
+      minLength: 0,
+      maxLength: 0,
+    },
   };
 }
 
@@ -104,7 +110,6 @@ export const AddFieldSidebar = () => {
       setNewField({
         ...newField,
         type,
-        rules: { minimum: 0, maximum: 0 },
       });
     }
   }

@@ -9,6 +9,7 @@ import { SchemaProvider } from "../../../src/modules/form/ui/schema-provider";
 import { Submissions } from "../../../src/modules/form/ui/submissions";
 import { getUserFormService } from "../../../src/modules/form/utils";
 import { Section } from "../../../src/ui/section";
+import { buildFieldsFromJsonSchema } from "../../../src/modules/form/json-schema-to-fields";
 
 export async function generateMetadata({
   params,
@@ -32,13 +33,12 @@ export async function getForm(id: string) {
   return formService.getById({ id });
 }
 
-function convertFormToFormInput(
+function getDefaultValues(
   form: Awaited<ReturnType<typeof getForm>>
 ): FormInput {
   return {
     name: form.name,
-    // todo: map form.schema to schemaContent
-    schemaContent: {} as Record<string, any>,
+    schemaContent: (form.schema?.content ?? {}) as Record<string, any>,
     urls: form.domainAllowList,
   };
 }
@@ -46,7 +46,8 @@ function convertFormToFormInput(
 export default async function FormPage({ params }: { params: { id: string } }) {
   const id = params.id;
   const form = await getForm(params.id);
-  const defaultValues = convertFormToFormInput(form);
+  const defaultValues = getDefaultValues(form);
+  const fields = buildFieldsFromJsonSchema(defaultValues.schemaContent);
 
   return (
     <main>
@@ -58,8 +59,9 @@ export default async function FormPage({ params }: { params: { id: string } }) {
         <Separator className="my-4" orientation="horizontal" />
       </Section>
       <Section title="Form fields">
-        <SchemaProvider>
+        <SchemaProvider defaultValues={fields}>
           <FormCreator
+            buttonText="Update"
             defaultValues={defaultValues}
             onHandleSubmit={async (input) => {
               "use server";

@@ -19,14 +19,18 @@ const EmbedSnippet = ({ formId }: { formId: string }) => {
     <div className="flex flex-col">
       <ol className="my-4 flex flex-col gap-4">
         <li>
-          <p>1. Copy the snippet below</p>
+          <p>
+            <b>1.</b> Copy the snippet below
+          </p>
           <div className="flex max-w-[480px] ml-2 mt-2">
             <div className="bg-stone-100 wrap" contentEditable>
               {snippetText}
             </div>
           </div>
         </li>
-        <li>2. Paste the snippet into your website</li>
+        <li>
+          <b>2.</b> Paste the snippet into your website
+        </li>
       </ol>
     </div>
   );

@@ -19,6 +19,7 @@ const UrlBadge = ({
         <Button
           className="pr-0 h-5 w-5"
           size="icon"
+          type="button"
           variant={"ghost"}
           onClick={() => onDeleteClick(url)}
         >

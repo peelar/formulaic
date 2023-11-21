@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { SchemaContext } from "./hooks/useFormBuilder";
-import { FieldProps } from "../build-form-json-schema";
+import { FieldProps } from "../fields-schema";
 
 export const SchemaProvider = ({
   children,

@@ -1,23 +1,24 @@
 "use client";
 
+import { PlusIcon } from "@radix-ui/react-icons";
 import React from "react";
+import { Button } from "../../../@/components/ui/button";
 import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
-import { buildFormJsonSchema } from "../build-form-json-schema";
+import { UrlBadges } from "../../../ui/url-badges";
+import { buildFormJsonSchemaFromFields } from "../fields-to-json-schema";
+import { FormInput } from "../form-service";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 import { SchemaBuilder } from "./schema-builder";
-import { SubmitButton } from "./submit-button";
-import { FormInput } from "../form-service";
-import { UrlBadges } from "../../../ui/url-badges";
-import { Button } from "../../../@/components/ui/button";
-import { PlusIcon } from "@radix-ui/react-icons";
 
 export const FormCreator = ({
   onHandleSubmit,
   defaultValues,
+  buttonText,
 }: {
   onHandleSubmit: (input: FormInput) => Promise<void>;
   defaultValues?: FormInput;
+  buttonText: string;
 }) => {
   const [isPending, setIsPending] = React.useState(false);
   const { fields } = useFormBuilder();
@@ -42,7 +43,7 @@ export const FormCreator = ({
     const input: FormInput = {
       name: form.get("name") as string,
       urls,
-      schemaContent: buildFormJsonSchema(fields),
+      schemaContent: buildFormJsonSchemaFromFields(fields),
     };
 
     await onHandleSubmit(input);
@@ -82,13 +83,15 @@ export const FormCreator = ({
               <UrlBadges urls={urls} onDeleteClick={deleteUrl} />
             </div>
             <span className="text-stone-400 text-small">
-              Domain that the form will be embedded on. This is used to verify
-              the origin of the request.
+              Domains the form is allowed to be embedded on. This is used to
+              make sure the form is not embedded on other websites.
             </span>
           </Label>
         </fieldset>
         <div className="mt-4">
-          <SubmitButton isPending={isPending} />
+          <Button disabled={isPending} type="submit">
+            {isPending ? "Loading..." : buttonText}
+          </Button>
         </div>
       </form>
     </div>
