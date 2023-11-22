@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "../../../@/components/ui/button";
 import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
-import { buildFormJsonSchemaFromFields } from "../fields-to-json-schema";
+import { buildFormJsonSchemaFromFields } from "../fields-to-json-properties";
 import { FormInput, formThemeSchema } from "../form-input.schema";
 import { AllowedUrlsDialog } from "./allowed-urls-dialog";
 import { FormThemeSelect } from "./form-theme-select";
