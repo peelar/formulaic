@@ -100,7 +100,7 @@ export const Draggable = ({
   drag(drop(ref));
 
   return (
-    <div className="flex gap-2 h-10 items-center" style={{ opacity }}>
+    <div className="flex gap-2 h-12 items-center" style={{ opacity }}>
       <Button
         type="button"
         variant={"secondary"}
@@ -111,8 +111,9 @@ export const Draggable = ({
       >
         <DragHandleHorizontalIcon />
       </Button>
-
-      {children}
+      <Button type="button" variant={"link"} className="mx-0 px-2">
+        {children}
+      </Button>
     </div>
   );
 };

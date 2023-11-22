@@ -11,36 +11,9 @@ import {
 
 import { Draggable } from "../../../ui/draggable";
 import { FieldProps, FieldType, typeGuards } from "../fields-schema";
+import { FieldPill } from "./field-pill";
 import { FieldForm } from "./field-form";
 import { useFormBuilder } from "./hooks/useFormBuilder";
-
-// const fieldTypeIconMap: Record<
-//   FieldType,
-//   ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
-// > = {
-//   email: EnvelopeClosedIcon,
-//   text: Pencil1Icon,
-//   number: PlusIcon,
-// };
-
-// const FieldIcon = ({ type }: { type: FieldType }) => {
-//   const Icon = fieldTypeIconMap[type];
-
-//   return <Icon />;
-// };
-
-const FieldPill = ({ field }: { field: FieldProps }) => {
-  return (
-    <div className="flex gap-2 items-center">
-      <div className="flex items-start gap-[2px] flex-col hover:underline">
-        <span>{field.name}</span>
-        {field.required && (
-          <span className="text-stone-500 text-[0.6rem]">Required</span>
-        )}
-      </div>
-    </div>
-  );
-};
 
 export const EditFieldSidebar = ({
   field,
