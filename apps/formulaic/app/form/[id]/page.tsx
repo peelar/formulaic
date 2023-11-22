@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { updateForm } from "../../../src/modules/form/form-actions";
 import { Separator } from "../../../src/@/components/ui/separator";
-import { EmbedButton } from "../../../src/modules/form/ui/embed-button";
+import { ShareButton } from "../../../src/modules/form/ui/share-button";
 import { FormCreator } from "../../../src/modules/form/ui/form-creator";
 import { FormProvider } from "../../../src/modules/form/ui/form-provider";
 import { Submissions } from "../../../src/modules/form/ui/submissions";
@@ -54,7 +54,7 @@ export default async function FormPage({ params }: { params: { id: string } }) {
       <Section>
         <header className="flex justify-between items-center">
           <h2 className="text-stone-800 capitalize border-0">{form.name}</h2>
-          <EmbedButton form={form} />
+          <ShareButton form={form} />
         </header>
         <Separator className="my-4" orientation="horizontal" />
       </Section>

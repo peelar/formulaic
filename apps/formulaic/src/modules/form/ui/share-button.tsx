@@ -36,7 +36,7 @@ const EmbedSnippet = ({ formId }: { formId: string }) => {
   );
 };
 
-export const EmbedButton = ({
+export const ShareButton = ({
   form,
 }: {
   form: Awaited<ReturnType<typeof getForm>>;
@@ -44,9 +44,8 @@ export const EmbedButton = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="brand">
+        <Button icon={<Share1Icon />} variant="brand">
           Share
-          <Share1Icon className="ml-2" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
