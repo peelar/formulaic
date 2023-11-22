@@ -25,19 +25,19 @@ export function App() {
 
   return (
     <section>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>{error.message}</p>}
-      {form && form.schema && form.schema.content && (
-        <div>
+      <main>
+        {isLoading && <p>Initializing...</p>}
+        {error && <p>{error.message}</p>}
+        {form && form.schema && form.schema.content && (
           <Form
             onSubmit={handleFormSubmit}
             schema={form.schema.content}
             validator={validator}
             theme={form.theme}
           />
-        </div>
-      )}
-      {isSubmitted && <p>Form submitted!</p>}
+        )}
+        {isSubmitted && <p>Form submitted!</p>}
+      </main>
     </section>
   );
 }

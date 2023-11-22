@@ -28,7 +28,7 @@ export class PublicFormService {
       throw new NotFoundError("Form not found");
     }
 
-    this.logger.info(form.name, "Returning form: ");
+    this.logger.info({ name: form.name }, "Returning form: ");
     return form;
   }
 }

@@ -12,7 +12,7 @@ import { Theme } from "@prisma/client";
 const themeToLabelMap: Record<Theme, string> = {
   ANTD: "Ant Design",
   CHAKRA: "Chakra UI",
-  MUI: "Material UI",
+  MUI: "Material UI v5",
   SEMANTIC: "Semantic UI",
 };
 
