@@ -1,36 +1,12 @@
 import { z } from "zod";
 import { FieldProps, fieldSchema } from "./fields-schema";
 import { generateId } from "../../lib/id";
-
-const stringPropertySchema = z
-  .object({
-    type: z.literal("string"),
-    minLength: z.number().optional().default(0),
-    maxLength: z.number().optional().default(100),
-  })
-  .strict();
-
-type JsonSchemaStringProperty = z.infer<typeof stringPropertySchema>;
-
-const emailPropertySchema = z
-  .object({
-    type: z.literal("string"),
-    format: z.literal("email"),
-  })
-  .strict();
-
-const numberPropertySchema = z
-  .object({
-    type: z.literal("integer"),
-    minimum: z.number().optional().default(0),
-    maximum: z.number().optional().default(100),
-  })
-  .strict();
+import { JsonProperty } from "./json-properties.schema";
 
 const maps = {
   mapStringPropertyToField: (
     name: string,
-    property: JsonSchemaStringProperty
+    property: JsonProperty.String
   ): FieldProps => {
     return {
       id: generateId(),
@@ -43,10 +19,7 @@ const maps = {
       },
     };
   },
-  mapEmailPropertyToField: (
-    name: string,
-    property: z.infer<typeof emailPropertySchema>
-  ): FieldProps => {
+  mapEmailPropertyToField: (name: string): FieldProps => {
     return {
       id: generateId(),
       name,
@@ -56,7 +29,7 @@ const maps = {
   },
   mapNumberPropertyToField: (
     name: string,
-    property: z.infer<typeof numberPropertySchema>
+    property: JsonProperty.Number
   ): FieldProps => {
     return {
       id: generateId(),
@@ -69,22 +42,36 @@ const maps = {
       },
     };
   },
+  mapBooleanPropertyToField: (name: string): FieldProps => {
+    return {
+      id: generateId(),
+      name,
+      required: false,
+      type: "boolean",
+    };
+  },
 };
 
 function mapObjectToField(name: string, input: unknown): FieldProps {
-  const stringPropertyParseResult = stringPropertySchema.safeParse(input);
+  const stringPropertyParseResult = JsonProperty.stringSchema.safeParse(input);
   if (stringPropertyParseResult.success) {
     return maps.mapStringPropertyToField(name, stringPropertyParseResult.data);
   }
 
-  const emailPropertyParseResult = emailPropertySchema.safeParse(input);
+  const emailPropertyParseResult = JsonProperty.emailSchema.safeParse(input);
   if (emailPropertyParseResult.success) {
-    return maps.mapEmailPropertyToField(name, emailPropertyParseResult.data);
+    return maps.mapEmailPropertyToField(name);
   }
 
-  const numberPropertyParseResult = numberPropertySchema.safeParse(input);
+  const numberPropertyParseResult = JsonProperty.numberSchema.safeParse(input);
   if (numberPropertyParseResult.success) {
     return maps.mapNumberPropertyToField(name, numberPropertyParseResult.data);
+  }
+
+  const booleanPropertyParseResult =
+    JsonProperty.booleanSchema.safeParse(input);
+  if (booleanPropertyParseResult.success) {
+    return maps.mapBooleanPropertyToField(name);
   }
 
   throw new Error("Unsupported property type");

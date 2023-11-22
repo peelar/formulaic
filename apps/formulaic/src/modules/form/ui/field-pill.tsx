@@ -6,6 +6,7 @@ const fieldTypeLabelMap: Record<FieldType, string> = {
   email: "email",
   text: "text",
   number: "num",
+  boolean: "bool",
 };
 
 export const FieldPill = ({ field }: { field: FieldProps }) => {

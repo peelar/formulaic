@@ -2,15 +2,6 @@
 import { PlusIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { Button } from "../../../@/components/ui/button";
-import { Label } from "../../../@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../@/components/ui/select";
 import {
   Sheet,
   SheetContent,
@@ -25,43 +16,6 @@ import { generateId } from "../../../lib/id";
 import { FieldForm } from "./field-form";
 
 import { FieldProps, FieldType, typeGuards } from "../fields-schema";
-
-const options: { id: FieldType; name: string }[] = [
-  { id: "text", name: "Text" },
-  { id: "email", name: "Email" },
-  { id: "number", name: "Number" },
-];
-
-export const FieldTypeSelect = ({
-  type,
-  onTypeChange,
-}: {
-  type: FieldType | undefined;
-  onTypeChange: (type: FieldType) => void;
-}) => {
-  return (
-    <Label>
-      Field type
-      <Select
-        onValueChange={(value) => onTypeChange(value as FieldType)}
-        value={type}
-      >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select field type" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {options.map((option) => (
-              <SelectItem key={option.id} value={option.id}>
-                {option.name}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </Label>
-  );
-};
 
 function generateDefaultField(): FieldProps {
   return {
@@ -107,6 +61,13 @@ export const AddFieldSidebar = () => {
     }
 
     if (typeGuards.isFieldTypeEmail(type)) {
+      setNewField({
+        ...newField,
+        type,
+      });
+    }
+
+    if (typeGuards.isFieldTypeBoolean(type)) {
       setNewField({
         ...newField,
         type,

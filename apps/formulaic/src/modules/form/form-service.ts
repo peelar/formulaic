@@ -3,7 +3,7 @@ import { SessionUser } from "../../../auth";
 import { BadRequestError, NotFoundError } from "../../lib/error";
 import { createLogger } from "../../lib/logger";
 import { FormRepository } from "./form-repository";
-import { formCreateInputSchema } from "./formCreateInputSchema";
+import { FormInput } from "./form-input.schema";
 
 export class FormService {
   private logger = createLogger({
@@ -55,7 +55,7 @@ export class FormService {
   async create(body: unknown) {
     this.logger.debug("Creating form");
 
-    const parsed = formCreateInputSchema.safeParse(body);
+    const parsed = FormInput.schema.safeParse(body);
 
     if (!parsed.success) {
       this.logger.debug({ errors: parsed.error }, "Invalid form input");
@@ -81,7 +81,7 @@ export class FormService {
   async updateById({ id }: { id: string }, body: unknown) {
     this.logger.debug({ id }, "Updating form by id");
 
-    const parsed = formCreateInputSchema.safeParse(body);
+    const parsed = FormInput.schema.safeParse(body);
 
     if (!parsed.success) {
       this.logger.debug({ errors: parsed.error }, "Invalid form input");

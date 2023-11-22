@@ -111,9 +111,7 @@ export const Draggable = ({
       >
         <DragHandleHorizontalIcon />
       </Button>
-      <Button type="button" variant={"link"} className="mx-0 px-2">
-        {children}
-      </Button>
+      {children}
     </div>
   );
 };

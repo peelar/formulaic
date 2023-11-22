@@ -38,10 +38,17 @@ const numberFieldSchema = baseFieldSchema.and(
 
 export type NumberFieldProps = z.infer<typeof numberFieldSchema>;
 
+const booleanFieldSchema = baseFieldSchema.and(
+  z.object({
+    type: z.literal("boolean"),
+  })
+);
+
 export const fieldSchema = z.union([
   textFieldSchema,
   emailFieldSchema,
   numberFieldSchema,
+  booleanFieldSchema,
 ]);
 
 export type FieldProps = z.infer<typeof fieldSchema>;
@@ -55,8 +62,10 @@ export const typeGuards = {
   isFieldTypeEmail(type: FieldType): type is "email" {
     return type === "email";
   },
-
   isFieldTypeNumber(type: FieldType): type is "number" {
     return type === "number";
+  },
+  isFieldTypeBoolean(type: FieldType): type is "boolean" {
+    return type === "boolean";
   },
 };

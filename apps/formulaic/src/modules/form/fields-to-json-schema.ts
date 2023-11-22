@@ -1,10 +1,9 @@
 import { RJSFSchema } from "@rjsf/utils";
 import {
-  TextFieldProps,
   EmailFieldProps,
-  NumberFieldProps,
-  FieldType,
   FieldProps,
+  NumberFieldProps,
+  TextFieldProps,
   typeGuards,
 } from "./fields-schema";
 
@@ -38,6 +37,11 @@ const jsonSchemaFieldFactory = {
       }),
     };
   },
+  boolean: (): RJSFSchema => {
+    return {
+      type: "boolean",
+    };
+  },
 };
 
 function createPropertiesFromFields(fields: FieldProps[]) {
@@ -67,6 +71,13 @@ function createPropertiesFromFields(fields: FieldProps[]) {
         return {
           ...prev,
           [next.name]: jsonSchemaFieldFactory.text(next as TextFieldProps),
+        };
+      }
+
+      if (typeGuards.isFieldTypeBoolean(type)) {
+        return {
+          ...prev,
+          [next.name]: jsonSchemaFieldFactory.boolean(),
         };
       }
 

@@ -47,6 +47,13 @@ export const EditFieldSidebar = ({
         rules: { minimum: 0, maximum: 0 },
       });
     }
+
+    if (typeGuards.isFieldTypeBoolean(type)) {
+      updateField({
+        ...field,
+        type,
+      });
+    }
   }
 
   return (

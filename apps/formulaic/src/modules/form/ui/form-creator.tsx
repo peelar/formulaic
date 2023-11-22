@@ -5,7 +5,7 @@ import { Button } from "../../../@/components/ui/button";
 import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
 import { buildFormJsonSchemaFromFields } from "../fields-to-json-schema";
-import { FormInput, formThemeSchema } from "../formCreateInputSchema";
+import { FormInput, formThemeSchema } from "../form-input.schema";
 import { AllowedUrlsDialog } from "./allowed-urls-dialog";
 import { FormThemeSelect } from "./form-theme-select";
 import { useFormBuilder } from "./hooks/useFormBuilder";
@@ -54,8 +54,8 @@ export const FormCreator = ({
   defaultValues,
   buttonText,
 }: {
-  onHandleSubmit: (input: FormInput) => Promise<void>;
-  defaultValues?: FormInput;
+  onHandleSubmit: (input: FormInput.Schema) => Promise<void>;
+  defaultValues?: FormInput.Schema;
   buttonText: string;
 }) => {
   const [isPending, setIsPending] = React.useState(false);
@@ -74,7 +74,7 @@ export const FormCreator = ({
     const rawTheme = form.get("theme");
     const theme = formThemeSchema.parse(rawTheme);
 
-    const input: FormInput = {
+    const input: FormInput.Schema = {
       name: form.get("name") as string,
       urls: allowedUrls.urls,
       schemaContent: buildFormJsonSchemaFromFields(fields),
@@ -97,7 +97,7 @@ export const FormCreator = ({
               defaultValue={defaultValues?.name}
               type="text"
               name="name"
-              placeholder="e.g. Invitation form"
+              placeholder="Invitation form"
             />
           </Label>
           <SchemaBuilder />

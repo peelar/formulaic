@@ -1,6 +1,6 @@
 import { env } from "../../../env.mjs";
 import { prisma } from "../../../prisma";
-import { FormInput } from "./formCreateInputSchema";
+import { FormInput } from "./form-input.schema";
 
 // idea: try/catch? and return { data, error }
 export class FormRepository {
@@ -49,7 +49,7 @@ export class FormRepository {
     });
   }
 
-  create({ input: data, userId }: { input: FormInput; userId: string }) {
+  create({ input: data, userId }: { input: FormInput.Schema; userId: string }) {
     return prisma.form.create({
       data: {
         name: data.name,
@@ -79,7 +79,10 @@ export class FormRepository {
     });
   }
 
-  updateById({ id, userId }: { id: string; userId: string }, data: FormInput) {
+  updateById(
+    { id, userId }: { id: string; userId: string },
+    data: FormInput.Schema
+  ) {
     return prisma.form.update({
       where: { id, authorId: userId },
       data: {

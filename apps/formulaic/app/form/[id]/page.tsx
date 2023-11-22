@@ -8,7 +8,7 @@ import { Submissions } from "../../../src/modules/form/ui/submissions";
 import { getUserFormService } from "../../../src/modules/form/utils";
 import { Section } from "../../../src/ui/section";
 import { buildFieldsFromJsonSchema } from "../../../src/modules/form/json-schema-to-fields";
-import { FormInput } from "../../../src/modules/form/formCreateInputSchema";
+import { FormInput } from "../../../src/modules/form/form-input.schema";
 
 export async function generateMetadata({
   params,
@@ -34,7 +34,7 @@ export async function getForm(id: string) {
 
 function getDefaultValues(
   form: Awaited<ReturnType<typeof getForm>>
-): FormInput {
+): FormInput.Schema {
   return {
     name: form.name,
     schemaContent: (form.schema?.content ?? {}) as Record<string, any>,

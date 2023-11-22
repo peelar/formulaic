@@ -15,4 +15,7 @@ export const formCreateInputSchema = z.object({
   theme: formThemeSchema,
 });
 
-export type FormInput = z.infer<typeof formCreateInputSchema>;
+export namespace FormInput {
+  export const schema = formCreateInputSchema;
+  export type Schema = z.infer<typeof schema>;
+}

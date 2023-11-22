@@ -14,7 +14,7 @@ const EditableFieldWrapper = ({ children }: { children: React.ReactNode }) => {
   return <fieldset className="flex flex-col gap-6">{children}</fieldset>;
 };
 
-const NumberEditableField = ({
+const NumberField = ({
   field,
   updateField,
 }: {
@@ -30,7 +30,7 @@ const NumberEditableField = ({
           onChange={(e) => updateField({ ...field, name: e.target.value })}
           type="text"
           name="name"
-          placeholder="e.g. Event name"
+          placeholder="Event name"
         />
       </Label>
       <Label>
@@ -67,7 +67,7 @@ const NumberEditableField = ({
   );
 };
 
-const TextEditableField = ({
+const TextField = ({
   field,
   updateField,
 }: {
@@ -83,7 +83,7 @@ const TextEditableField = ({
           onChange={(e) => updateField({ ...field, name: e.target.value })}
           type="text"
           name="name"
-          placeholder="e.g. Event name"
+          placeholder="Event name"
         />
       </Label>
       <Label>
@@ -120,7 +120,7 @@ const TextEditableField = ({
   );
 };
 
-const EmailEditableField = ({
+const EmailField = ({
   field,
   updateField,
 }: {
@@ -136,14 +136,37 @@ const EmailEditableField = ({
           onChange={(e) => updateField({ ...field, name: e.target.value })}
           type="text"
           name="name"
-          placeholder="e.g. Participant e-mail"
+          placeholder="Participant e-mail"
         />
       </Label>
     </EditableFieldWrapper>
   );
 };
 
-export const EditableField = ({
+const BooleanField = ({
+  field,
+  updateField,
+}: {
+  field: FieldProps;
+  updateField: (field: FieldProps) => void;
+}) => {
+  return (
+    <EditableFieldWrapper>
+      <Label>
+        Name
+        <Input
+          value={field.name}
+          onChange={(e) => updateField({ ...field, name: e.target.value })}
+          type="text"
+          name="name"
+          placeholder="Do you accept the terms?"
+        />
+      </Label>
+    </EditableFieldWrapper>
+  );
+};
+
+export const Field = ({
   field,
   updateField,
 }: {
@@ -152,10 +175,15 @@ export const EditableField = ({
 }) => {
   switch (field.type) {
     case "text":
-      return <TextEditableField field={field} updateField={updateField} />;
+      return <TextField field={field} updateField={updateField} />;
     case "email":
-      return <EmailEditableField field={field} updateField={updateField} />;
+      return <EmailField field={field} updateField={updateField} />;
     case "number":
-      return <NumberEditableField field={field} updateField={updateField} />;
+      return <NumberField field={field} updateField={updateField} />;
+    case "boolean":
+      return <BooleanField field={field} updateField={updateField} />;
+    default:
+      const _exhaustiveCheck: never = field;
+      break;
   }
 };

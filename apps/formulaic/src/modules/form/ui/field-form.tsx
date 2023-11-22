@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { EditableField } from "./editable-field";
-import { FieldTypeSelect } from "./add-field-sidebar";
+import { Field } from "./field";
+import { FieldTypeSelect } from "./field-type-select";
 import { Label } from "../../../@/components/ui/label";
 import { Checkbox } from "../../../@/components/ui/checkbox";
 import { Separator } from "../../../@/components/ui/separator";
@@ -43,7 +43,7 @@ export const FieldForm = ({
       {field.type && (
         <>
           <Separator orientation="horizontal" />
-          <EditableField field={field} updateField={updateField} />
+          <Field field={field} updateField={updateField} />
           <FieldRequiredCheckbox field={field} updateField={updateField} />
         </>
       )}
