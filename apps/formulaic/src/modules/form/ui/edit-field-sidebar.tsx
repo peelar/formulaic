@@ -54,6 +54,13 @@ export const EditFieldSidebar = ({
         type,
       });
     }
+
+    if (typeGuards.isFieldTypeDate(type)) {
+      updateField({
+        ...field,
+        type,
+      });
+    }
   }
 
   return (

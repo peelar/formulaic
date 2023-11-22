@@ -44,11 +44,18 @@ const booleanFieldSchema = baseFieldSchema.and(
   })
 );
 
+const dateFieldSchema = baseFieldSchema.and(
+  z.object({
+    type: z.literal("date"),
+  })
+);
+
 export const fieldSchema = z.union([
   textFieldSchema,
   emailFieldSchema,
   numberFieldSchema,
   booleanFieldSchema,
+  dateFieldSchema,
 ]);
 
 export type FieldProps = z.infer<typeof fieldSchema>;
@@ -67,5 +74,8 @@ export const typeGuards = {
   },
   isFieldTypeBoolean(type: FieldType): type is "boolean" {
     return type === "boolean";
+  },
+  isFieldTypeDate(type: FieldType): type is "date" {
+    return type === "date";
   },
 };

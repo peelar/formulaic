@@ -50,6 +50,14 @@ const maps = {
       type: "boolean",
     };
   },
+  mapDatePropertyToField: (name: string): FieldProps => {
+    return {
+      id: generateId(),
+      name,
+      required: false,
+      type: "date",
+    };
+  },
 };
 
 function mapObjectToField(name: string, input: unknown): FieldProps {
@@ -74,14 +82,13 @@ function mapObjectToField(name: string, input: unknown): FieldProps {
     return maps.mapBooleanPropertyToField(name);
   }
 
+  const datePropertyParseResult = JsonProperty.dateSchema.safeParse(input);
+  if (datePropertyParseResult.success) {
+    return maps.mapDatePropertyToField(name);
+  }
+
   throw new Error("Unsupported property type");
 }
-
-const baseJsonSchema = z.object({
-  type: z.literal("object"),
-  properties: z.record(z.unknown()),
-  required: z.array(z.string()).optional().default([]),
-});
 
 function overwriteFieldsWithRequired(
   fields: FieldProps[],
@@ -100,6 +107,12 @@ function overwriteFieldsWithRequired(
 
   return updatedFields;
 }
+
+const baseJsonSchema = z.object({
+  type: z.literal("object"),
+  properties: z.record(z.unknown()),
+  required: z.array(z.string()).optional().default([]),
+});
 
 export function buildFieldsFromJsonSchema(
   rawJsonSchema: unknown

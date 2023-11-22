@@ -166,6 +166,29 @@ const BooleanField = ({
   );
 };
 
+const DateField = ({
+  field,
+  updateField,
+}: {
+  field: FieldProps;
+  updateField: (field: FieldProps) => void;
+}) => {
+  return (
+    <EditableFieldWrapper>
+      <Label>
+        Name
+        <Input
+          value={field.name}
+          onChange={(e) => updateField({ ...field, name: e.target.value })}
+          type="text"
+          name="name"
+          placeholder="Event date"
+        />
+      </Label>
+    </EditableFieldWrapper>
+  );
+};
+
 export const Field = ({
   field,
   updateField,
@@ -182,8 +205,9 @@ export const Field = ({
       return <NumberField field={field} updateField={updateField} />;
     case "boolean":
       return <BooleanField field={field} updateField={updateField} />;
+    case "date":
+      return <DateField field={field} updateField={updateField} />;
     default:
       const _exhaustiveCheck: never = field;
-      break;
   }
 };

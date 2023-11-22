@@ -15,7 +15,8 @@ const optionsRecord: Record<FieldType, string> = {
   text: "Text",
   number: "Number",
   email: "Email",
-  boolean: "Boolean",
+  boolean: "Checkbox",
+  date: "Date",
 };
 const options: { id: FieldType; name: string }[] = Object.entries(
   optionsRecord

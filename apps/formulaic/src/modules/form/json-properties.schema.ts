@@ -25,14 +25,23 @@ const numberPropertySchema = z
 
 const booleanPropertySchema = z.object({ type: z.literal("boolean") }).strict();
 
+const datePropertySchema = z
+  .object({
+    type: z.literal("string"),
+    format: z.literal("date"),
+  })
+  .strict();
+
 export namespace JsonProperty {
   export type String = z.infer<typeof stringPropertySchema>;
   export type Email = z.infer<typeof emailPropertySchema>;
   export type Number = z.infer<typeof numberPropertySchema>;
   export type Boolean = z.infer<typeof booleanPropertySchema>;
+  export type Date = z.infer<typeof datePropertySchema>;
 
   export const stringSchema = stringPropertySchema;
   export const emailSchema = emailPropertySchema;
   export const numberSchema = numberPropertySchema;
   export const booleanSchema = booleanPropertySchema;
+  export const dateSchema = datePropertySchema;
 }

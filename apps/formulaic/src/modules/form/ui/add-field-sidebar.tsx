@@ -73,6 +73,13 @@ export const AddFieldSidebar = () => {
         type,
       });
     }
+
+    if (typeGuards.isFieldTypeDate(type)) {
+      setNewField({
+        ...newField,
+        type,
+      });
+    }
   }
 
   function handleFormSubmit() {

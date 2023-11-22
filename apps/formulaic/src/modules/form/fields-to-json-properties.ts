@@ -18,7 +18,7 @@ const jsonSchemaFieldFactory = {
       }),
     };
   },
-  email: (props: EmailFieldProps): RJSFSchema => {
+  email: (): RJSFSchema => {
     return {
       type: "string",
       format: "email",
@@ -42,6 +42,9 @@ const jsonSchemaFieldFactory = {
       type: "boolean",
     };
   },
+  date: (): RJSFSchema => {
+    return { type: "string", format: "date" };
+  },
 };
 
 function createPropertiesFromFields(fields: FieldProps[]) {
@@ -56,7 +59,7 @@ function createPropertiesFromFields(fields: FieldProps[]) {
       if (typeGuards.isFieldTypeEmail(type)) {
         return {
           ...prev,
-          [next.name]: jsonSchemaFieldFactory.email(next as EmailFieldProps),
+          [next.name]: jsonSchemaFieldFactory.email(),
         };
       }
 
@@ -78,6 +81,13 @@ function createPropertiesFromFields(fields: FieldProps[]) {
         return {
           ...prev,
           [next.name]: jsonSchemaFieldFactory.boolean(),
+        };
+      }
+
+      if (typeGuards.isFieldTypeDate(type)) {
+        return {
+          ...prev,
+          [next.name]: jsonSchemaFieldFactory.date(),
         };
       }
 
