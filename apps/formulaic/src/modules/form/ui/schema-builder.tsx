@@ -21,7 +21,7 @@ export const SchemaBuilder = () => {
 
   return (
     <Label>
-      Form fields
+      Fields
       <div className="md:w-2/5">
         <DndProvider backend={HTML5Backend}>
           <div className="flex flex-col items-start gap-4">

@@ -5,7 +5,7 @@ import { FormInput } from "../../../src/modules/form/form-service";
 import { Separator } from "../../../src/@/components/ui/separator";
 import { EmbedButton } from "../../../src/modules/form/ui/embed-button";
 import { FormCreator } from "../../../src/modules/form/ui/form-creator";
-import { SchemaProvider } from "../../../src/modules/form/ui/schema-provider";
+import { FormProvider } from "../../../src/modules/form/ui/form-provider";
 import { Submissions } from "../../../src/modules/form/ui/submissions";
 import { getUserFormService } from "../../../src/modules/form/utils";
 import { Section } from "../../../src/ui/section";
@@ -58,8 +58,8 @@ export default async function FormPage({ params }: { params: { id: string } }) {
         </header>
         <Separator className="my-4" orientation="horizontal" />
       </Section>
-      <Section title="Form fields">
-        <SchemaProvider defaultValues={fields}>
+      <Section>
+        <FormProvider defaultValues={fields}>
           <FormCreator
             buttonText="Update"
             defaultValues={defaultValues}
@@ -69,7 +69,7 @@ export default async function FormPage({ params }: { params: { id: string } }) {
               return updateForm(id, input);
             }}
           />
-        </SchemaProvider>
+        </FormProvider>
       </Section>
 
       <Section title="Submissions">

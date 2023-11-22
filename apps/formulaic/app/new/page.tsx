@@ -2,7 +2,7 @@ import React from "react";
 import { FormCreator } from "../../src/modules/form/ui/form-creator";
 import { Section } from "../../src/ui/section";
 import { Metadata } from "next";
-import { SchemaProvider } from "../../src/modules/form/ui/schema-provider";
+import { FormProvider } from "../../src/modules/form/ui/form-provider";
 import { protectPage } from "../../src/lib/routing";
 import { createForm } from "../../src/modules/form/form-actions";
 
@@ -25,9 +25,9 @@ const NewFormPage = async () => {
             </span>{" "}
             form
           </h3>
-          <SchemaProvider>
+          <FormProvider>
             <FormCreator buttonText="Create" onHandleSubmit={createForm} />
-          </SchemaProvider>
+          </FormProvider>
         </div>
       </Section>
     </main>

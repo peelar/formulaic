@@ -3,7 +3,7 @@ import React from "react";
 import { SchemaContext } from "./hooks/useFormBuilder";
 import { FieldProps } from "../fields-schema";
 
-export const SchemaProvider = ({
+export const FormProvider = ({
   children,
   defaultValues = [],
 }: {
