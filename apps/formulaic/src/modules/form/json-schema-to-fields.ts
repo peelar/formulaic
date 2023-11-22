@@ -35,7 +35,6 @@ const maps = {
     return {
       id: generateId(),
       name,
-      // todo: override required
       required: false,
       type: "text",
       rules: {
@@ -73,7 +72,6 @@ const maps = {
 };
 
 function mapObjectToField(name: string, input: unknown): FieldProps {
-  console.log(name, input);
   const stringPropertyParseResult = stringPropertySchema.safeParse(input);
   if (stringPropertyParseResult.success) {
     return maps.mapStringPropertyToField(name, stringPropertyParseResult.data);
@@ -101,7 +99,26 @@ function mapObjectToField(name: string, input: unknown): FieldProps {
 const baseJsonSchema = z.object({
   type: z.literal("object"),
   properties: z.record(z.unknown()),
+  required: z.array(z.string()).optional().default([]),
 });
+
+function overwriteFieldsWithRequired(
+  fields: FieldProps[],
+  requiredFields: string[]
+): FieldProps[] {
+  const updatedFields = fields.map((field) => {
+    if (requiredFields.includes(field.name)) {
+      return {
+        ...field,
+        required: true,
+      };
+    }
+
+    return field;
+  });
+
+  return updatedFields;
+}
 
 export function buildFieldsFromJsonSchema(
   rawJsonSchema: unknown
@@ -116,5 +133,5 @@ export function buildFieldsFromJsonSchema(
     }
   );
 
-  return fields;
+  return overwriteFieldsWithRequired(fields, jsonSchema.required);
 }
