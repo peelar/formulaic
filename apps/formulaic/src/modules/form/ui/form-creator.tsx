@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "../../../@/components/ui/button";
 import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
-import { buildFormJsonSchemaFromFields } from "../fields-to-json-properties";
+import { buildJsonSchemaFromFields } from "../fields-to-json-schema";
 import { FormInput, formThemeSchema } from "../form-input.schema";
 import { AllowedUrlsDialog } from "./allowed-urls-dialog";
 import { FormThemeSelect } from "./form-theme-select";
@@ -77,7 +77,7 @@ export const FormCreator = ({
     const input: FormInput.Schema = {
       name: form.get("name") as string,
       urls: allowedUrls.urls,
-      schemaContent: buildFormJsonSchemaFromFields(fields),
+      schemaContent: buildJsonSchemaFromFields(fields),
       theme,
     };
 

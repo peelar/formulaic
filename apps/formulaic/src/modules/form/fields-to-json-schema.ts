@@ -109,7 +109,7 @@ function createRequiredFromFields(fields: FieldProps[]) {
   return Array.from(required);
 }
 
-export function buildFormJsonSchemaFromFields(
+export function buildJsonSchemaFromFields(
   fields: FieldProps[]
 ): Record<string, any> {
   const properties = createPropertiesFromFields(fields);
