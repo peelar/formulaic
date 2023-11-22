@@ -1,6 +1,6 @@
 import { env } from "../../../env.mjs";
 import { prisma } from "../../../prisma";
-import { FormInput } from "./form-service";
+import { FormInput } from "./formCreateInputSchema";
 
 // idea: try/catch? and return { data, error }
 export class FormRepository {
@@ -30,6 +30,7 @@ export class FormRepository {
         id: true,
         name: true,
         domainAllowList: true,
+        theme: true,
         schema: {
           select: {
             id: true,
@@ -83,6 +84,7 @@ export class FormRepository {
       where: { id, authorId: userId },
       data: {
         name: data.name,
+        theme: data.theme,
         domainAllowList: {
           set: data.urls,
         },

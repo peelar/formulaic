@@ -1,17 +1,9 @@
 import { z } from "zod";
+import { SessionUser } from "../../../auth";
 import { BadRequestError, NotFoundError } from "../../lib/error";
 import { createLogger } from "../../lib/logger";
 import { FormRepository } from "./form-repository";
-import { Session } from "next-auth/types";
-import { SessionUser } from "../../../auth";
-
-const formCreateInputSchema = z.object({
-  name: z.string(),
-  schemaContent: z.record(z.any()),
-  urls: z.array(z.string().url()),
-});
-
-export type FormInput = z.infer<typeof formCreateInputSchema>;
+import { formCreateInputSchema } from "./formCreateInputSchema";
 
 export class FormService {
   private logger = createLogger({

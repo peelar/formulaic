@@ -5,8 +5,11 @@ import { ROOT_ID } from "./main";
 
 // todo: parse with zod or
 // todo: use a type from the api package
-type FormResponse = {
+export type FormTheme = "MUI" | "ANTD" | "CHAKRA" | "SEMANTIC";
+
+export type FormResponse = {
   id: number;
+  theme: FormTheme;
   schema: {
     content: RJSFSchema;
     createdAt: string;

@@ -1,7 +1,5 @@
 import { Metadata } from "next";
 import { updateForm } from "../../../src/modules/form/form-actions";
-import { FormInput } from "../../../src/modules/form/form-service";
-// import { EmbedButton } from "../../../src/modules/form/ui/embed-button";
 import { Separator } from "../../../src/@/components/ui/separator";
 import { EmbedButton } from "../../../src/modules/form/ui/embed-button";
 import { FormCreator } from "../../../src/modules/form/ui/form-creator";
@@ -10,6 +8,7 @@ import { Submissions } from "../../../src/modules/form/ui/submissions";
 import { getUserFormService } from "../../../src/modules/form/utils";
 import { Section } from "../../../src/ui/section";
 import { buildFieldsFromJsonSchema } from "../../../src/modules/form/json-schema-to-fields";
+import { FormInput } from "../../../src/modules/form/formCreateInputSchema";
 
 export async function generateMetadata({
   params,
@@ -40,6 +39,7 @@ function getDefaultValues(
     name: form.name,
     schemaContent: (form.schema?.content ?? {}) as Record<string, any>,
     urls: form.domainAllowList,
+    theme: form.theme,
   };
 }
 

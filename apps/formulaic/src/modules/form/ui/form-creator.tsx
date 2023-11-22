@@ -5,8 +5,9 @@ import { Button } from "../../../@/components/ui/button";
 import { Input } from "../../../@/components/ui/input";
 import { Label } from "../../../@/components/ui/label";
 import { buildFormJsonSchemaFromFields } from "../fields-to-json-schema";
-import { FormInput } from "../form-service";
+import { FormInput, formThemeSchema } from "../formCreateInputSchema";
 import { AllowedUrlsDialog } from "./allowed-urls-dialog";
+import { FormThemeSelect } from "./form-theme-select";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 import { SchemaBuilder } from "./schema-builder";
 
@@ -54,10 +55,14 @@ export const FormCreator = ({
 
     const form = new FormData(e.currentTarget);
 
+    const rawTheme = form.get("theme");
+    const theme = formThemeSchema.parse(rawTheme);
+
     const input: FormInput = {
       name: form.get("name") as string,
       urls: allowedUrls.urls,
       schemaContent: buildFormJsonSchemaFromFields(fields),
+      theme,
     };
 
     await onHandleSubmit(input);
@@ -88,6 +93,10 @@ export const FormCreator = ({
               </span>
             </span>
             <AllowedUrlsDialog {...allowedUrls} />
+          </Label>
+          <Label>
+            Theme
+            <FormThemeSelect defaultValue={defaultValues?.theme} />
           </Label>
         </fieldset>
         <div className="mt-4">

@@ -10,6 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Theme {
+  MUI
+  ANTD
+  CHAKRA
+  SEMANTIC
+}
+
 model Form {
   id              String   @id @default(cuid())
   createdAt       DateTime @default(now())
@@ -18,6 +25,7 @@ model Form {
   schema          Schema?
   author          User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId        String
+  theme           Theme    @default(MUI)
 }
 
 model Submission {

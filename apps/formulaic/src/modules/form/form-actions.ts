@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { FormInput } from "./form-service";
 import { getUserFormService } from "./utils";
+import { FormInput } from "./formCreateInputSchema";
 
 export async function createForm(input: FormInput) {
   const formService = await getUserFormService();

@@ -1,9 +1,10 @@
-import Form, { IChangeEvent } from "@rjsf/core";
+import { IChangeEvent } from "@rjsf/core";
+import { RJSFSchema } from "@rjsf/utils";
 import validator from "@rjsf/validator-ajv8";
 import "./App.css";
+import { Form } from "./Form";
 import { useGetForm } from "./useGetForm";
 import { useSubmitForm } from "./useSubmitForm";
-import { RJSFSchema } from "@rjsf/utils";
 
 export function App() {
   const { data: form, isLoading, error } = useGetForm();
@@ -17,22 +18,22 @@ export function App() {
 
     if (!schema?.id) throw new Error("Schema ID not found");
 
-    await submit({ content: data.formData, schemaId: schema?.id });
+    await submit({ content: data.formData, schemaId: schema.id });
   }
 
-  const content = schema?.content;
   const isSubmitted = submitData !== undefined;
 
   return (
     <section>
       {isLoading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
-      {content && (
+      {form && form.schema && form.schema.content && (
         <div>
           <Form
             onSubmit={handleFormSubmit}
-            schema={content}
+            schema={form.schema.content}
             validator={validator}
+            theme={form.theme}
           />
         </div>
       )}
