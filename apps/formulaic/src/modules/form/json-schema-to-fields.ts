@@ -65,7 +65,7 @@ const maps = {
       type: "number",
       rules: {
         minimum: property.minimum ?? 0,
-        maximum: property.maximum ?? 0,
+        maximum: property.maximum ?? 100,
       },
     };
   },
@@ -75,22 +75,16 @@ function mapObjectToField(name: string, input: unknown): FieldProps {
   const stringPropertyParseResult = stringPropertySchema.safeParse(input);
   if (stringPropertyParseResult.success) {
     return maps.mapStringPropertyToField(name, stringPropertyParseResult.data);
-  } else {
-    console.error(stringPropertyParseResult.error);
   }
 
   const emailPropertyParseResult = emailPropertySchema.safeParse(input);
   if (emailPropertyParseResult.success) {
     return maps.mapEmailPropertyToField(name, emailPropertyParseResult.data);
-  } else {
-    console.error(emailPropertyParseResult.error);
   }
 
   const numberPropertyParseResult = numberPropertySchema.safeParse(input);
   if (numberPropertyParseResult.success) {
     return maps.mapNumberPropertyToField(name, numberPropertyParseResult.data);
-  } else {
-    console.error(numberPropertyParseResult.error);
   }
 
   throw new Error("Unsupported property type");

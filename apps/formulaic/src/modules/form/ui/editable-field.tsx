@@ -34,7 +34,7 @@ const NumberEditableField = ({
         />
       </Label>
       <Label>
-        Minimum length
+        Minimum value
         <Input
           value={field.rules?.minimum ?? 0}
           onChange={(e) =>
@@ -49,7 +49,7 @@ const NumberEditableField = ({
         />
       </Label>
       <Label>
-        Maximum length
+        Maximum value
         <Input
           value={field.rules?.maximum ?? 100}
           onChange={(e) =>

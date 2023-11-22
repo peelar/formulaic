@@ -33,8 +33,7 @@ export const DeleteFormAlert = async ({ id }: { id: string }) => {
             Are you sure you want to delete the form?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            form.
+            This action cannot be undone. You form will be deleted permanently.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

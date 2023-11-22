@@ -14,7 +14,7 @@ export const SchemaBuilder = () => {
 
   const renderFieldNames = React.useCallback(
     (field: FieldProps, index: number) => {
-      return <EditFieldSidebar field={field} index={index} />;
+      return <EditFieldSidebar key={field.id} field={field} index={index} />;
     },
     [fields]
   );

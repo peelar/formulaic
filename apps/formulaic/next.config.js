@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000", process.env.TUNNEL_URL],
+      allowedOrigins: ["localhost:3000"],
     },
   },
 
