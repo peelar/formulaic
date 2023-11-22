@@ -10,6 +10,8 @@ import { AllowedUrlsDialog } from "./allowed-urls-dialog";
 import { FormThemeSelect } from "./form-theme-select";
 import { useFormBuilder } from "./hooks/useFormBuilder";
 import { SchemaBuilder } from "./schema-builder";
+import { cn } from "../../../@/lib/utils";
+import { Tooltip } from "../../../ui/tooltip";
 
 const useAllowedUrls = ({
   defaultValues = [],
@@ -32,6 +34,20 @@ const useAllowedUrls = ({
 };
 
 export type UseAllowedUrlsValues = ReturnType<typeof useAllowedUrls>;
+
+const UrlCount = ({ count }: { count: number }) => {
+  const isZero = count === 0;
+  return (
+    <span
+      className={cn(
+        "bg-secondary text-primary ml-2 w-6 h-6 border rounded-sm flex items-center justify-center",
+        isZero ? "underline" : ""
+      )}
+    >
+      {count}
+    </span>
+  );
+};
 
 export const FormCreator = ({
   onHandleSubmit,
@@ -85,13 +101,15 @@ export const FormCreator = ({
             />
           </Label>
           <SchemaBuilder />
+
           <Label className="flex flex-col items-start md:w-2/5">
-            <span className="flex items-center">
-              Allowed URLs
-              <span className="bg-secondary text-primary ml-2 w-6 h-6 border rounded-sm flex items-center justify-center">
-                {urlCount}
+            <Tooltip tooltipContent="You must add at least one URL to embed this form.">
+              <span className="flex items-center">
+                Allowed URLs
+                <UrlCount count={urlCount} />
               </span>
-            </span>
+            </Tooltip>
+
             <AllowedUrlsDialog {...allowedUrls} />
           </Label>
           <Label>

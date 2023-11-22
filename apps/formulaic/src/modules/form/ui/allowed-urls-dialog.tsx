@@ -1,5 +1,5 @@
 "use client";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { GearIcon, PlusIcon } from "@radix-ui/react-icons";
 import { Button } from "../../../@/components/ui/button";
 import {
   Dialog,
@@ -26,6 +26,7 @@ export const AllowedUrlsDialog = ({
       <DialogTrigger asChild>
         <Button className="flex items-center" variant="outline">
           Manage
+          <GearIcon className="ml-2 w-5 h-5" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -51,7 +51,7 @@ export const FormsTable = async () => {
       </Table>
       <div className="flex mt-4">
         <Link href="/new">
-          <Button>Add new</Button>
+          <Button variant={"brand"}>Add new</Button>
         </Link>
       </div>
     </div>

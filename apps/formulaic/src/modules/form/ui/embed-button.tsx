@@ -1,14 +1,14 @@
 "use client";
 
+import { Share1Icon } from "@radix-ui/react-icons";
+import { getForm } from "../../../../app/form/[id]/page";
+import { env } from "../../../../env.mjs";
 import { Button } from "../../../@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "../../../@/components/ui/popover";
-import { CopyIcon } from "@radix-ui/react-icons";
-import { getForm } from "../../../../app/form/[id]/page";
-import { env } from "../../../../env.mjs";
 
 const EmbedSnippet = ({ formId }: { formId: string }) => {
   const snippetText = `
@@ -17,7 +17,7 @@ const EmbedSnippet = ({ formId }: { formId: string }) => {
 
   return (
     <div className="flex flex-col">
-      <ol className="my-4 flex flex-col gap-4">
+      <ol className="my-2 flex flex-col gap-4">
         <li>
           <p>
             <b>1.</b> Copy the snippet below
@@ -44,9 +44,9 @@ export const EmbedButton = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">
-          <CopyIcon className="mr-2" />
-          Embed
+        <Button variant="brand">
+          Share
+          <Share1Icon className="ml-2" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">

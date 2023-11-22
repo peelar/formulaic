@@ -20,7 +20,7 @@ const NewFormPage = async () => {
         <div className="mt-24">
           <h3>
             Create your{" "}
-            <span className="underline decoration-violet-600 decoration-4">
+            <span className="underline decoration-brand decoration-4">
               Formulaic
             </span>{" "}
             form
