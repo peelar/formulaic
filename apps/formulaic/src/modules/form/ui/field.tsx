@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Input } from "../../../@/components/ui/input";
-import { Label } from "../../../@/components/ui/label";
 import {
   NumberFieldProps,
   TextFieldProps,
@@ -10,36 +9,11 @@ import {
   FieldProps,
   typeGuards,
   EnumFieldProps,
+  FieldType,
 } from "../fields-schema";
 import { BadgeListForm } from "../../../ui/badge-list-form";
 import { BadgeListItem } from "../../../ui/badge-list";
-
-const EditableFieldWrapper = ({ children }: { children: React.ReactNode }) => {
-  return <fieldset className="flex flex-col gap-6">{children}</fieldset>;
-};
-
-const LabeledNameInput = ({
-  value,
-  onChange,
-  placeholder,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
-}) => {
-  return (
-    <Label>
-      Name
-      <Input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        type="text"
-        name="name"
-        placeholder={placeholder}
-      />
-    </Label>
-  );
-};
+import { FieldPrimitive } from "./field-primitive";
 
 const NumberField = ({
   field,
@@ -49,14 +23,13 @@ const NumberField = ({
   updateField: (field: NumberFieldProps) => void;
 }) => {
   return (
-    <EditableFieldWrapper>
-      <LabeledNameInput
+    <FieldPrimitive.FieldWrapper>
+      <FieldPrimitive.LabeledNameInput
         value={field.name}
         onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="Age"
+        placeholder="How many friends are you bringing?"
       />
-      <Label>
-        Minimum value
+      <FieldPrimitive.Label label="Minimum value">
         <Input
           value={field.rules?.minimum ?? 0}
           onChange={(e) =>
@@ -69,9 +42,8 @@ const NumberField = ({
           name="minimum"
           placeholder="0"
         />
-      </Label>
-      <Label>
-        Maximum value
+      </FieldPrimitive.Label>
+      <FieldPrimitive.Label label="Maximum value">
         <Input
           value={field.rules?.maximum ?? 100}
           onChange={(e) =>
@@ -84,8 +56,8 @@ const NumberField = ({
           name="maximum"
           placeholder="100"
         />
-      </Label>
-    </EditableFieldWrapper>
+      </FieldPrimitive.Label>
+    </FieldPrimitive.FieldWrapper>
   );
 };
 
@@ -97,14 +69,13 @@ const TextField = ({
   updateField: (field: TextFieldProps) => void;
 }) => {
   return (
-    <EditableFieldWrapper>
-      <LabeledNameInput
+    <FieldPrimitive.FieldWrapper>
+      <FieldPrimitive.LabeledNameInput
         value={field.name}
         onChange={(value) => updateField({ ...field, name: value })}
         placeholder="Event name"
       />
-      <Label>
-        Minimum length
+      <FieldPrimitive.Label label="Minimum length">
         <Input
           value={field.rules?.minLength ?? 0}
           onChange={(e) =>
@@ -117,9 +88,8 @@ const TextField = ({
           name="minLength"
           placeholder="0"
         />
-      </Label>
-      <Label>
-        Maximum length
+      </FieldPrimitive.Label>
+      <FieldPrimitive.Label label="Maximum length">
         <Input
           value={field.rules?.maxLength ?? 100}
           onChange={(e) =>
@@ -132,8 +102,8 @@ const TextField = ({
           name="maxLength"
           placeholder="0"
         />
-      </Label>
-    </EditableFieldWrapper>
+      </FieldPrimitive.Label>
+    </FieldPrimitive.FieldWrapper>
   );
 };
 
@@ -145,13 +115,13 @@ const EmailField = ({
   updateField: (field: EmailFieldProps) => void;
 }) => {
   return (
-    <EditableFieldWrapper>
-      <LabeledNameInput
+    <FieldPrimitive.FieldWrapper>
+      <FieldPrimitive.LabeledNameInput
         value={field.name}
         onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="Participant email"
+        placeholder="Guest email"
       />
-    </EditableFieldWrapper>
+    </FieldPrimitive.FieldWrapper>
   );
 };
 
@@ -163,13 +133,13 @@ const BooleanField = ({
   updateField: (field: FieldProps) => void;
 }) => {
   return (
-    <EditableFieldWrapper>
-      <LabeledNameInput
+    <FieldPrimitive.FieldWrapper>
+      <FieldPrimitive.LabeledNameInput
         value={field.name}
         onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="Do you accept the terms?"
+        placeholder="Are you gonna have fun?"
       />
-    </EditableFieldWrapper>
+    </FieldPrimitive.FieldWrapper>
   );
 };
 
@@ -181,13 +151,13 @@ const DateField = ({
   updateField: (field: FieldProps) => void;
 }) => {
   return (
-    <EditableFieldWrapper>
-      <LabeledNameInput
+    <FieldPrimitive.FieldWrapper>
+      <FieldPrimitive.LabeledNameInput
         value={field.name}
         onChange={(value) => updateField({ ...field, name: value })}
         placeholder="Event date"
       />
-    </EditableFieldWrapper>
+    </FieldPrimitive.FieldWrapper>
   );
 };
 
@@ -208,14 +178,16 @@ const EnumField = ({
   const options = enumField.options ?? [];
 
   return (
-    <EditableFieldWrapper>
-      <LabeledNameInput
+    <FieldPrimitive.FieldWrapper>
+      <FieldPrimitive.LabeledNameInput
         value={field.name}
         onChange={(value) => updateField({ ...field, name: value })}
         placeholder="What pizza do you want?"
       />
-      <Label>
-        Options
+      <FieldPrimitive.Label
+        label="Options"
+        helperText="Add options users can choose from"
+      >
         <BadgeListForm
           inputPlaceholder="Pepperoni"
           inputValue={inputValue}
@@ -242,8 +214,8 @@ const EnumField = ({
             </BadgeListItem>
           ))}
         </BadgeListForm>
-      </Label>
-    </EditableFieldWrapper>
+      </FieldPrimitive.Label>
+    </FieldPrimitive.FieldWrapper>
   );
 };
 
