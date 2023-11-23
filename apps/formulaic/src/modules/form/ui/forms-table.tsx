@@ -36,9 +36,7 @@ export const FormsTable = async () => {
               <TableCell className="font-bold">
                 <Link href={`/form/${form.id}`}>{form.name}</Link>
               </TableCell>
-              {/* <TableCell>
-                <UrlBadges urls={form.domainAllowList} />
-              </TableCell> */}
+
               <TableCell>{form.schema?._count.submissions}</TableCell>
               <TableCell>{date.toLongDate(form.createdAt)}</TableCell>
               <TableCell>

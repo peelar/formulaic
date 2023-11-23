@@ -1,5 +1,5 @@
 "use client";
-import { GearIcon, PlusIcon } from "@radix-ui/react-icons";
+import { GearIcon } from "@radix-ui/react-icons";
 import { Button } from "../../../@/components/ui/button";
 import {
   Dialog,
@@ -9,10 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../../@/components/ui/dialog";
-import { Input } from "../../../@/components/ui/input";
-import { UrlBadges } from "../../../ui/url-badges";
-import { Separator } from "../../../@/components/ui/separator";
+import { BadgeListForm } from "../../../ui/badge-list-form";
 import { UseAllowedUrlsValues } from "./form-creator";
+import { UrlBadge } from "./url-badge";
 
 export const AllowedUrlsDialog = ({
   urls,
@@ -21,6 +20,8 @@ export const AllowedUrlsDialog = ({
   urlValue,
   setUrlValue,
 }: UseAllowedUrlsValues) => {
+  const urlsWithoutHttps = urls.map((url) => url.replace(/https?:\/\//, ""));
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -37,23 +38,16 @@ export const AllowedUrlsDialog = ({
             will prevent others from embedding your form on their website.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
-            <Input
-              value={urlValue}
-              onChange={(e) => setUrlValue(e.target.value)}
-              type="text"
-              name="domain"
-              placeholder="https://example.com"
-              className="w-3/5"
-            />
-            <Button type="button" size="icon" onClick={addUrl}>
-              <PlusIcon />
-            </Button>
-          </div>
-          <Separator orientation="horizontal" className="my-2" />
-          <UrlBadges urls={urls} onDeleteClick={deleteUrl} />
-        </div>
+        <BadgeListForm
+          inputPlaceholder="https://www.example.com"
+          addBadge={addUrl}
+          inputValue={urlValue}
+          setInputValue={setUrlValue}
+        >
+          {urlsWithoutHttps.map((url) => (
+            <UrlBadge onDeleteClick={(url) => deleteUrl(url)} url={url} />
+          ))}
+        </BadgeListForm>
       </DialogContent>
     </Dialog>
   );

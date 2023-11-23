@@ -8,6 +8,7 @@ const fieldTypeLabelMap: Record<FieldType, string> = {
   number: "num",
   boolean: "bool",
   date: "date",
+  enum: "select",
 };
 
 export const FieldPill = ({ field }: { field: FieldProps }) => {

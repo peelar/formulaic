@@ -1,6 +1,6 @@
 import { RJSFSchema } from "@rjsf/utils";
 import {
-  EmailFieldProps,
+  EnumFieldProps,
   FieldProps,
   NumberFieldProps,
   TextFieldProps,
@@ -45,6 +45,12 @@ const jsonSchemaFieldFactory = {
   date: (): RJSFSchema => {
     return { type: "string", format: "date" };
   },
+  enum: (props: EnumFieldProps): RJSFSchema => {
+    return {
+      type: "string",
+      enum: props.options,
+    };
+  },
 };
 
 function createPropertiesFromFields(fields: FieldProps[]) {
@@ -88,6 +94,13 @@ function createPropertiesFromFields(fields: FieldProps[]) {
         return {
           ...prev,
           [next.name]: jsonSchemaFieldFactory.date(),
+        };
+      }
+
+      if (typeGuards.isFieldTypeEnum(type)) {
+        return {
+          ...prev,
+          [next.name]: jsonSchemaFieldFactory.enum(next as EnumFieldProps),
         };
       }
 

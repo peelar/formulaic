@@ -50,12 +50,22 @@ const dateFieldSchema = baseFieldSchema.and(
   })
 );
 
+const enumFieldSchema = baseFieldSchema.and(
+  z.object({
+    type: z.literal("enum"),
+    options: z.array(z.string()),
+  })
+);
+
+export type EnumFieldProps = z.infer<typeof enumFieldSchema>;
+
 export const fieldSchema = z.union([
   textFieldSchema,
   emailFieldSchema,
   numberFieldSchema,
   booleanFieldSchema,
   dateFieldSchema,
+  enumFieldSchema,
 ]);
 
 export type FieldProps = z.infer<typeof fieldSchema>;
@@ -77,5 +87,8 @@ export const typeGuards = {
   },
   isFieldTypeDate(type: FieldType): type is "date" {
     return type === "date";
+  },
+  isFieldTypeEnum(type: FieldType): type is "enum" {
+    return type === "enum";
   },
 };

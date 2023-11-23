@@ -61,6 +61,14 @@ export const EditFieldSidebar = ({
         type,
       });
     }
+
+    if (typeGuards.isFieldTypeEnum(type)) {
+      updateField({
+        ...field,
+        type,
+        options: [],
+      });
+    }
   }
 
   return (

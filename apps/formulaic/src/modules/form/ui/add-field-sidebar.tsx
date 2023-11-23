@@ -80,6 +80,14 @@ export const AddFieldSidebar = () => {
         type,
       });
     }
+
+    if (typeGuards.isFieldTypeEnum(type)) {
+      setNewField({
+        ...newField,
+        type,
+        options: [],
+      });
+    }
   }
 
   function handleFormSubmit() {

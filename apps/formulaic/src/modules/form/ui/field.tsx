@@ -8,10 +8,37 @@ import {
   TextFieldProps,
   EmailFieldProps,
   FieldProps,
+  typeGuards,
+  EnumFieldProps,
 } from "../fields-schema";
+import { BadgeListForm } from "../../../ui/badge-list-form";
+import { BadgeListItem } from "../../../ui/badge-list";
 
 const EditableFieldWrapper = ({ children }: { children: React.ReactNode }) => {
   return <fieldset className="flex flex-col gap-6">{children}</fieldset>;
+};
+
+const LabeledNameInput = ({
+  value,
+  onChange,
+  placeholder,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}) => {
+  return (
+    <Label>
+      Name
+      <Input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        type="text"
+        name="name"
+        placeholder={placeholder}
+      />
+    </Label>
+  );
 };
 
 const NumberField = ({
@@ -23,16 +50,11 @@ const NumberField = ({
 }) => {
   return (
     <EditableFieldWrapper>
-      <Label>
-        Name
-        <Input
-          value={field.name}
-          onChange={(e) => updateField({ ...field, name: e.target.value })}
-          type="text"
-          name="name"
-          placeholder="Event name"
-        />
-      </Label>
+      <LabeledNameInput
+        value={field.name}
+        onChange={(value) => updateField({ ...field, name: value })}
+        placeholder="Age"
+      />
       <Label>
         Minimum value
         <Input
@@ -76,16 +98,11 @@ const TextField = ({
 }) => {
   return (
     <EditableFieldWrapper>
-      <Label>
-        Name
-        <Input
-          value={field.name}
-          onChange={(e) => updateField({ ...field, name: e.target.value })}
-          type="text"
-          name="name"
-          placeholder="Event name"
-        />
-      </Label>
+      <LabeledNameInput
+        value={field.name}
+        onChange={(value) => updateField({ ...field, name: value })}
+        placeholder="Event name"
+      />
       <Label>
         Minimum length
         <Input
@@ -129,16 +146,11 @@ const EmailField = ({
 }) => {
   return (
     <EditableFieldWrapper>
-      <Label>
-        Name
-        <Input
-          value={field.name}
-          onChange={(e) => updateField({ ...field, name: e.target.value })}
-          type="text"
-          name="name"
-          placeholder="Participant e-mail"
-        />
-      </Label>
+      <LabeledNameInput
+        value={field.name}
+        onChange={(value) => updateField({ ...field, name: value })}
+        placeholder="Participant email"
+      />
     </EditableFieldWrapper>
   );
 };
@@ -152,16 +164,11 @@ const BooleanField = ({
 }) => {
   return (
     <EditableFieldWrapper>
-      <Label>
-        Name
-        <Input
-          value={field.name}
-          onChange={(e) => updateField({ ...field, name: e.target.value })}
-          type="text"
-          name="name"
-          placeholder="Do you accept the terms?"
-        />
-      </Label>
+      <LabeledNameInput
+        value={field.name}
+        onChange={(value) => updateField({ ...field, name: value })}
+        placeholder="Do you accept the terms?"
+      />
     </EditableFieldWrapper>
   );
 };
@@ -175,15 +182,66 @@ const DateField = ({
 }) => {
   return (
     <EditableFieldWrapper>
+      <LabeledNameInput
+        value={field.name}
+        onChange={(value) => updateField({ ...field, name: value })}
+        placeholder="Event date"
+      />
+    </EditableFieldWrapper>
+  );
+};
+
+const EnumField = ({
+  field,
+  updateField,
+}: {
+  field: FieldProps;
+  updateField: (field: FieldProps) => void;
+}) => {
+  const [inputValue, setInputValue] = React.useState("");
+
+  if (!typeGuards.isFieldTypeEnum(field.type)) {
+    throw new Error("Invalid field type");
+  }
+
+  const enumField = field as EnumFieldProps;
+  const options = enumField.options ?? [];
+
+  return (
+    <EditableFieldWrapper>
+      <LabeledNameInput
+        value={field.name}
+        onChange={(value) => updateField({ ...field, name: value })}
+        placeholder="What pizza do you want?"
+      />
       <Label>
-        Name
-        <Input
-          value={field.name}
-          onChange={(e) => updateField({ ...field, name: e.target.value })}
-          type="text"
-          name="name"
-          placeholder="Event date"
-        />
+        Options
+        <BadgeListForm
+          inputPlaceholder="Pepperoni"
+          inputValue={inputValue}
+          setInputValue={(value) => setInputValue(value)}
+          addBadge={() => {
+            updateField({
+              ...enumField,
+              options: [...options, inputValue],
+            });
+            setInputValue("");
+          }}
+        >
+          {options.map((option) => (
+            <BadgeListItem
+              key={option}
+              onDeleteClick={() =>
+                updateField({
+                  ...enumField,
+                  options: options.filter((o) => o !== option),
+                })
+              }
+            >
+              {option}
+            </BadgeListItem>
+          ))}
+        </BadgeListForm>
       </Label>
     </EditableFieldWrapper>
   );
@@ -207,6 +265,8 @@ export const Field = ({
       return <BooleanField field={field} updateField={updateField} />;
     case "date":
       return <DateField field={field} updateField={updateField} />;
+    case "enum":
+      return <EnumField field={field} updateField={updateField} />;
     default:
       const _exhaustiveCheck: never = field;
   }

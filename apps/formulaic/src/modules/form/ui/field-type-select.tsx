@@ -17,7 +17,9 @@ const optionsRecord: Record<FieldType, string> = {
   email: "Email",
   boolean: "Checkbox",
   date: "Date",
+  enum: "Select",
 };
+
 const options: { id: FieldType; name: string }[] = Object.entries(
   optionsRecord
 ).map(([id, name]) => ({ id: id as FieldType, name }));
