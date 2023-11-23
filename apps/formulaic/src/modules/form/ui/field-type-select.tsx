@@ -20,6 +20,16 @@ const optionsRecord: Record<FieldType, string> = {
   enum: "Select",
 };
 
+const descriptionRecord: Record<FieldType, string> = {
+  text: "Use it for short, freeform text input, like names or titles.",
+  number: "Ideal for numeric values, such as quantities or ratings.",
+  email: "Just a good ol' email",
+  boolean: "A binary field for true/false options, often as a checkbox.",
+  date: "Used for selecting dates, perfect for scheduling.",
+
+  enum: "Allows choosing one option from a predefined list.",
+};
+
 const options: { id: FieldType; name: string }[] = Object.entries(
   optionsRecord
 ).map(([id, name]) => ({ id: id as FieldType, name }));
@@ -51,6 +61,11 @@ export const FieldTypeSelect = ({
           </SelectGroup>
         </SelectContent>
       </Select>
+      {type && (
+        <span className="text-xs text-stone-400 mt-1">
+          {descriptionRecord[type]}
+        </span>
+      )}
     </Label>
   );
 };

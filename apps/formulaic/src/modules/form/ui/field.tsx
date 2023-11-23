@@ -2,17 +2,16 @@
 
 import React from "react";
 import { Input } from "../../../@/components/ui/input";
+import { BadgeListItem } from "../../../ui/badge-list";
+import { BadgeListForm } from "../../../ui/badge-list-form";
 import {
+  EmailFieldProps,
+  EnumFieldProps,
+  FieldProps,
   NumberFieldProps,
   TextFieldProps,
-  EmailFieldProps,
-  FieldProps,
   typeGuards,
-  EnumFieldProps,
-  FieldType,
 } from "../fields-schema";
-import { BadgeListForm } from "../../../ui/badge-list-form";
-import { BadgeListItem } from "../../../ui/badge-list";
 import { FieldPrimitive } from "./field-primitive";
 
 const NumberField = ({

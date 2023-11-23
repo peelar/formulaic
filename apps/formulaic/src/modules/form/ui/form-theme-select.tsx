@@ -23,7 +23,7 @@ const options = Object.entries(Theme).map(([key, value]) => ({
 
 export const FormThemeSelect = ({ defaultValue }: { defaultValue?: Theme }) => {
   return (
-    <Select defaultValue={defaultValue} name="theme">
+    <Select required defaultValue={defaultValue} name="theme">
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select theme" />
       </SelectTrigger>

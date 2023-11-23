@@ -38,13 +38,17 @@ export const FieldForm = ({
   changeType: (type: FieldType) => void;
 }) => {
   return (
-    <form className="flex flex-col gap-4 items-start pt-4">
-      <FieldTypeSelect type={field.type} onTypeChange={changeType} />
+    <form className="pt-4">
+      <div className="flex flex-col gap-4 items-start w-4/5">
+        <FieldTypeSelect type={field.type} onTypeChange={changeType} />
+      </div>
       {field.type && (
         <>
-          <Separator orientation="horizontal" />
-          <Field field={field} updateField={updateField} />
-          <FieldRequiredCheckbox field={field} updateField={updateField} />
+          <Separator className="my-4" orientation="horizontal" />
+          <div className="flex flex-col gap-4 items-start w-4/5">
+            <Field field={field} updateField={updateField} />
+            <FieldRequiredCheckbox field={field} updateField={updateField} />
+          </div>
         </>
       )}
     </form>

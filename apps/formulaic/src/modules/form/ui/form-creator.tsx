@@ -66,8 +66,8 @@ export const FormCreator = ({
   });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    setIsPending(true);
     e.preventDefault();
+    setIsPending(true);
 
     const form = new FormData(e.currentTarget);
 
@@ -98,6 +98,7 @@ export const FormCreator = ({
               type="text"
               name="name"
               placeholder="Invitation form"
+              required
             />
           </Label>
           <SchemaBuilder />
@@ -114,7 +115,7 @@ export const FormCreator = ({
           </Label>
           <Label>
             Theme
-            <FormThemeSelect defaultValue={defaultValues?.theme} />
+            <FormThemeSelect defaultValue={defaultValues?.theme ?? "MUI"} />
           </Label>
         </fieldset>
         <div className="mt-4">
