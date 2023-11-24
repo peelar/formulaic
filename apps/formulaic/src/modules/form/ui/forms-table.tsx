@@ -19,12 +19,11 @@ export const FormsTable = async () => {
 
   return (
     <div className="my-6 w-full max-w-2xl">
-      <h3 className="mb-2">Forms table</h3>
+      <h3 className="mb-2">Your forms</h3>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            {/* <TableHead>Allowed URLs</TableHead> */}
             <TableHead>Submissions</TableHead>
             <TableHead>Created at</TableHead>
             <TableHead>Actions</TableHead>

@@ -41,7 +41,7 @@ model Schema {
   id          String       @id @default(cuid())
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  content     Json         @db.JsonB
+  content     Json         @db.Json
   form        Form?        @relation(fields: [formId], references: [id], onDelete: Cascade)
   formId      String       @unique
   submissions Submission[]

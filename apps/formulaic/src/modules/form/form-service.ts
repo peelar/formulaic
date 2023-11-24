@@ -48,7 +48,7 @@ export class FormService {
       throw new NotFoundError("Form not found");
     }
 
-    this.logger.info({ form }, "Returning form");
+    this.logger.info({ id: form.id }, "Returning form");
     return form;
   }
 
@@ -66,7 +66,7 @@ export class FormService {
 
     const form = await this.repository.create({ input, userId: this.user.id });
 
-    this.logger.info(form.name, "Returning form: ");
+    this.logger.info({ name: form.name }, "Returning form: ");
     return form;
   }
 
@@ -79,8 +79,6 @@ export class FormService {
   }
 
   async updateById({ id }: { id: string }, body: unknown) {
-    this.logger.debug({ id }, "Updating form by id");
-
     const parsed = FormInput.schema.safeParse(body);
 
     if (!parsed.success) {
@@ -89,6 +87,8 @@ export class FormService {
     }
 
     const input = parsed.data;
+
+    this.logger.debug({ input }, "Updating form with input");
 
     const form = await this.repository.updateById(
       { id, userId: this.user.id },
