@@ -45,7 +45,11 @@ export const AllowedUrlsDialog = ({
           setInputValue={setUrlValue}
         >
           {urlsWithoutHttps.map((url) => (
-            <UrlBadge onDeleteClick={(url) => deleteUrl(url)} url={url} />
+            <UrlBadge
+              key={url}
+              onDeleteClick={(url) => deleteUrl(url)}
+              url={url}
+            />
           ))}
         </BadgeListForm>
       </DialogContent>

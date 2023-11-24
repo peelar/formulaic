@@ -29,7 +29,6 @@ export const EditFieldSidebar = ({
       updateField({
         ...field,
         type,
-        rules: { minLength: 0, maxLength: 0 },
       });
     }
 

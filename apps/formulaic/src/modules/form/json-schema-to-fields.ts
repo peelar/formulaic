@@ -1,40 +1,46 @@
 import { z } from "zod";
-import { FieldProps, fieldSchema } from "./fields-schema";
+import {
+  BaseFieldProps,
+  BooleanFieldProps,
+  DateFieldProps,
+  EmailFieldProps,
+  FieldProps,
+  NumberFieldProps,
+  TextFieldProps,
+  fieldSchema,
+} from "./fields-schema";
 import { generateId } from "../../lib/id";
 import { JsonProperty } from "./json-properties.schema";
 
+const mapBaseProperty = (property: JsonProperty.Base): BaseFieldProps => {
+  return {
+    id: generateId(),
+    required: false,
+    title: property.title,
+    description: property.description,
+  };
+};
+
 const maps = {
-  mapStringPropertyToField: (
-    name: string,
-    property: JsonProperty.String
-  ): FieldProps => {
+  mapStringPropertyToField: (property: JsonProperty.String): TextFieldProps => {
     return {
-      id: generateId(),
-      name,
-      required: false,
+      ...mapBaseProperty(property),
       type: "text",
-      rules: {
-        minLength: property.minLength ?? 0,
-        maxLength: property.maxLength ?? 0,
-      },
     };
   },
-  mapEmailPropertyToField: (name: string): FieldProps => {
+  mapEmailPropertyToField: (property: JsonProperty.Email): EmailFieldProps => {
     return {
-      id: generateId(),
-      name,
-      required: false,
+      ...mapBaseProperty(property),
       type: "email",
+      title: property.title,
+      description: property.description,
     };
   },
   mapNumberPropertyToField: (
-    name: string,
     property: JsonProperty.Number
-  ): FieldProps => {
+  ): NumberFieldProps => {
     return {
-      id: generateId(),
-      name,
-      required: false,
+      ...mapBaseProperty(property),
       type: "number",
       rules: {
         minimum: property.minimum ?? 0,
@@ -42,49 +48,59 @@ const maps = {
       },
     };
   },
-  mapBooleanPropertyToField: (name: string): FieldProps => {
+  mapBooleanPropertyToField: (
+    property: JsonProperty.Boolean
+  ): BooleanFieldProps => {
     return {
-      id: generateId(),
-      name,
-      required: false,
+      ...mapBaseProperty(property),
       type: "boolean",
     };
   },
-  mapDatePropertyToField: (name: string): FieldProps => {
+  mapDatePropertyToField: (property: JsonProperty.Date): DateFieldProps => {
     return {
-      id: generateId(),
-      name,
-      required: false,
+      ...mapBaseProperty(property),
       type: "date",
+    };
+  },
+  mapEnumPropertyToField: (property: JsonProperty.Enum): FieldProps => {
+    return {
+      ...mapBaseProperty(property),
+      type: "enum",
+      options: property.enum,
     };
   },
 };
 
-function mapObjectToField(name: string, input: unknown): FieldProps {
+function mapObjectToField(input: unknown): FieldProps {
   const stringPropertyParseResult = JsonProperty.stringSchema.safeParse(input);
   if (stringPropertyParseResult.success) {
-    return maps.mapStringPropertyToField(name, stringPropertyParseResult.data);
+    return maps.mapStringPropertyToField(stringPropertyParseResult.data);
   }
 
   const emailPropertyParseResult = JsonProperty.emailSchema.safeParse(input);
   if (emailPropertyParseResult.success) {
-    return maps.mapEmailPropertyToField(name);
+    return maps.mapEmailPropertyToField(emailPropertyParseResult.data);
   }
 
   const numberPropertyParseResult = JsonProperty.numberSchema.safeParse(input);
   if (numberPropertyParseResult.success) {
-    return maps.mapNumberPropertyToField(name, numberPropertyParseResult.data);
+    return maps.mapNumberPropertyToField(numberPropertyParseResult.data);
   }
 
   const booleanPropertyParseResult =
     JsonProperty.booleanSchema.safeParse(input);
   if (booleanPropertyParseResult.success) {
-    return maps.mapBooleanPropertyToField(name);
+    return maps.mapBooleanPropertyToField(booleanPropertyParseResult.data);
   }
 
   const datePropertyParseResult = JsonProperty.dateSchema.safeParse(input);
   if (datePropertyParseResult.success) {
-    return maps.mapDatePropertyToField(name);
+    return maps.mapDatePropertyToField(datePropertyParseResult.data);
+  }
+
+  const enumPropertyParseResult = JsonProperty.enumSchema.safeParse(input);
+  if (enumPropertyParseResult.success) {
+    return maps.mapEnumPropertyToField(enumPropertyParseResult.data);
   }
 
   throw new Error("Unsupported property type");
@@ -95,7 +111,7 @@ function overwriteFieldsWithRequired(
   requiredFields: string[]
 ): FieldProps[] {
   const updatedFields = fields.map((field) => {
-    if (requiredFields.includes(field.name)) {
+    if (requiredFields.includes(field.title)) {
       return {
         ...field,
         required: true,
@@ -121,7 +137,7 @@ export function buildFieldsFromJsonSchema(
 
   const fields = Object.entries(jsonSchema.properties).map(
     ([name, rawProperty]) => {
-      const field = mapObjectToField(name, rawProperty);
+      const field = mapObjectToField(rawProperty);
 
       return field;
     }

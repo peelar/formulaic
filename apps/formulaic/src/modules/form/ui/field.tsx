@@ -12,6 +12,7 @@ import {
   TextFieldProps,
   typeGuards,
 } from "../fields-schema";
+import { CommonFieldsWrapper } from "./field-common";
 import { FieldPrimitive } from "./field-primitive";
 
 const NumberField = ({
@@ -22,12 +23,12 @@ const NumberField = ({
   updateField: (field: NumberFieldProps) => void;
 }) => {
   return (
-    <FieldPrimitive.FieldWrapper>
-      <FieldPrimitive.LabeledNameInput
-        value={field.name}
-        onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="How many friends are you bringing?"
-      />
+    <CommonFieldsWrapper
+      field={field}
+      updateField={updateField}
+      titlePlaceholder="How many pizzas do you want?"
+      descriptionPlaceholder="How many pizzas should we bake? Don't be shy!"
+    >
       <FieldPrimitive.Label label="Minimum value">
         <Input
           value={field.rules?.minimum ?? 0}
@@ -56,7 +57,7 @@ const NumberField = ({
           placeholder="100"
         />
       </FieldPrimitive.Label>
-    </FieldPrimitive.FieldWrapper>
+    </CommonFieldsWrapper>
   );
 };
 
@@ -68,41 +69,12 @@ const TextField = ({
   updateField: (field: TextFieldProps) => void;
 }) => {
   return (
-    <FieldPrimitive.FieldWrapper>
-      <FieldPrimitive.LabeledNameInput
-        value={field.name}
-        onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="Event name"
-      />
-      <FieldPrimitive.Label label="Minimum length">
-        <Input
-          value={field.rules?.minLength ?? 0}
-          onChange={(e) =>
-            updateField({
-              ...field,
-              rules: { ...field.rules, minLength: Number(e.target.value) },
-            })
-          }
-          type="number"
-          name="minLength"
-          placeholder="0"
-        />
-      </FieldPrimitive.Label>
-      <FieldPrimitive.Label label="Maximum length">
-        <Input
-          value={field.rules?.maxLength ?? 100}
-          onChange={(e) =>
-            updateField({
-              ...field,
-              rules: { ...field.rules, maxLength: Number(e.target.value) },
-            })
-          }
-          type="number"
-          name="maxLength"
-          placeholder="0"
-        />
-      </FieldPrimitive.Label>
-    </FieldPrimitive.FieldWrapper>
+    <CommonFieldsWrapper
+      field={field}
+      updateField={updateField}
+      titlePlaceholder="Guest name"
+      descriptionPlaceholder="Who's joining the pizza party? Enter names here!"
+    />
   );
 };
 
@@ -114,13 +86,12 @@ const EmailField = ({
   updateField: (field: EmailFieldProps) => void;
 }) => {
   return (
-    <FieldPrimitive.FieldWrapper>
-      <FieldPrimitive.LabeledNameInput
-        value={field.name}
-        onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="Guest email"
-      />
-    </FieldPrimitive.FieldWrapper>
+    <CommonFieldsWrapper
+      field={field}
+      updateField={updateField}
+      titlePlaceholder="Guest email"
+      descriptionPlaceholder="Where should we send your invitation?"
+    />
   );
 };
 
@@ -132,13 +103,12 @@ const BooleanField = ({
   updateField: (field: FieldProps) => void;
 }) => {
   return (
-    <FieldPrimitive.FieldWrapper>
-      <FieldPrimitive.LabeledNameInput
-        value={field.name}
-        onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="Are you gonna have fun?"
-      />
-    </FieldPrimitive.FieldWrapper>
+    <CommonFieldsWrapper
+      field={field}
+      updateField={updateField}
+      titlePlaceholder="Veggie pizza?"
+      descriptionPlaceholder="You won't be ostracized! We love all pizza!"
+    />
   );
 };
 
@@ -150,13 +120,12 @@ const DateField = ({
   updateField: (field: FieldProps) => void;
 }) => {
   return (
-    <FieldPrimitive.FieldWrapper>
-      <FieldPrimitive.LabeledNameInput
-        value={field.name}
-        onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="Event date"
-      />
-    </FieldPrimitive.FieldWrapper>
+    <CommonFieldsWrapper
+      field={field}
+      updateField={updateField}
+      titlePlaceholder="Pizza party date"
+      descriptionPlaceholder="When's the pizza fiesta?"
+    />
   );
 };
 
@@ -177,16 +146,13 @@ const EnumField = ({
   const options = enumField.options ?? [];
 
   return (
-    <FieldPrimitive.FieldWrapper>
-      <FieldPrimitive.LabeledNameInput
-        value={field.name}
-        onChange={(value) => updateField({ ...field, name: value })}
-        placeholder="What pizza do you want?"
-      />
-      <FieldPrimitive.Label
-        label="Options"
-        helperText="Add options users can choose from"
-      >
+    <CommonFieldsWrapper
+      field={field}
+      updateField={updateField}
+      titlePlaceholder="What pizza flavors do you want?"
+      descriptionPlaceholder="Select from a list of our delicious toppings!"
+    >
+      <FieldPrimitive.Label label="Options">
         <BadgeListForm
           inputPlaceholder="Pepperoni"
           inputValue={inputValue}
@@ -214,7 +180,7 @@ const EnumField = ({
           ))}
         </BadgeListForm>
       </FieldPrimitive.Label>
-    </FieldPrimitive.FieldWrapper>
+    </CommonFieldsWrapper>
   );
 };
 

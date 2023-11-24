@@ -26,7 +26,7 @@ const NewFormPage = async () => {
             form
           </h3>
           <FormProvider>
-            <FormCreator buttonText="Create" onHandleSubmit={createForm} />
+            <FormCreator buttonText="Submit" onHandleSubmit={createForm} />
           </FormProvider>
         </div>
       </Section>

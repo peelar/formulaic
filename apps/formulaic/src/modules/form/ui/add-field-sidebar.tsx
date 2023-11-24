@@ -20,13 +20,10 @@ import { FieldProps, FieldType, typeGuards } from "../fields-schema";
 function generateDefaultField(): FieldProps {
   return {
     id: generateId(),
-    name: "",
     type: "text",
     required: false,
-    rules: {
-      minLength: 0,
-      maxLength: 0,
-    },
+    title: "",
+    description: "",
   };
 }
 
@@ -45,10 +42,6 @@ export const AddFieldSidebar = () => {
       setNewField({
         ...newField,
         type,
-        rules: {
-          minLength: 0,
-          maxLength: 0,
-        },
       });
     }
 

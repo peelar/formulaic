@@ -1,54 +1,62 @@
-import { RJSFSchema } from "@rjsf/utils";
+import { words } from "../../lib/words";
 import {
+  BooleanFieldProps,
+  DateFieldProps,
+  EmailFieldProps,
   EnumFieldProps,
   FieldProps,
   NumberFieldProps,
   TextFieldProps,
   typeGuards,
 } from "./fields-schema";
+import { JsonProperty } from "./json-properties.schema";
 
 const jsonSchemaFieldFactory = {
-  text: (props: TextFieldProps): RJSFSchema => {
+  text: (props: TextFieldProps): JsonProperty.String => {
     return {
       type: "string",
-      ...(props.rules && {
-        ...(props.rules.minLength && {
-          minLength: props.rules.minLength,
-        }),
-      }),
+      title: props.title,
+      description: props.description,
     };
   },
-  email: (): RJSFSchema => {
+  email: (props: EmailFieldProps): JsonProperty.Email => {
     return {
       type: "string",
       format: "email",
+      title: props.title,
+      description: props.description,
     };
   },
-  number: (props: NumberFieldProps): RJSFSchema => {
+  number: (props: NumberFieldProps): JsonProperty.Number => {
     return {
       type: "integer",
-      ...(props.rules && {
-        ...(props.rules.minimum && {
-          minimum: props.rules.minimum,
-        }),
-        ...(props.rules.maximum && {
-          maximum: props.rules.maximum,
-        }),
-      }),
+      title: props.title,
+      description: props.description,
+      minimum: props.rules.minimum,
+      maximum: props.rules.maximum,
     };
   },
-  boolean: (): RJSFSchema => {
+  boolean: (props: BooleanFieldProps): JsonProperty.Boolean => {
     return {
       type: "boolean",
+      title: props.title,
+      description: props.description,
     };
   },
-  date: (): RJSFSchema => {
-    return { type: "string", format: "date" };
+  date: (props: DateFieldProps): JsonProperty.Date => {
+    return {
+      type: "string",
+      format: "date",
+      title: props.title,
+      description: props.description,
+    };
   },
-  enum: (props: EnumFieldProps): RJSFSchema => {
+  enum: (props: EnumFieldProps): JsonProperty.Enum => {
     return {
       type: "string",
       enum: props.options,
+      title: props.title,
+      description: props.description,
     };
   },
 };
@@ -57,6 +65,7 @@ function createPropertiesFromFields(fields: FieldProps[]) {
   return fields.reduce(
     (prev, next) => {
       const type = next.type;
+      const fieldName = words.toSnakeCase(next.title);
 
       if (!type) {
         throw new Error("Field type is not defined");
@@ -65,42 +74,44 @@ function createPropertiesFromFields(fields: FieldProps[]) {
       if (typeGuards.isFieldTypeEmail(type)) {
         return {
           ...prev,
-          [next.name]: jsonSchemaFieldFactory.email(),
+          [fieldName]: jsonSchemaFieldFactory.email(next as EmailFieldProps),
         };
       }
 
       if (typeGuards.isFieldTypeNumber(type)) {
         return {
           ...prev,
-          [next.name]: jsonSchemaFieldFactory.number(next as NumberFieldProps),
+          [fieldName]: jsonSchemaFieldFactory.number(next as NumberFieldProps),
         };
       }
 
       if (typeGuards.isFieldTypeText(type)) {
         return {
           ...prev,
-          [next.name]: jsonSchemaFieldFactory.text(next as TextFieldProps),
+          [fieldName]: jsonSchemaFieldFactory.text(next as TextFieldProps),
         };
       }
 
       if (typeGuards.isFieldTypeBoolean(type)) {
         return {
           ...prev,
-          [next.name]: jsonSchemaFieldFactory.boolean(),
+          [fieldName]: jsonSchemaFieldFactory.boolean(
+            next as BooleanFieldProps
+          ),
         };
       }
 
       if (typeGuards.isFieldTypeDate(type)) {
         return {
           ...prev,
-          [next.name]: jsonSchemaFieldFactory.date(),
+          [fieldName]: jsonSchemaFieldFactory.date(next as DateFieldProps),
         };
       }
 
       if (typeGuards.isFieldTypeEnum(type)) {
         return {
           ...prev,
-          [next.name]: jsonSchemaFieldFactory.enum(next as EnumFieldProps),
+          [fieldName]: jsonSchemaFieldFactory.enum(next as EnumFieldProps),
         };
       }
 
@@ -115,7 +126,7 @@ function createRequiredFromFields(fields: FieldProps[]) {
 
   fields.forEach((field) => {
     if (field.required) {
-      required.add(field.name);
+      required.add(words.toSnakeCase(field.title));
     }
   });
 

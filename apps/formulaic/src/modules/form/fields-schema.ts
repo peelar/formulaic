@@ -1,18 +1,19 @@
 import { z } from "zod";
 
+// todo: add namespace
+
 const baseFieldSchema = z.object({
   id: z.string(),
-  name: z.string(),
   required: z.boolean(),
+  title: z.string().min(1),
+  description: z.string(),
 });
+
+export type BaseFieldProps = z.infer<typeof baseFieldSchema>;
 
 const textFieldSchema = baseFieldSchema.and(
   z.object({
     type: z.literal("text"),
-    rules: z.object({
-      minLength: z.number().default(0),
-      maxLength: z.number().default(100),
-    }),
   })
 );
 
@@ -44,11 +45,15 @@ const booleanFieldSchema = baseFieldSchema.and(
   })
 );
 
+export type BooleanFieldProps = z.infer<typeof booleanFieldSchema>;
+
 const dateFieldSchema = baseFieldSchema.and(
   z.object({
     type: z.literal("date"),
   })
 );
+
+export type DateFieldProps = z.infer<typeof dateFieldSchema>;
 
 const enumFieldSchema = baseFieldSchema.and(
   z.object({

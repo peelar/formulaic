@@ -16,7 +16,7 @@ export const FieldPill = ({ field }: { field: FieldProps }) => {
     <div className="flex gap-2 items-center">
       <div className="flex items-start gap-[2px] flex-col hover:underline">
         <span>
-          {field.name}
+          {field.title}
           {field.required && "*"}
         </span>{" "}
         <span className="text-stone-400 text-xs">
