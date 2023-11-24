@@ -1,19 +1,12 @@
 "use client";
-import React, { useContext } from "react";
+import { atom, useAtom } from "jotai";
+import React from "react";
 import { FieldProps } from "../../fields-schema";
 
-type SchemaContextType = [
-  FieldProps[],
-  React.Dispatch<React.SetStateAction<FieldProps[]>>,
-];
-
-export const SchemaContext = React.createContext<SchemaContextType>([
-  [],
-  () => {},
-]);
+export const fieldsAtom = atom<FieldProps[]>([]);
 
 export function useFormBuilder() {
-  const [fields, setFields] = useContext(SchemaContext);
+  const [fields, setFields] = useAtom(fieldsAtom);
 
   const moveField = React.useCallback(
     (dragIndex: number, hoverIndex: number) => {

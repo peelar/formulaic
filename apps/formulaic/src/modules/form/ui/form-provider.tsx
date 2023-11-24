@@ -1,7 +1,8 @@
 "use client";
+import { useSetAtom } from "jotai";
 import React from "react";
-import { SchemaContext } from "./hooks/useFormBuilder";
 import { FieldProps } from "../fields-schema";
+import { fieldsAtom } from "./hooks/useFormBuilder";
 
 export const FormProvider = ({
   children,
@@ -10,11 +11,13 @@ export const FormProvider = ({
   children: React.ReactNode;
   defaultValues?: FieldProps[];
 }) => {
-  const fieldsState = React.useState<FieldProps[]>(defaultValues);
+  const setFields = useSetAtom(fieldsAtom);
 
-  return (
-    <SchemaContext.Provider value={fieldsState}>
-      {children}
-    </SchemaContext.Provider>
-  );
+  React.useEffect(() => {
+    if (defaultValues) {
+      setFields(defaultValues);
+    }
+  }, [defaultValues, setFields]);
+
+  return <>{children}</>;
 };
