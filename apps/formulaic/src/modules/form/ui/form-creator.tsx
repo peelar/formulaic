@@ -13,6 +13,7 @@ import { SchemaBuilder } from "./schema-builder";
 import { Tooltip } from "../../../ui/tooltip";
 import { Count as UrlCount } from "../../../ui/count";
 import { cn } from "../../../@/lib/utils";
+import { useToast } from "../../../@/components/ui/use-toast";
 
 const useAllowedUrls = ({
   defaultValues = [],
@@ -47,6 +48,7 @@ export const FormCreator = ({
 }) => {
   const [isPending, setIsPending] = React.useState(false);
   const { fields } = useFormBuilder();
+  const { toast } = useToast();
 
   const allowedUrls = useAllowedUrls({
     defaultValues: defaultValues?.urls,
@@ -69,6 +71,12 @@ export const FormCreator = ({
     };
 
     await onHandleSubmit(input);
+
+    // todo: split up into update and create forms
+    // toast({
+    //   description: "Your form has been saved",
+    // });
+
     setIsPending(false);
   }
 
