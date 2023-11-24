@@ -27,3 +27,8 @@ export async function deleteForm(id: string) {
 
   revalidatePath("/");
 }
+
+export async function getForm(id: string) {
+  const formService = await getUserFormService();
+  return formService.getById({ id });
+}

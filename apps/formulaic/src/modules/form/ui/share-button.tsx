@@ -1,7 +1,6 @@
 "use client";
 
 import { Share1Icon } from "@radix-ui/react-icons";
-import { getForm } from "../../../../app/form/[id]/page";
 import { env } from "../../../../env.mjs";
 import { Button } from "../../../@/components/ui/button";
 import {
@@ -9,6 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../../@/components/ui/popover";
+import { getForm } from "../form-actions";
 
 const EmbedSnippet = ({ formId }: { formId: string }) => {
   const snippetText = `
