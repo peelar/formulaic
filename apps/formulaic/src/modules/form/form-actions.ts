@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getUserFormService } from "./utils";
 import { FormInput } from "./form-input.schema";
+import { cache } from "react";
 
 export async function createForm(input: FormInput.Schema) {
   const formService = await getUserFormService();
@@ -28,7 +29,12 @@ export async function deleteForm(id: string) {
   revalidatePath("/");
 }
 
-export async function getForm(id: string) {
+export const getForm = cache(async (id: string) => {
   const formService = await getUserFormService();
   return formService.getById({ id });
-}
+});
+
+export const getAllForms = cache(async () => {
+  const formService = await getUserFormService();
+  return formService.getAll();
+});

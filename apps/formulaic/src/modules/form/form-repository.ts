@@ -1,10 +1,11 @@
 import { env } from "../../../env.mjs";
 import { prisma } from "../../../prisma";
+import { logger } from "../../lib/logger";
 import { FormInput } from "./form-input.schema";
 
 // idea: try/catch? and return { data, error }
 export class FormRepository {
-  getAllMine({ userId }: { userId: string }) {
+  getAll({ userId }: { userId: string }) {
     return prisma.form.findMany({
       where: {
         authorId: userId,

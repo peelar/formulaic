@@ -10,12 +10,11 @@ import {
   TableRow,
 } from "../../../@/components/ui/table";
 import { date } from "../../../lib/date";
-import { getUserFormService } from "../utils";
+import { getAllForms } from "../form-actions";
 import { DeleteFormAlert } from "./delete-form-alert";
 
 export const FormsTable = async () => {
-  const formService = await getUserFormService();
-  const forms = await formService.getAllMine();
+  const forms = await getAllForms();
 
   return (
     <div className="my-6 w-full max-w-2xl">

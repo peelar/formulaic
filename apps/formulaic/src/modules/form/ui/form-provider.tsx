@@ -1,5 +1,5 @@
 "use client";
-import { useSetAtom } from "jotai";
+import { Provider, useSetAtom } from "jotai";
 import React from "react";
 import { FieldProps } from "../fields-schema";
 import { fieldsAtom } from "./hooks/useFormBuilder";
@@ -19,5 +19,5 @@ export const FormProvider = ({
     }
   }, [defaultValues, setFields]);
 
-  return <>{children}</>;
+  return <Provider>{children}</Provider>;
 };

@@ -24,10 +24,10 @@ export class FormService {
     this.user = user;
   }
 
-  async getAllMine() {
+  async getAll() {
     this.logger.debug("Getting all forms");
 
-    const forms = await this.repository.getAllMine({ userId: this.user.id });
+    const forms = await this.repository.getAll({ userId: this.user.id });
 
     this.logger.info("Returning forms");
     return forms;
