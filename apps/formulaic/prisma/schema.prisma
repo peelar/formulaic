@@ -35,10 +35,10 @@ model Schema {
   content     Json         @db.Json
   submissions Submission[]
   version     Int          @default(autoincrement())
-  Form        Form?        @relation(fields: [formId], references: [id])
+  form        Form?        @relation(fields: [formId], references: [id])
   formId      String?
-  User        User?        @relation(fields: [userId], references: [id])
-  userId      String?
+  user        User         @relation(fields: [userId], references: [id])
+  userId      String
 }
 
 model Submission {
@@ -90,7 +90,7 @@ model User {
   forms         Form[]
   accounts      Account[]
   sessions      Session[]
-  Schema        Schema[]
+  schema        Schema[]
 
   @@map(name: "users") // next-auth requires it
 }

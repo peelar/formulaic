@@ -2,9 +2,20 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getUserFormService } from "./utils";
 import { FormInput } from "./form-input.schema";
 import { cache } from "react";
+import { getUser } from "../../../auth";
+import { FormRepository } from "./form-repository";
+import { FormService } from "./form-service";
+import { GetResponseFromPromiseFunction } from "../../lib/types";
+
+async function getUserFormService() {
+  const repository = new FormRepository();
+  const user = await getUser();
+  const formService = new FormService({ repository, user });
+
+  return formService;
+}
 
 export async function createForm(input: FormInput.FullSchema) {
   const formService = await getUserFormService();
@@ -51,6 +62,6 @@ export const getAllForms = cache(async () => {
 });
 
 export namespace FormActionsResponse {
-  export type GetForm = Awaited<ReturnType<typeof getForm>>;
-  export type GetAllForms = Awaited<ReturnType<typeof getAllForms>>;
+  export type GetForm = GetResponseFromPromiseFunction<typeof getForm>;
+  export type GetAllForms = GetResponseFromPromiseFunction<typeof getAllForms>;
 }

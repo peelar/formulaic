@@ -4,8 +4,10 @@ import { FormInput } from "./form-input.schema";
 
 // idea: try/catch? and return { data, error }
 export class FormRepository {
+  constructor(private db = prisma) {}
+
   getAll({ userId }: { userId: string }) {
-    return prisma.form.findMany({
+    return this.db.form.findMany({
       where: {
         authorId: userId,
       },
@@ -21,7 +23,7 @@ export class FormRepository {
    * @returns Base form data with the latest schema version
    */
   async getBaseById({ id }: { id: string }) {
-    const form = await prisma.form.findFirst({
+    const form = await this.db.form.findFirst({
       where: { id },
       select: {
         id: true,
@@ -53,7 +55,7 @@ export class FormRepository {
    * @returns Form data with the latest schema version and submissions
    */
   async getDetailsById({ id, userId }: { id: string; userId: string }) {
-    const form = await prisma.form.findFirst({
+    const form = await this.db.form.findFirst({
       where: { id, authorId: userId },
       select: {
         id: true,
@@ -91,7 +93,7 @@ export class FormRepository {
     input: FormInput.FullSchema;
     userId: string;
   }) {
-    return prisma.form.create({
+    return this.db.form.create({
       data: {
         name: data.name,
         domainAllowList: {
@@ -103,6 +105,11 @@ export class FormRepository {
         schemas: {
           create: {
             content: data.schemaContent,
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
           },
         },
         author: {
@@ -115,7 +122,7 @@ export class FormRepository {
   }
 
   deleteById({ id, userId }: { id: string; userId: string }) {
-    return prisma.form.delete({
+    return this.db.form.delete({
       where: { id, authorId: userId },
     });
   }
@@ -127,11 +134,16 @@ export class FormRepository {
     { id, userId }: { id: string; userId: string },
     data: FormInput.SchemaContentSchema
   ) {
-    return prisma.form.update({
+    return this.db.form.update({
       where: { id, authorId: userId },
       data: {
         schemas: {
           create: {
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
             content: data.schemaContent,
           },
         },
@@ -143,7 +155,7 @@ export class FormRepository {
     { id, userId }: { id: string; userId: string },
     data: FormInput.BaseSchema
   ) {
-    return prisma.form.update({
+    return this.db.form.update({
       where: { id, authorId: userId },
       data: {
         name: data.name,

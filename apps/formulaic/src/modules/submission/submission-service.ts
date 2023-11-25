@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createLogger } from "../../lib/logger";
 import { SubmissionRepository } from "./submission-repository";
 import { BadRequestError, InternalServerError } from "../../lib/error";
+import { SessionUser } from "../../../auth";
 
 const submissionRepositoryInputSchema = z.object({
   content: z.record(z.any()),
@@ -13,28 +14,29 @@ export class SubmissionService {
     name: "SubmissionService",
   });
 
-  constructor(private repository: SubmissionRepository) {}
+  private repository: SubmissionRepository;
+  private user: SessionUser;
 
-  async create(body: unknown) {
-    const parsed = submissionRepositoryInputSchema.safeParse(body);
+  constructor({
+    repository,
+    user,
+  }: {
+    repository: SubmissionRepository;
+    user: SessionUser;
+  }) {
+    this.repository = repository;
+    this.user = user;
+  }
 
-    if (!parsed.success) {
-      this.logger.error(parsed.error);
-      // todo: return error in response
-      throw new BadRequestError("Invalid submission input");
-    }
+  async getSubmissionsBySchemaId({ schemaId }: { schemaId: string }) {
+    this.logger.debug({ schemaId }, "Getting submissions by schema id");
 
-    const input = parsed.data;
-
-    this.logger.debug("Creating submission", { input });
-
-    const submission = await this.repository.create({
-      content: input.content,
-      schemaId: input.schemaId,
+    const submissions = await this.repository.getSubmissionsBySchemaId({
+      schemaId,
+      userId: this.user.id,
     });
 
-    this.logger.info("Created submission", { submission });
-
-    return submission;
+    this.logger.info({ schemaId }, "Returning submissions");
+    return submissions;
   }
 }

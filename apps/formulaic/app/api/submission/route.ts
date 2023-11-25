@@ -1,7 +1,7 @@
-import { SubmissionController } from "../../../src/modules/submission/submission-controller";
+import { PublicSubmissionController } from "../../../src/modules/submission/public-submission-controller";
 
 export async function POST(request: Request) {
-  const submissionController = new SubmissionController();
+  const submissionController = new PublicSubmissionController();
 
   return submissionController.POST(request);
 }

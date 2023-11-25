@@ -1,18 +1,18 @@
 import { BaseError } from "../../lib/error";
 import { createLogger } from "../../lib/logger";
+import { PublicSubmissionService } from "./public-submission-service";
 import { SubmissionRepository } from "./submission-repository";
-import { SubmissionService } from "./submission-service";
 
-export class SubmissionController {
+export class PublicSubmissionController {
   logger = createLogger({
     name: "SubmissionController",
   });
 
-  private service: SubmissionService;
+  private service: PublicSubmissionService;
 
   constructor() {
     const repository = new SubmissionRepository();
-    this.service = new SubmissionService(repository);
+    this.service = new PublicSubmissionService({ repository });
   }
 
   async POST(request: Request) {

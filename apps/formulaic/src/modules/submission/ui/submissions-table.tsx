@@ -1,4 +1,6 @@
-import { Submission } from "@prisma/client";
+"use client";
+
+import React from "react";
 import {
   Table,
   TableBody,
@@ -9,14 +11,31 @@ import {
   TableRow,
 } from "../../../@/components/ui/table";
 import { date } from "../../../lib/date";
+import {
+  SubmissionActionsResponse,
+  getSubmissionsBySchemaId,
+} from "../submission-actions";
+import { useAtomValue } from "jotai";
+import { schemaIdAtom } from "../../schema/ui/schema-version-select";
 
-type SelectedSubmission = Pick<Submission, "content" | "createdAt" | "id">;
+export const SubmissionsTable = () => {
+  const schemaId = useAtomValue(schemaIdAtom);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [submissions, setSubmissions] =
+    React.useState<SubmissionActionsResponse.GetSubmissionsBySchemaId>([]);
 
-const SubmissionsTable = ({
-  submissions,
-}: {
-  submissions: SelectedSubmission[];
-}) => {
+  async function fetchSubmissions(schemaId: string) {
+    setIsLoading(true);
+    const nextSubmissions = await getSubmissionsBySchemaId({ schemaId });
+    setSubmissions(nextSubmissions);
+    setIsLoading(false);
+  }
+
+  React.useEffect(() => {
+    if (!schemaId) return;
+    fetchSubmissions(schemaId);
+  }, [schemaId]);
+
   return (
     <section className="my-6">
       <Table>
@@ -39,18 +58,11 @@ const SubmissionsTable = ({
             );
           })}
         </TableBody>
-        {!submissions.length && (
+        {isLoading && <TableCaption>Fetching submissions...</TableCaption>}
+        {!isLoading && !submissions.length && (
           <TableCaption>No submissions found</TableCaption>
         )}
       </Table>
     </section>
   );
-};
-
-export const Submissions = ({
-  submissions,
-}: {
-  submissions: SelectedSubmission[];
-}) => {
-  return <SubmissionsTable submissions={submissions} />;
 };
