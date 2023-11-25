@@ -6,6 +6,7 @@ import { FormCreator } from "../../../src/modules/form/ui/form-creator";
 import { FormProvider } from "../../../src/modules/form/ui/form-provider";
 import { getUserFormService } from "../../../src/modules/form/utils";
 import { Section } from "../../../src/ui/section";
+import { UpdateForm } from "../../../src/modules/form/ui/update-form";
 
 type Form = Awaited<ReturnType<typeof getForm>>;
 
@@ -44,15 +45,7 @@ export default async function FormPage({ params }: { params: { id: string } }) {
     <main>
       <Section title="Form">
         <FormProvider defaultValues={fields}>
-          <FormCreator
-            buttonText="Update"
-            defaultValues={defaultValues}
-            onHandleSubmit={async (input) => {
-              "use server";
-
-              return updateForm(form.id, input);
-            }}
-          />
+          <UpdateForm defaultValues={defaultValues} />
         </FormProvider>
       </Section>
     </main>

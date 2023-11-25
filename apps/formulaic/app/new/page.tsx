@@ -1,10 +1,8 @@
-import React from "react";
-import { FormCreator } from "../../src/modules/form/ui/form-creator";
-import { Section } from "../../src/ui/section";
 import { Metadata } from "next";
-import { FormProvider } from "../../src/modules/form/ui/form-provider";
 import { protectPage } from "../../src/lib/routing";
-import { createForm } from "../../src/modules/form/form-actions";
+import { CreateForm } from "../../src/modules/form/ui/create-form";
+import { FormProvider } from "../../src/modules/form/ui/form-provider";
+import { Section } from "../../src/ui/section";
 
 export const metadata: Metadata = {
   title: "Create new form",
@@ -26,7 +24,7 @@ const NewFormPage = async () => {
             form
           </h3>
           <FormProvider>
-            <FormCreator buttonText="Submit" onHandleSubmit={createForm} />
+            <CreateForm />
           </FormProvider>
         </div>
       </Section>

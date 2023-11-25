@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "../../../@/components/ui/dialog";
 import { BadgeListForm } from "../../../ui/badge-list-form";
-import { UseAllowedUrlsValues } from "./form-creator";
+import { UseAllowedUrlsValues } from "./hooks/useAllowedUrls";
 import { UrlBadge } from "./url-badge";
 
 export const AllowedUrlsDialog = ({
