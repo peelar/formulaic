@@ -1,12 +1,10 @@
 import { Metadata } from "next";
-import { getForm, updateForm } from "../../../src/modules/form/form-actions";
+import { getForm } from "../../../src/modules/form/form-actions";
 import { FormInput } from "../../../src/modules/form/form-input.schema";
 import { buildFieldsFromJsonSchema } from "../../../src/modules/form/json-schema-to-fields";
-import { FormCreator } from "../../../src/modules/form/ui/form-creator";
 import { FormProvider } from "../../../src/modules/form/ui/form-provider";
-import { getUserFormService } from "../../../src/modules/form/utils";
-import { Section } from "../../../src/ui/section";
 import { UpdateForm } from "../../../src/modules/form/ui/update-form";
+import { Section } from "../../../src/ui/section";
 
 type Form = Awaited<ReturnType<typeof getForm>>;
 
@@ -18,9 +16,7 @@ export async function generateMetadata({
   // read route params
   const id = params.id;
 
-  const formService = await getUserFormService();
-  const form = await formService.getById({ id });
-
+  const form = await getForm(id);
   return {
     title: `Editing ${form.name}`,
     description: `Editing ${form.name}`,

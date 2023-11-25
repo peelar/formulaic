@@ -33,22 +33,44 @@ export class FormService {
     return forms;
   }
 
-  async getById({ id }: { id: string }) {
-    this.logger.debug({ id }, "Getting form by id");
+  async getBaseById({ id }: { id: string }) {
+    this.logger.debug({ id }, "Getting base form by id");
 
     if (!id) {
       this.logger.debug("Form id is either null or undefined");
       throw new BadRequestError("Missing form id");
     }
 
-    const form = await this.repository.getById({ id });
+    const form = await this.repository.getBaseById({ id });
 
     if (!form) {
       this.logger.debug("No form was found for this id");
       throw new NotFoundError("Form not found");
     }
 
-    this.logger.info({ id: form.id }, "Returning form");
+    this.logger.info({ id: form.id }, "Returning base form");
+    return form;
+  }
+
+  async getDetailById({ id }: { id: string }) {
+    this.logger.debug({ id }, "Getting detailed form by id");
+
+    if (!id) {
+      this.logger.debug("Form id is either null or undefined");
+      throw new BadRequestError("Missing form id");
+    }
+
+    const form = await this.repository.getDetailsById({
+      id,
+      userId: this.user.id,
+    });
+
+    if (!form) {
+      this.logger.debug("No form was found for this id");
+      throw new NotFoundError("Form not found");
+    }
+
+    this.logger.info({ id: form.id }, "Returning detailed form");
     return form;
   }
 
@@ -78,7 +100,7 @@ export class FormService {
     this.logger.info({ id }, "Form deleted");
   }
 
-  async updateById({ id }: { id: string }, body: unknown) {
+  async updateByIdWithNewSchema({ id }: { id: string }, body: unknown) {
     const parsed = FormInput.schema.safeParse(body);
 
     if (!parsed.success) {
@@ -90,7 +112,7 @@ export class FormService {
 
     this.logger.debug({ input }, "Updating form with input");
 
-    const form = await this.repository.updateById(
+    const form = await this.repository.updateByIdWithNewSchema(
       { id, userId: this.user.id },
       input
     );

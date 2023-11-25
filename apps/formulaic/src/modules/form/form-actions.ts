@@ -13,10 +13,13 @@ export async function createForm(input: FormInput.Schema) {
   redirect(`/form/${form.id}`);
 }
 
-export async function updateForm(id: string, input: FormInput.Schema) {
+export async function updateFormWithNewSchema(
+  id: string,
+  input: FormInput.Schema
+) {
   const formService = await getUserFormService();
 
-  await formService.updateById({ id }, input);
+  await formService.updateByIdWithNewSchema({ id }, input);
 
   revalidatePath(`/form/${id}`);
 }
@@ -31,7 +34,7 @@ export async function deleteForm(id: string) {
 
 export const getForm = cache(async (id: string) => {
   const formService = await getUserFormService();
-  return formService.getById({ id });
+  return formService.getDetailById({ id });
 });
 
 export const getAllForms = cache(async () => {

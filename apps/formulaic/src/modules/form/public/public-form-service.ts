@@ -21,7 +21,7 @@ export class PublicFormService {
       throw new BadRequestError("Missing form id");
     }
 
-    const form = await this.repository.getById({ id });
+    const form = await this.repository.getBaseById({ id });
 
     if (!form) {
       this.logger.debug("No form was found for this id");

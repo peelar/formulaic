@@ -8,6 +8,13 @@ import { FormInput, formThemeSchema } from "../form-input.schema";
 import { FormCreator } from "./form-creator";
 import { useAllowedUrls } from "./hooks/useAllowedUrls";
 import { useFormBuilder } from "./hooks/useFormBuilder";
+import { Button } from "../../../@/components/ui/button";
+
+const SubmitButton = ({ isPending }: { isPending: boolean }) => {
+  return (
+    <Button disabled={isPending}>{isPending ? "Loading..." : "Create"}</Button>
+  );
+};
 
 export const CreateForm = () => {
   const [isPending, setIsPending] = React.useState(false);
@@ -36,9 +43,8 @@ export const CreateForm = () => {
   }
   return (
     <FormCreator
-      buttonText="Create"
+      submitButton={<SubmitButton isPending={isPending} />}
       handleSubmit={onHandleSubmit}
-      isPending={isPending}
       allowedUrls={allowedUrls}
     />
   );

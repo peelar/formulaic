@@ -23,7 +23,6 @@ export const FormsTable = async () => {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Submissions</TableHead>
             <TableHead>Created at</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -34,8 +33,6 @@ export const FormsTable = async () => {
               <TableCell className="font-bold">
                 <Link href={`/form/${form.id}`}>{form.name}</Link>
               </TableCell>
-
-              <TableCell>{form.schema?._count.submissions}</TableCell>
               <TableCell>{date.toLongDate(form.createdAt)}</TableCell>
               <TableCell>
                 <DeleteFormAlert id={form.id} />

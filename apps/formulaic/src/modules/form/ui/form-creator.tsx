@@ -16,14 +16,12 @@ import { UseAllowedUrlsValues } from "./hooks/useAllowedUrls";
 export const FormCreator = ({
   handleSubmit,
   defaultValues,
-  buttonText,
-  isPending,
+  submitButton,
   allowedUrls,
 }: {
   handleSubmit: (form: FormData) => Promise<void>;
   defaultValues?: FormInput.Schema;
-  buttonText: string;
-  isPending: boolean;
+  submitButton: React.ReactNode;
   allowedUrls: UseAllowedUrlsValues;
 }) => {
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -71,11 +69,7 @@ export const FormCreator = ({
             <FormThemeSelect defaultValue={defaultValues?.theme ?? "MUI"} />
           </Label>
         </fieldset>
-        <div className="mt-4">
-          <Button disabled={isPending} type="submit">
-            {isPending ? "Loading..." : buttonText}
-          </Button>
-        </div>
+        <div className="mt-4">{submitButton}</div>
       </form>
     </div>
   );

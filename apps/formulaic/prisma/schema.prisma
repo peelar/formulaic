@@ -22,19 +22,10 @@ model Form {
   createdAt       DateTime @default(now())
   name            String
   domainAllowList String[]
-  schema          Schema?
+  schemas         Schema[]
   author          User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId        String
   theme           Theme    @default(MUI)
-}
-
-model Submission {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   Json     @db.JsonB
-  schema    Schema?  @relation(fields: [schemaId], references: [id], onDelete: Cascade)
-  schemaId  String?
 }
 
 model Schema {
@@ -42,9 +33,21 @@ model Schema {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   content     Json         @db.Json
-  form        Form?        @relation(fields: [formId], references: [id], onDelete: Cascade)
-  formId      String       @unique
   submissions Submission[]
+  version     Int          @default(autoincrement())
+  Form        Form?        @relation(fields: [formId], references: [id])
+  formId      String?
+  User        User?        @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model Submission {
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  content           Json     @db.JsonB
+  versionedSchema   Schema   @relation(fields: [versionedSchemaId], references: [id])
+  versionedSchemaId String
 }
 
 model Account {
@@ -87,6 +90,7 @@ model User {
   forms         Form[]
   accounts      Account[]
   sessions      Session[]
+  Schema        Schema[]
 
   @@map(name: "users") // next-auth requires it
 }

@@ -4,11 +4,49 @@ import { useParams } from "next/navigation";
 import React from "react";
 import { useToast } from "../../../@/components/ui/use-toast";
 import { buildJsonSchemaFromFields } from "../fields-to-json-schema";
-import { updateForm } from "../form-actions";
+import { updateFormWithNewSchema } from "../form-actions";
 import { FormInput, formThemeSchema } from "../form-input.schema";
 import { FormCreator } from "./form-creator";
 import { useAllowedUrls } from "./hooks/useAllowedUrls";
 import { useFormBuilder } from "./hooks/useFormBuilder";
+import { Button } from "../../../@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../../../@/components/ui/alert-dialog";
+
+const SubmitButton = ({ isPending }: { isPending: boolean }) => {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button disabled={isPending}>
+          {isPending ? "Loading..." : "Update"}
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Are you sure you want to delete the form?
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. You form will be deleted permanently.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction type="submit">Delete</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
 
 export const UpdateForm = ({
   defaultValues,
@@ -36,7 +74,7 @@ export const UpdateForm = ({
       theme,
     };
 
-    await updateForm(id, input);
+    await updateFormWithNewSchema(id, input);
     setIsPending(false);
     toast({
       description: "Your form has been updated",
@@ -44,10 +82,9 @@ export const UpdateForm = ({
   }
   return (
     <FormCreator
-      buttonText="Update"
+      submitButton={<SubmitButton isPending={isPending} />}
       defaultValues={defaultValues}
       handleSubmit={onHandleSubmit}
-      isPending={isPending}
       allowedUrls={allowedUrls}
     />
   );

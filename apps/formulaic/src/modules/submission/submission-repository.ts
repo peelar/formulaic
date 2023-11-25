@@ -10,7 +10,7 @@ export class SubmissionRepository {
     return prisma.submission.create({
       data: {
         content: data.content,
-        schema: {
+        versionedSchema: {
           connect: {
             id: data.schemaId,
           },

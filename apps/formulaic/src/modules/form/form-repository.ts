@@ -1,6 +1,5 @@
 import { env } from "../../../env.mjs";
 import { prisma } from "../../../prisma";
-import { logger } from "../../lib/logger";
 import { FormInput } from "./form-input.schema";
 
 // idea: try/catch? and return { data, error }
@@ -13,41 +12,76 @@ export class FormRepository {
       select: {
         id: true,
         name: true,
-        domainAllowList: true,
         createdAt: true,
-        schema: {
-          include: {
-            _count: { select: { submissions: true } },
-          },
-        },
       },
     });
   }
 
-  getById({ id }: { id: string }) {
-    return prisma.form.findFirst({
+  /**
+   * @returns Base form data with the latest schema version
+   */
+  async getBaseById({ id }: { id: string }) {
+    const form = await prisma.form.findFirst({
       where: { id },
       select: {
         id: true,
         name: true,
         domainAllowList: true,
         theme: true,
-        schema: {
+        schemas: {
+          take: 1,
           select: {
-            id: true,
             content: true,
-            createdAt: true,
-            submissions: {
-              select: {
-                id: true,
-                content: true,
-                createdAt: true,
-              },
-            },
           },
         },
       },
     });
+
+    if (!form) {
+      return null;
+    }
+
+    const { schemas, ...rest } = form;
+
+    return {
+      ...rest,
+      schema: schemas[0],
+    };
+  }
+
+  /**
+   * @returns Form data with the latest schema version and submissions
+   */
+  async getDetailsById({ id, userId }: { id: string; userId: string }) {
+    const form = await prisma.form.findFirst({
+      where: { id, authorId: userId },
+      select: {
+        id: true,
+        name: true,
+        domainAllowList: true,
+        theme: true,
+        schemas: {
+          take: 1,
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            submissions: true,
+          },
+        },
+      },
+    });
+
+    if (!form) {
+      return null;
+    }
+
+    const { schemas, ...rest } = form;
+
+    return {
+      ...rest,
+      schema: schemas[0],
+    };
   }
 
   create({ input: data, userId }: { input: FormInput.Schema; userId: string }) {
@@ -60,7 +94,7 @@ export class FormRepository {
             ...data.urls,
           ],
         },
-        schema: {
+        schemas: {
           create: {
             content: data.schemaContent,
           },
@@ -80,7 +114,10 @@ export class FormRepository {
     });
   }
 
-  updateById(
+  /**
+   * @description Creates a new schema version on each update
+   */
+  updateByIdWithNewSchema(
     { id, userId }: { id: string; userId: string },
     data: FormInput.Schema
   ) {
@@ -92,8 +129,8 @@ export class FormRepository {
         domainAllowList: {
           set: data.urls,
         },
-        schema: {
-          update: {
+        schemas: {
+          create: {
             content: data.schemaContent,
           },
         },
