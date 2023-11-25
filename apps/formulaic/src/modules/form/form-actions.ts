@@ -6,20 +6,28 @@ import { getUserFormService } from "./utils";
 import { FormInput } from "./form-input.schema";
 import { cache } from "react";
 
-export async function createForm(input: FormInput.Schema) {
+export async function createForm(input: FormInput.FullSchema) {
   const formService = await getUserFormService();
   const form = await formService.create(input);
 
   redirect(`/form/${form.id}`);
 }
 
-export async function updateFormWithNewSchema(
+export async function updateBaseForm(id: string, input: FormInput.BaseSchema) {
+  const formService = await getUserFormService();
+
+  await formService.updateBaseFormById({ id }, input);
+
+  revalidatePath(`/form/${id}`);
+}
+
+export async function updateFormSchemaById(
   id: string,
-  input: FormInput.Schema
+  input: FormInput.SchemaContentSchema
 ) {
   const formService = await getUserFormService();
 
-  await formService.updateByIdWithNewSchema({ id }, input);
+  await formService.updateFormSchemaById({ id }, input);
 
   revalidatePath(`/form/${id}`);
 }
@@ -41,3 +49,8 @@ export const getAllForms = cache(async () => {
   const formService = await getUserFormService();
   return formService.getAll();
 });
+
+export namespace FormActionsResponse {
+  export type GetForm = Awaited<ReturnType<typeof getForm>>;
+  export type GetAllForms = Awaited<ReturnType<typeof getAllForms>>;
+}

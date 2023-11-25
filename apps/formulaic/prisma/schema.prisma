@@ -42,12 +42,12 @@ model Schema {
 }
 
 model Submission {
-  id                String   @id @default(cuid())
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  content           Json     @db.JsonB
-  versionedSchema   Schema   @relation(fields: [versionedSchemaId], references: [id])
-  versionedSchemaId String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   Json     @db.JsonB
+  schema    Schema   @relation(fields: [schemaId], references: [id])
+  schemaId  String
 }
 
 model Account {

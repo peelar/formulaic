@@ -84,7 +84,13 @@ export class FormRepository {
     };
   }
 
-  create({ input: data, userId }: { input: FormInput.Schema; userId: string }) {
+  create({
+    input: data,
+    userId,
+  }: {
+    input: FormInput.FullSchema;
+    userId: string;
+  }) {
     return prisma.form.create({
       data: {
         name: data.name,
@@ -117,9 +123,25 @@ export class FormRepository {
   /**
    * @description Creates a new schema version on each update
    */
-  updateByIdWithNewSchema(
+  updateFormSchemaById(
     { id, userId }: { id: string; userId: string },
-    data: FormInput.Schema
+    data: FormInput.SchemaContentSchema
+  ) {
+    return prisma.form.update({
+      where: { id, authorId: userId },
+      data: {
+        schemas: {
+          create: {
+            content: data.schemaContent,
+          },
+        },
+      },
+    });
+  }
+
+  updateBaseFormById(
+    { id, userId }: { id: string; userId: string },
+    data: FormInput.BaseSchema
   ) {
     return prisma.form.update({
       where: { id, authorId: userId },
@@ -128,11 +150,6 @@ export class FormRepository {
         theme: data.theme,
         domainAllowList: {
           set: data.urls,
-        },
-        schemas: {
-          create: {
-            content: data.schemaContent,
-          },
         },
       },
     });

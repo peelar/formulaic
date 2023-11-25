@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
-import { getForm } from "../form-actions";
-import { Section } from "../../../ui/section";
-import { ShareButton } from "./share-button";
 import { Separator } from "@radix-ui/react-separator";
+import { Section } from "../../../ui/section";
+import { FormActionsResponse } from "../form-actions";
+import { ShareButton } from "./share-button";
 
-type Form = Awaited<ReturnType<typeof getForm>>;
+type Form = FormActionsResponse.GetForm;
 
 export const FormHeader = ({ form }: { form: Form }) => {
   return (

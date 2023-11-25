@@ -4,7 +4,7 @@ import React from "react";
 import { useToast } from "../../../@/components/ui/use-toast";
 import { buildJsonSchemaFromFields } from "../fields-to-json-schema";
 import { createForm } from "../form-actions";
-import { FormInput, formThemeSchema } from "../form-input.schema";
+import { FormInput } from "../form-input.schema";
 import { FormCreator } from "./form-creator";
 import { useAllowedUrls } from "./hooks/useAllowedUrls";
 import { useFormBuilder } from "./hooks/useFormBuilder";
@@ -26,9 +26,9 @@ export const CreateForm = () => {
     setIsPending(true);
 
     const rawTheme = form.get("theme");
-    const theme = formThemeSchema.parse(rawTheme);
+    const theme = FormInput.themeSchema.parse(rawTheme);
 
-    const input: FormInput.Schema = {
+    const input: FormInput.FullSchema = {
       name: form.get("name") as string,
       urls: allowedUrls.urls,
       schemaContent: buildJsonSchemaFromFields(fields),

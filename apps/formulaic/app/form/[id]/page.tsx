@@ -5,8 +5,9 @@ import { buildFieldsFromJsonSchema } from "../../../src/modules/form/json-schema
 import { FormProvider } from "../../../src/modules/form/ui/form-provider";
 import { UpdateForm } from "../../../src/modules/form/ui/update-form";
 import { Section } from "../../../src/ui/section";
+import { FormActionsResponse } from "../../../src/modules/form/form-actions";
 
-type Form = Awaited<ReturnType<typeof getForm>>;
+type Form = FormActionsResponse.GetForm;
 
 export async function generateMetadata({
   params,
@@ -23,7 +24,7 @@ export async function generateMetadata({
   };
 }
 
-function getDefaultValues(form: Form): FormInput.Schema {
+function getDefaultValues(form: Form): FormInput.FullSchema {
   return {
     name: form.name,
     schemaContent: (form.schema?.content ?? {}) as Record<string, any>,

@@ -13,6 +13,8 @@ import { FormThemeSelect } from "./form-theme-select";
 import { SchemaBuilder } from "./schema-builder";
 import { UseAllowedUrlsValues } from "./hooks/useAllowedUrls";
 
+export const FORM_CREATOR_ID = "form-creator";
+
 export const FormCreator = ({
   handleSubmit,
   defaultValues,
@@ -20,7 +22,7 @@ export const FormCreator = ({
   allowedUrls,
 }: {
   handleSubmit: (form: FormData) => Promise<void>;
-  defaultValues?: FormInput.Schema;
+  defaultValues?: FormInput.FullSchema;
   submitButton: React.ReactNode;
   allowedUrls: UseAllowedUrlsValues;
 }) => {
@@ -34,7 +36,7 @@ export const FormCreator = ({
 
   return (
     <div className="my-6">
-      <form onSubmit={onSubmit}>
+      <form id={FORM_CREATOR_ID} onSubmit={onSubmit}>
         <fieldset className="flex flex-col gap-6">
           <Label className="md:w-2/5">
             Name

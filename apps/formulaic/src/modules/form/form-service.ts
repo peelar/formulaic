@@ -77,7 +77,7 @@ export class FormService {
   async create(body: unknown) {
     this.logger.debug("Creating form");
 
-    const parsed = FormInput.schema.safeParse(body);
+    const parsed = FormInput.fullSchema.safeParse(body);
 
     if (!parsed.success) {
       this.logger.debug({ errors: parsed.error }, "Invalid form input");
@@ -100,8 +100,8 @@ export class FormService {
     this.logger.info({ id }, "Form deleted");
   }
 
-  async updateByIdWithNewSchema({ id }: { id: string }, body: unknown) {
-    const parsed = FormInput.schema.safeParse(body);
+  async updateBaseFormById({ id }: { id: string }, body: unknown) {
+    const parsed = FormInput.baseSchema.safeParse(body);
 
     if (!parsed.success) {
       this.logger.debug({ errors: parsed.error }, "Invalid form input");
@@ -112,7 +112,29 @@ export class FormService {
 
     this.logger.debug({ input }, "Updating form with input");
 
-    const form = await this.repository.updateByIdWithNewSchema(
+    const form = await this.repository.updateBaseFormById(
+      { id, userId: this.user.id },
+      input
+    );
+
+    this.logger.info({ id }, "Form updated");
+
+    return form;
+  }
+
+  async updateFormSchemaById({ id }: { id: string }, body: unknown) {
+    const parsed = FormInput.schemaContent.safeParse(body);
+
+    if (!parsed.success) {
+      this.logger.debug({ errors: parsed.error }, "Invalid form input");
+      throw new BadRequestError("Invalid form input", { cause: parsed.error });
+    }
+
+    const input = parsed.data;
+
+    this.logger.debug({ input }, "Updating form with input");
+
+    const form = await this.repository.updateFormSchemaById(
       { id, userId: this.user.id },
       input
     );

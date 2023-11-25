@@ -6,12 +6,12 @@ import React from "react";
 import { Tabs, TabsList, TabsTrigger } from "../../../@/components/ui/tabs";
 import { Count } from "../../../ui/count";
 import { Section } from "../../../ui/section";
-import { getForm } from "../form-actions";
+import { FormActionsResponse } from "../form-actions";
 
 export const FormPageTabs = ({
   form,
 }: {
-  form: Awaited<ReturnType<typeof getForm>>;
+  form: FormActionsResponse.GetForm;
 }) => {
   const noOfSubmissions = form?.schema?.submissions?.length ?? 0;
   const [tabValue, setTabValue] = React.useState<"form" | "submissions">(
