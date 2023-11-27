@@ -1,11 +1,11 @@
 import { Metadata } from "next";
-import { getForm } from "../../../src/modules/form/form-actions";
-import { FormInput } from "../../../src/modules/form/form-input.schema";
-import { buildFieldsFromJsonSchema } from "../../../src/modules/form/json-schema-to-fields";
-import { FormProvider } from "../../../src/modules/form/ui/form-provider";
-import { UpdateForm } from "../../../src/modules/form/ui/update-form";
-import { Section } from "../../../src/ui/section";
-import { FormActionsResponse } from "../../../src/modules/form/form-actions";
+import { getForm } from "../../src/modules/form/form-actions";
+import { FormInput } from "../../src/modules/form/form-input.schema";
+import { buildFieldsFromJsonSchema } from "../../src/modules/form/json-schema-to-fields";
+import { FormProvider } from "../../src/modules/form/ui/form-provider";
+import { UpdateForm } from "../../src/modules/form/ui/update-form";
+import { Section } from "../../src/ui/section";
+import { FormActionsResponse } from "../../src/modules/form/form-actions";
 
 type Form = FormActionsResponse.GetForm;
 

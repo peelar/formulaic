@@ -1,7 +1,7 @@
 import React from "react";
-import { getForm } from "../../../src/modules/form/form-actions";
-import { FormPageTabs } from "../../../src/modules/form/ui/form-page-tabs";
-import { FormHeader } from "../../../src/modules/form/ui/form-header";
+import { getForm } from "../../src/modules/form/form-actions";
+import { FormPageTabs } from "../../src/modules/form/ui/form-page-tabs";
+import { FormHeader } from "../../src/modules/form/ui/form-header";
 
 const FormLayout = async ({
   children,

@@ -1,5 +1,5 @@
-import { Submissions } from "../../../../src/modules/submission/ui/submissions";
-import { Section } from "../../../../src/ui/section";
+import { Submissions } from "../../../src/modules/submission/ui/submissions";
+import { Section } from "../../../src/ui/section";
 
 const SubmissionsPage = async ({ params }: { params: { id: string } }) => {
   const id = params.id;

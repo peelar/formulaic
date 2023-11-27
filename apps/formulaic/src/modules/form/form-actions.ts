@@ -21,7 +21,7 @@ export async function createForm(input: FormInput.FullSchema) {
   const formService = await getUserFormService();
   const form = await formService.create(input);
 
-  redirect(`/form/${form.slug}`);
+  redirect(`/${form.slug}`);
 }
 
 export async function updateBaseForm(id: string, input: FormInput.BaseSchema) {
