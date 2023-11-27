@@ -10,14 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../@/components/ui/select";
+import { date } from "../../../lib/date";
 import {
   SchemaActionsResponse,
   getFormSchemaVersions,
 } from "../schema-actions";
-import { date } from "../../../lib/date";
-import { atom, useAtom } from "jotai";
-
-export const schemaIdAtom = atom<string | undefined>(undefined);
+import { useSchemaId } from "./useSchemaId";
 
 const schemaVersionsToOptions = (
   schemaVersions: SchemaActionsResponse.GetFormSchemaVersions
@@ -33,16 +31,26 @@ type SelectOption = ReturnType<typeof schemaVersionsToOptions>[0];
 
 export const SchemaVersionSelect = ({ formId }: { formId: string }) => {
   const [options, setOptions] = React.useState<SelectOption[]>([]);
-  const [schemaId, setSchemaId] = useAtom(schemaIdAtom);
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const { state, push } = useSchemaId();
+
+  function updateSchemaId(schemaId: string) {
+    push({ schemaId });
+  }
 
   async function fetchSchemaVersions() {
     setIsLoading(true);
     const schemaVersions = await getFormSchemaVersions({ formId });
     const nextOptions = schemaVersionsToOptions(schemaVersions);
 
+    const nextSchemaId = nextOptions[0].id;
+
+    if (state.schemaId === undefined && nextSchemaId) {
+      updateSchemaId(nextSchemaId);
+    }
+
     setOptions(nextOptions);
-    setSchemaId(nextOptions[0].id);
     setIsLoading(false);
   }
 
@@ -53,8 +61,8 @@ export const SchemaVersionSelect = ({ formId }: { formId: string }) => {
   return (
     <Select
       disabled={isLoading}
-      onValueChange={(value) => setSchemaId(value)}
-      value={schemaId}
+      onValueChange={(value) => updateSchemaId(value)}
+      value={state.schemaId}
     >
       <SelectTrigger className="w-auto">
         <SelectValue placeholder="Select schema version" />

@@ -11,15 +11,17 @@ import {
   TableRow,
 } from "../../../@/components/ui/table";
 import { date } from "../../../lib/date";
+import { useSchemaId } from "../../schema/ui/useSchemaId";
 import {
   SubmissionActionsResponse,
   getSubmissionsBySchemaId,
 } from "../submission-actions";
-import { useAtomValue } from "jotai";
-import { schemaIdAtom } from "../../schema/ui/schema-version-select";
 
+// todo: maybe server component?
 export const SubmissionsTable = () => {
-  const schemaId = useAtomValue(schemaIdAtom);
+  const {
+    state: { schemaId },
+  } = useSchemaId();
   const [isLoading, setIsLoading] = React.useState(false);
   const [submissions, setSubmissions] =
     React.useState<SubmissionActionsResponse.GetSubmissionsBySchemaId>([]);
