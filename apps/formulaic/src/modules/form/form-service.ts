@@ -52,25 +52,25 @@ export class FormService {
     return form;
   }
 
-  async getDetailById({ id }: { id: string }) {
-    this.logger.debug({ id }, "Getting detailed form by id");
+  async getDetailBySlug({ slug }: { slug: string }) {
+    this.logger.debug({ slug }, "Getting detailed form by slug");
 
-    if (!id) {
-      this.logger.debug("Form id is either null or undefined");
-      throw new BadRequestError("Missing form id");
+    if (!slug) {
+      this.logger.debug("Form slug is either null or undefined");
+      throw new BadRequestError("Missing form slug");
     }
 
-    const form = await this.repository.getDetailsById({
-      id,
+    const form = await this.repository.getDetailsBySlug({
+      slug,
       userId: this.user.id,
     });
 
     if (!form) {
-      this.logger.debug("No form was found for this id");
+      this.logger.debug("No form was found for this slug");
       throw new NotFoundError("Form not found");
     }
 
-    this.logger.info({ id: form.id }, "Returning detailed form");
+    this.logger.info({ slug: form.slug }, "Returning detailed form");
     return form;
   }
 

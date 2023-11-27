@@ -12,12 +12,11 @@ type Form = FormActionsResponse.GetForm;
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: { slug: string };
 }): Promise<Metadata> {
   // read route params
-  const id = params.id;
-
-  const form = await getForm(id);
+  const slug = params.slug;
+  const form = await getForm({ slug });
   return {
     title: `Editing ${form.name}`,
     description: `Editing ${form.name}`,
@@ -33,8 +32,13 @@ function getDefaultValues(form: Form): FormInput.FullSchema {
   };
 }
 
-export default async function FormPage({ params }: { params: { id: string } }) {
-  const form = await getForm(params.id);
+export default async function FormPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const slug = params.slug;
+  const form = await getForm({ slug });
   const defaultValues = getDefaultValues(form);
   const fields = buildFieldsFromJsonSchema(defaultValues.schemaContent);
 

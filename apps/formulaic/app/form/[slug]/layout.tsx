@@ -8,10 +8,10 @@ const FormLayout = async ({
   params,
 }: {
   children: React.ReactNode;
-  params: { id: string };
+  params: { slug: string };
 }) => {
-  const id = params.id;
-  const form = await getForm(id);
+  const slug = params.slug;
+  const form = await getForm({ slug });
 
   return (
     <>

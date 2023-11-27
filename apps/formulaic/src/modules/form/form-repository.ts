@@ -1,5 +1,6 @@
 import { env } from "../../../env.mjs";
 import { prisma } from "../../../prisma";
+import { words } from "../../lib/words";
 import { FormInput } from "./form-input.schema";
 
 // idea: try/catch? and return { data, error }
@@ -15,6 +16,7 @@ export class FormRepository {
         id: true,
         name: true,
         createdAt: true,
+        slug: true,
       },
     });
   }
@@ -54,14 +56,15 @@ export class FormRepository {
   /**
    * @returns Form data with the latest schema version and submissions
    */
-  async getDetailsById({ id, userId }: { id: string; userId: string }) {
+  async getDetailsBySlug({ slug, userId }: { slug: string; userId: string }) {
     const form = await this.db.form.findFirst({
-      where: { id, authorId: userId },
+      where: { slug, authorId: userId },
       select: {
         id: true,
         name: true,
         domainAllowList: true,
         theme: true,
+        slug: true,
         schemas: {
           take: 1,
           select: {
@@ -96,6 +99,7 @@ export class FormRepository {
     return this.db.form.create({
       data: {
         name: data.name,
+        slug: words.toSlug(data.name),
         domainAllowList: {
           set: [
             ...(process.env.NODE_ENV === "development" ? [env.WIDGET_URL] : []),

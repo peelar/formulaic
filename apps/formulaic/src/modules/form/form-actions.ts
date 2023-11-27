@@ -21,7 +21,7 @@ export async function createForm(input: FormInput.FullSchema) {
   const formService = await getUserFormService();
   const form = await formService.create(input);
 
-  redirect(`/form/${form.id}`);
+  redirect(`/form/${form.slug}`);
 }
 
 export async function updateBaseForm(id: string, input: FormInput.BaseSchema) {
@@ -51,9 +51,9 @@ export async function deleteForm(id: string) {
   revalidatePath("/");
 }
 
-export const getForm = cache(async (id: string) => {
+export const getForm = cache(async ({ slug }: { slug: string }) => {
   const formService = await getUserFormService();
-  return formService.getDetailById({ id });
+  return formService.getDetailBySlug({ slug });
 });
 
 export const getAllForms = cache(async () => {

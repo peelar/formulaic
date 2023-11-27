@@ -10,6 +10,14 @@ function toSnakeCase(str: string): string {
   );
 }
 
+function toSlug(src: string) {
+  return src
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+}
+
 export const words = {
   toSnakeCase,
+  toSlug,
 };

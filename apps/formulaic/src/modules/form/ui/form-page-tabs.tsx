@@ -33,10 +33,10 @@ export const FormPageTabs = ({
       <Tabs value={tabValue}>
         <TabsList>
           <TabsTrigger asChild value="form">
-            <Link href={`/form/${form.id}`}>Form</Link>
+            <Link href={`/form/${form.slug}`}>Form</Link>
           </TabsTrigger>
           <TabsTrigger asChild value="submissions">
-            <Link href={`/form/${form.id}/submissions`}>
+            <Link href={`/form/${form.slug}/submissions`}>
               Submissions
               <Count className="bg-secondary/10" count={noOfSubmissions} />
             </Link>

@@ -21,6 +21,7 @@ model Form {
   id              String   @id @default(cuid())
   createdAt       DateTime @default(now())
   name            String
+  slug            String   @unique
   domainAllowList String[]
   schemas         Schema[]
   author          User     @relation(fields: [authorId], references: [id], onDelete: Cascade)

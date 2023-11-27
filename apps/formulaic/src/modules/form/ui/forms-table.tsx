@@ -29,9 +29,9 @@ export const FormsTable = async () => {
         </TableHeader>
         <TableBody>
           {forms.map((form) => (
-            <TableRow key={form.id}>
+            <TableRow key={form.slug}>
               <TableCell className="font-bold">
-                <Link href={`/form/${form.id}`}>{form.name}</Link>
+                <Link href={`/form/${form.slug}`}>{form.name}</Link>
               </TableCell>
               <TableCell>{date.toLongDate(form.createdAt)}</TableCell>
               <TableCell>
