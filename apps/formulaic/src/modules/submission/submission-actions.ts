@@ -14,16 +14,16 @@ async function getUserSubmissionService() {
   return schemaService;
 }
 
-export const getSubmissionsBySchemaId = cache(
-  async ({ schemaId }: { schemaId: string }) => {
+export const getSubmissionsBySchemaVersion = cache(
+  async ({ schemaVersion }: { schemaVersion: number }) => {
     const service = await getUserSubmissionService();
 
-    return service.getSubmissionsBySchemaId({ schemaId });
+    return service.getSubmissionsBySchemaVersion({ schemaVersion });
   }
 );
 
 export namespace SubmissionActionsResponse {
-  export type GetSubmissionsBySchemaId = GetResponseFromPromiseFunction<
-    typeof getSubmissionsBySchemaId
+  export type GetSubmissionsBySchemaVersion = GetResponseFromPromiseFunction<
+    typeof getSubmissionsBySchemaVersion
   >;
 }

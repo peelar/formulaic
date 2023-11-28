@@ -3,23 +3,25 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 
-export const useStateUrl = <T extends z.ZodType<Record<string, string>>>(
-  schema: T,
-  defaultState?: z.infer<T>
+export const useStateUrl = <
+  TState extends Record<string, string>,
+  TSchema extends z.ZodType<TState>,
+>(
+  schema: TSchema,
+  defaultState: TState
 ) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const state = convertUrlIntoState() ?? defaultState ?? {};
+  const state = convertUrlIntoState() ?? defaultState;
 
-  function parseState(state: z.infer<T>) {
+  function parseState(state: TState) {
     return schema.safeParse(state);
   }
 
-  function convertStateIntoQuery(state: z.infer<T>) {
+  function convertStateIntoQuery(state: TState) {
     const result = parseState(state);
 
     if (!result.success) {
-      console.log("Failed to parse state from URL", result.error);
       return undefined;
     }
 
@@ -37,14 +39,13 @@ export const useStateUrl = <T extends z.ZodType<Record<string, string>>>(
     const result = schema.safeParse(objectParams);
 
     if (!result.success) {
-      console.log("Failed to parse state from URL", result.error);
       return undefined;
     }
 
     return result.data;
   }
 
-  function synchronizeStateWithUrl(state: z.infer<T>) {
+  function synchronizeStateWithUrl(state: TState) {
     const query = convertStateIntoQuery(state);
 
     if (query) {
@@ -52,15 +53,15 @@ export const useStateUrl = <T extends z.ZodType<Record<string, string>>>(
     }
   }
 
-  function push(update: Partial<z.infer<T>>) {
+  function push(update: Partial<TState>) {
     const currentState = convertUrlIntoState();
-    const nextState = { ...currentState, ...update };
+    const nextState = { ...defaultState, ...currentState, ...update };
     synchronizeStateWithUrl(nextState);
   }
 
-  function remove({ key }: { key: keyof z.infer<T> }) {
+  function remove({ key }: { key: keyof TState }) {
     const currentState = convertUrlIntoState();
-    const nextState = { ...currentState };
+    const nextState = { ...defaultState, ...currentState };
     delete nextState[key as string];
     synchronizeStateWithUrl(nextState);
   }

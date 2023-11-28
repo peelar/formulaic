@@ -8,17 +8,17 @@ export type SubmissionCreateInput = Pick<
 export class SubmissionRepository {
   constructor(private db = prisma) {}
 
-  getSubmissionsBySchemaId({
-    schemaId,
+  getSubmissionsBySchemaVersion({
+    schemaVersion,
     userId,
   }: {
-    schemaId: string;
+    schemaVersion: number;
     userId: string;
   }) {
     return this.db.submission.findMany({
       where: {
         schema: {
-          id: schemaId,
+          version: schemaVersion,
           userId,
         },
       },

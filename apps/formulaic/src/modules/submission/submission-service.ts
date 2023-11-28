@@ -6,7 +6,7 @@ import { SessionUser } from "../../../auth";
 
 const submissionRepositoryInputSchema = z.object({
   content: z.record(z.any()),
-  schemaId: z.string().min(6),
+  schemaVersion: z.string().min(6),
 });
 
 export class SubmissionService {
@@ -28,15 +28,22 @@ export class SubmissionService {
     this.user = user;
   }
 
-  async getSubmissionsBySchemaId({ schemaId }: { schemaId: string }) {
-    this.logger.debug({ schemaId }, "Getting submissions by schema id");
+  async getSubmissionsBySchemaVersion({
+    schemaVersion,
+  }: {
+    schemaVersion: number;
+  }) {
+    this.logger.debug(
+      { schemaVersion },
+      "Getting submissions by schema version"
+    );
 
-    const submissions = await this.repository.getSubmissionsBySchemaId({
-      schemaId,
+    const submissions = await this.repository.getSubmissionsBySchemaVersion({
+      schemaVersion,
       userId: this.user.id,
     });
 
-    this.logger.info({ schemaId }, "Returning submissions");
+    this.logger.info({ schemaVersion }, "Returning submissions");
     return submissions;
   }
 }

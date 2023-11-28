@@ -15,14 +15,14 @@ import {
   SchemaActionsResponse,
   getFormSchemaVersions,
 } from "../schema-actions";
-import { useSchemaId } from "./useSchemaId";
+import { useSchemaVersion } from "./useSchemaVersion";
 
 const schemaVersionsToOptions = (
   schemaVersions: SchemaActionsResponse.GetFormSchemaVersions
 ) => {
   return schemaVersions.map((schemaVersion) => ({
     id: schemaVersion.id,
-    name: String(schemaVersion.version),
+    version: schemaVersion.version,
     date: date.toShortDateRel(schemaVersion.createdAt),
   }));
 };
@@ -33,10 +33,10 @@ export const SchemaVersionSelect = ({ formId }: { formId: string }) => {
   const [options, setOptions] = React.useState<SelectOption[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const { state, push } = useSchemaId();
+  const { state, push } = useSchemaVersion();
 
-  function updateSchemaId(schemaId: string) {
-    push({ schemaId });
+  function updateSchemaVersion(schemaVersion: number) {
+    push({ version: String(schemaVersion) });
   }
 
   async function fetchSchemaVersions() {
@@ -44,10 +44,10 @@ export const SchemaVersionSelect = ({ formId }: { formId: string }) => {
     const schemaVersions = await getFormSchemaVersions({ formId });
     const nextOptions = schemaVersionsToOptions(schemaVersions);
 
-    const nextSchemaId = nextOptions[0].id;
+    const nextSchemaVersion = nextOptions[0].version;
 
-    if (state.schemaId === undefined && nextSchemaId) {
-      updateSchemaId(nextSchemaId);
+    if (nextSchemaVersion) {
+      updateSchemaVersion(nextSchemaVersion);
     }
 
     setOptions(nextOptions);
@@ -61,8 +61,8 @@ export const SchemaVersionSelect = ({ formId }: { formId: string }) => {
   return (
     <Select
       disabled={isLoading}
-      onValueChange={(value) => updateSchemaId(value)}
-      value={state.schemaId}
+      onValueChange={(value) => updateSchemaVersion(Number(value))}
+      value={String(state.version)}
     >
       <SelectTrigger className="w-auto">
         <SelectValue placeholder="Select schema version" />
@@ -70,16 +70,16 @@ export const SchemaVersionSelect = ({ formId }: { formId: string }) => {
       <SelectContent>
         <SelectGroup>
           {options.map((option) => (
-            <>
+            <span key={option.id}>
               <SelectLabel className="text-stone-400 font-normal">
-                Created today at {option.date}
+                Created {option.date}
               </SelectLabel>
-              <SelectItem key={option.id} value={option.id}>
+              <SelectItem value={String(option.version)}>
                 <div className="flex flex-col gap-1">
-                  <span className="text-sm">Version {option.name}</span>
+                  <span className="text-sm">Version {option.version}</span>
                 </div>
               </SelectItem>
-            </>
+            </span>
           ))}
         </SelectGroup>
       </SelectContent>

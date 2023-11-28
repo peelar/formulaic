@@ -11,32 +11,34 @@ import {
   TableRow,
 } from "../../../@/components/ui/table";
 import { date } from "../../../lib/date";
-import { useSchemaId } from "../../schema/ui/useSchemaId";
+import { useSchemaVersion } from "../../schema/ui/useSchemaVersion";
 import {
   SubmissionActionsResponse,
-  getSubmissionsBySchemaId,
+  getSubmissionsBySchemaVersion,
 } from "../submission-actions";
 
 // todo: maybe server component?
 export const SubmissionsTable = () => {
   const {
-    state: { schemaId },
-  } = useSchemaId();
+    state: { version },
+  } = useSchemaVersion();
   const [isLoading, setIsLoading] = React.useState(false);
   const [submissions, setSubmissions] =
-    React.useState<SubmissionActionsResponse.GetSubmissionsBySchemaId>([]);
+    React.useState<SubmissionActionsResponse.GetSubmissionsBySchemaVersion>([]);
 
-  async function fetchSubmissions(schemaId: string) {
+  async function fetchSubmissions(schemaVersion: string) {
     setIsLoading(true);
-    const nextSubmissions = await getSubmissionsBySchemaId({ schemaId });
+    const nextSubmissions = await getSubmissionsBySchemaVersion({
+      schemaVersion: Number(schemaVersion),
+    });
     setSubmissions(nextSubmissions);
     setIsLoading(false);
   }
 
   React.useEffect(() => {
-    if (!schemaId) return;
-    fetchSubmissions(schemaId);
-  }, [schemaId]);
+    if (!version) return;
+    fetchSubmissions(version);
+  }, [version]);
 
   return (
     <section className="my-6">
